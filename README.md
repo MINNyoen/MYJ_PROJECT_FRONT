@@ -1,34 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+이 프로젝트는 MYJ Project로 [React](https://ko.reactjs.org/)와 [Next.js](https://nextjs.org/) 기반으로 [TypeScript](https://www.typescriptlang.org/) 언어를 사용하여 개발하였습니다.
 
-## Getting Started
+## 시작하기
 
-First, run the development server:
+먼저 Git을 통하여 code를 받으신 후 아래 명령어를 실행합니다.
 
 ```bash
+npm install
 npm run dev
 # or
+yarn install
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+이후 브라우저에 [http://localhost:3000](http://localhost:3000)을 통해 접속합니다.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## 개발 특징
+ - [Next.js](https://nextjs.org/)를 통한 SSR(Server Side Rendering) 및 높은 SEO(Search Engine Optimization)
+ - [StoryBook](https://storybook.js.org/)을 통한 CDD 주도 개발
+ - [Next-Translate](https://www.npmjs.com/package/next-translate)를 이용한 다국어 설정
+ - [MUI](https://mui.com/) 기반의 Theme 및 Style 적용
+ - [FullCalendar](https://fullcalendar.io/) 라이브러리를 통한 스케줄러 작성
+ - [Redux](https://ko.redux.js.org/)을 통한 통합 상태 관리 
+ - [React-Hook-Form](https://react-hook-form.com/)과 [Yup](https://www.npmjs.com/package/yup)을 이용하여 효과적인 Form 사용
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 개발 요약
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+해당 프로젝트는 개인 미니홈페이지 프로젝트입니다. 해당 프로젝트 안에는 아래 페이지가 존재합니다.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+ - UI 메뉴 구성도 이미지 첨부 예정
