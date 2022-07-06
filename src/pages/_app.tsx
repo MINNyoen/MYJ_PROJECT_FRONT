@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import {ThemeProvider} from '@mui/material';
-import {theme} from 'theme/theme';
+import {createTheme} from 'theme/theme';
 import type { AppProps } from 'next/app'
 import nProgress from 'nprogress';
 import { Router } from 'next/router';
@@ -13,6 +13,8 @@ import { createEmotionCache } from 'utils/create-emotion-cache';
 import Head from 'next/head';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { SettingsConsumer, SettingsProvider } from 'contexts/settings-context';
+import { SettingsButton } from 'components/Settings/settings-button';
 
 
 type EnhancedAppProps = AppProps & {
@@ -41,9 +43,20 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
       </Head>
       <ReduxProvider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <ThemeProvider theme={theme}>
-            <Component {...pageProps} />
-          </ThemeProvider>
+          <SettingsProvider>
+            <SettingsConsumer>
+              {({ settings }) => (
+                <ThemeProvider theme={createTheme({
+                  direction: settings.direction,
+                  responsiveFontSizes: settings.responsiveFontSizes,
+                  mode: settings.theme
+                })}>
+                  <SettingsButton />
+                  <Component {...pageProps} />
+                </ThemeProvider>
+              )}
+            </SettingsConsumer>
+          </SettingsProvider>
         </LocalizationProvider>
       </ReduxProvider>
     </CacheProvider>
