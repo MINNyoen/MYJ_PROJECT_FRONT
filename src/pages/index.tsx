@@ -1,70 +1,45 @@
-import type { NextPage } from 'next'
-import Image from 'next/image'
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { Divider } from '@mui/material';
+import { MainLayout } from 'layout/main-layout';
+import { HomeClients } from 'components/home/home-clients';
+import { HomeHero } from 'components/home/home-hero';
+import { HomeDevelopers } from 'components/home/home-developers';
+import { HomeDesigners } from 'components/home/home-designers';
+import { HomeFeatures } from 'components/home/home-features';
+import { HomeTestimonials } from 'components/home/home-testimonials';
 import useTransition from 'next-translate/useTranslation'
-import styles from 'styles/Home.module.css'
 
 const Home: NextPage = () => {
+
   const {t} = useTransition('common');
 
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <p>{t('Korean')} {t('English')}</p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+    <>
+      <Head>
+        <title>
+        {t('HomeTitle')}
+        </title>
+      </Head>
+      <main>
+        <HomeHero />
+        <Divider />
+        <HomeDevelopers />
+        <Divider />
+        <HomeDesigners />
+        <HomeTestimonials />
+        <HomeFeatures />
+        <Divider />
+        <HomeClients />
       </main>
+    </>
+  );
+};
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
-    </div>
-  )
-}
+Home.getLayout = (page) => (
+  <MainLayout>
+    {page}
+  </MainLayout>
+);
 
-export default Home
+export default Home;

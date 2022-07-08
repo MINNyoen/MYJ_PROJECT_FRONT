@@ -25,6 +25,7 @@ type EnhancedAppProps = AppProps & {
   emotionCache: EmotionCache;
 }
 
+
 Router.events.on('routeChangeStart', nProgress.start);
 Router.events.on('routeChangeError', nProgress.done);
 Router.events.on('routeChangeComplete', nProgress.done);
@@ -32,6 +33,8 @@ Router.events.on('routeChangeComplete', nProgress.done);
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: EnhancedAppProps) {
+
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -56,8 +59,8 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
                   <RTL direction={settings.direction}>
                   <CssBaseline />
                   <Toaster position="top-center" />
-                  <SettingsButton />
-                  <Component {...pageProps} />
+                  <SettingsButton /> 
+                  {getLayout(<Component {...pageProps} />)}
                   </RTL>
                 </ThemeProvider>
               )}
