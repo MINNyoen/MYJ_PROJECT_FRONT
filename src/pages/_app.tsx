@@ -12,12 +12,14 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Router } from 'next/router';
 import nProgress from 'nprogress';
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from 'store';
 import { createTheme } from 'theme/theme';
 import { createEmotionCache } from 'utils/create-emotion-cache';
 import '../styles/globals.css';
+import setLanguage from 'next-translate/setLanguage'
 
 
 type EnhancedAppProps = AppProps & {

@@ -3,16 +3,18 @@ import NextLink from 'next/link';
 import Head from 'next/head';
 import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import useTranslation from 'next-translate/useTranslation';
 
 const ServerError: NextPage = () => {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const {t} = useTranslation('common');
+  const {t : r} = useTranslation('500');
   return (
     <>
       <Head>
         <title>
-          Error: Server Error | Material Kit Pro
+          {r('500-Title')} | {t('HomeTitle')}
         </title>
       </Head>
       <Box
@@ -30,7 +32,7 @@ const ServerError: NextPage = () => {
             align="center"
             variant={mobileDevice ? 'h4' : 'h1'}
           >
-            500: Internal Server Error
+            {r('500-subTitle')}
           </Typography>
           <Typography
             align="center"
@@ -38,9 +40,7 @@ const ServerError: NextPage = () => {
             sx={{ mt: 0.5 }}
             variant="subtitle2"
           >
-            You either tried some shady route or you
-            came here by mistake. Whichever it is, try using the
-            navigation.
+          {r('500-content')}
           </Typography>
           <Box
             sx={{
@@ -68,14 +68,14 @@ const ServerError: NextPage = () => {
             }}
           >
             <NextLink
-              href="/dashboard"
+              href="/"
               passHref
             >
               <Button
                 component="a"
                 variant="outlined"
               >
-                Back to Dashboard
+                {t('BackToHome')}
               </Button>
             </NextLink>
           </Box>

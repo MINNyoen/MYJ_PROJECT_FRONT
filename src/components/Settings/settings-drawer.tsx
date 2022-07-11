@@ -16,7 +16,12 @@ import { X as XIcon } from 'components/icons/x';
 import LightThemeIcon from './light-theme.svg';
 // @ts-ignore
 import DarkThemeIcon from './dark-theme.svg';
+// @ts-ignore
+import KoLanguageIcon from './flag-ko.svg';
+// @ts-ignore
+import UsLanguageIcon from './flag-en.svg';
 import PropTypes from 'prop-types';
+import useTranslation from 'next-translate/useTranslation';
 
 interface SettingsDrawerProps {
   onClose?: () => void;
@@ -36,9 +41,23 @@ const themes = [
   }
 ];
 
+const languages = [
+  {
+    label: '한국어',
+    value: 'ko',
+    icon: KoLanguageIcon
+  },
+  {
+    label: 'English',
+    value: 'en',
+    icon: UsLanguageIcon
+  }
+];
+
 const getValues = (settings: Settings) => ({
   direction: settings.direction,
   responsiveFontSizes: settings.responsiveFontSizes,
+  language: settings.language,
   theme: settings.theme
 });
 
@@ -46,6 +65,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
   const { open, onClose, ...other } = props;
   const { settings, saveSettings } = useSettings();
   const [values, setValues] = useState<Settings>(getValues(settings));
+  const {t} = useTranslation('common');
 
   useEffect(() => {
     setValues(getValues(settings));
@@ -87,7 +107,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
           color="inherit"
           variant="h6"
         >
-          Theme settings
+          {t('ThemeSetting')}
         </Typography>
         <IconButton
           color="inherit"
@@ -110,7 +130,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
           }}
           variant="overline"
         >
-          Color Scheme
+          {t('ColorScheme')}
         </Typography>
         <Box
           sx={{
@@ -164,7 +184,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
           }}
           variant="overline"
         >
-          Settings
+          {t('Settings')}
         </Typography>
         <div>
           <FormControlLabel
@@ -182,7 +202,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
             )}
             label={(
               <Typography variant="subtitle2">
-                Activate RTL content
+                {t('RTL')}
               </Typography>
             )}
           />
@@ -201,11 +221,68 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
             )}
             label={(
               <Typography variant="subtitle2">
-                Responsive font sizes
+                {t('ResponsiveFontSize')}
               </Typography>
             )}
           />
         </div>
+
+        <Typography
+          color="textSecondary"
+          sx={{
+            display: 'block',
+            mb: 1
+          }}
+          variant="overline"
+        >
+          {t('LanguageSetting')}
+        </Typography>
+        <Box
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            m: -1
+          }}
+        >
+          {languages.map((language) => {
+            const { label, icon: Icon , value } = language;
+            return (
+              <div key={value}>
+                <Box
+                  onClick={() => handleChange('language', value)}
+                  sx={{
+                    borderColor: values.language === value ? 'primary.main' : 'divider',
+                    borderRadius: 1,
+                    borderStyle: 'solid',
+                    borderWidth: 2,
+                    cursor: 'pointer',
+                    flexGrow: 1,
+                    fontSize: 0,
+                    m: 1,
+                    overflow: 'hidden',
+                    p: 1,
+                    '& svg': {
+                      height: 'auto',
+                      width: '100%'
+                    }
+                  }}
+                >
+                  <Icon />
+                </Box>
+                <Typography
+                  align="center"
+                  sx={{ mt: 1 }}
+                  variant="subtitle2"
+                >
+                  {label}
+                </Typography>
+              </div>
+            );
+          })}
+        </Box>
+
+
+
         <Button
           color="primary"
           fullWidth

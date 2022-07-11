@@ -3,16 +3,20 @@ import NextLink from 'next/link';
 import Head from 'next/head';
 import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import useTranslation from 'next-translate/useTranslation';
 
 const NotFound: NextPage = () => {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const {t} = useTranslation('common');
+  const {t : r} = useTranslation('404');
+
   return (
     <>
       <Head>
         <title>
-          Error: Not Found | Material Kit Pro
+           {r('404-Title')} | {t('HomeTitle')}
         </title>
       </Head>
       <Box
@@ -30,7 +34,7 @@ const NotFound: NextPage = () => {
             align="center"
             variant={mobileDevice ? 'h4' : 'h1'}
           >
-            404: The page you are looking for isn’t here
+            {r('404-subTitle')}
           </Typography>
           <Typography
             align="center"
@@ -38,9 +42,7 @@ const NotFound: NextPage = () => {
             sx={{ mt: 0.5 }}
             variant="subtitle2"
           >
-            You either tried some shady route or you
-            came here by mistake. Whichever it is, try using the
-            navigation.
+          {r('404-content')}
           </Typography>
           <Box
             sx={{
@@ -68,14 +70,14 @@ const NotFound: NextPage = () => {
             }}
           >
             <NextLink
-              href="/dashboard"
+              href="/"
               passHref
             >
               <Button
                 component="a"
                 variant="outlined"
               >
-                Back to Dashboard
+                {t('BackToHome')}
               </Button>
             </NextLink>
           </Box>

@@ -3,16 +3,18 @@ import NextLink from 'next/link';
 import Head from 'next/head';
 import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import useTranslation from 'next-translate/useTranslation';
 
 const AuthorizationRequired: NextPage = () => {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const {t} = useTranslation('common');
+  const {t : r} = useTranslation('401');
   return (
     <>
       <Head>
         <title>
-          Error: Authorization Required | Material Kit Pro
+        {r('401-Title')} | | {t('HomeTitle')}
         </title>
       </Head>
       <Box
@@ -30,7 +32,7 @@ const AuthorizationRequired: NextPage = () => {
             align="center"
             variant={mobileDevice ? 'h4' : 'h1'}
           >
-            401: Authorization required
+        {r('401-subTitle')}
           </Typography>
           <Typography
             align="center"
@@ -38,9 +40,7 @@ const AuthorizationRequired: NextPage = () => {
             sx={{ mt: 0.5 }}
             variant="subtitle2"
           >
-            You either tried some shady route or you
-            came here by mistake. Whichever it is, try using the
-            navigation.
+          {r('401-content')}
           </Typography>
           <Box
             sx={{
@@ -68,14 +68,14 @@ const AuthorizationRequired: NextPage = () => {
             }}
           >
             <NextLink
-              href="/dashboard"
+              href="/"
               passHref
             >
               <Button
                 component="a"
                 variant="outlined"
               >
-                Back to Dashboard
+                {t('BackToHome')}
               </Button>
             </NextLink>
           </Box>

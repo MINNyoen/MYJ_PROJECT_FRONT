@@ -1,5 +1,5 @@
 {
-    "English": "English",
-    "Korean": "Korean",
-    "HomeTitle": "MYJ's Home"
+    "401-Title": "Error: Authorization Required",
+    "401-subTitle": "401: Authorization required",
+    "401-content": "You either tried some shady route or you came here by mistake. Whichever it is, try using the navigation."
 }

@@ -1,10 +1,12 @@
 import { createContext, useEffect, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
+import setLanguage from 'next-translate/setLanguage'
 
 export interface Settings {
   direction?: 'ltr' | 'rtl';
   responsiveFontSizes?: boolean;
+  language: 'ko' | 'en';
   theme: 'light' | 'dark';
 }
 
@@ -20,6 +22,7 @@ interface SettingsProviderProps {
 const initialSettings: Settings = {
   direction: 'ltr',
   responsiveFontSizes: true,
+  language: 'ko',
   theme: 'light'
 };
 
@@ -35,6 +38,7 @@ export const restoreSettings = (): Settings | null => {
       settings = {
         direction: 'ltr',
         responsiveFontSizes: true,
+        language: 'ko',
         theme: globalThis.matchMedia('(prefers-color-scheme: dark)').matches
           ? 'dark'
           : 'light'
@@ -72,6 +76,7 @@ export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
 
   const saveSettings = (updatedSettings: Settings): void => {
     setSettings(updatedSettings);
+    setLanguage(updatedSettings.language);
     storeSettings(updatedSettings);
   };
 

@@ -11,7 +11,6 @@ import { HomeTestimonials } from 'components/home/home-testimonials';
 import useTransition from 'next-translate/useTranslation'
 
 const Home: NextPage = () => {
-
   const {t} = useTransition('common');
 
   return (
@@ -36,10 +35,11 @@ const Home: NextPage = () => {
   );
 };
 
-Home.getLayout = (page) => (
+Home.getLayout = (page) => {
+  return (
   <MainLayout>
     {page}
   </MainLayout>
-);
+)};
 
 export default Home;

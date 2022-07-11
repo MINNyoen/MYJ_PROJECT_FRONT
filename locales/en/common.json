@@ -1,5 +1,12 @@
 {
     "English": "English",
     "Korean": "Korean",
-    "HomeTitle": "MYJ's Home"
+    "HomeTitle": "MYJ's Home",
+    "ThemeSetting": "Theme Setting",
+    "ColorScheme": "Color Scheme",
+    "Settings": "Settings",
+    "LanguageSetting": "Language Settings",
+    "RTL": "Activate RTL content",
+    "ResponsiveFontSize": "Responsive font sizes",
+    "BackToHome" : "Back to Home"
 }

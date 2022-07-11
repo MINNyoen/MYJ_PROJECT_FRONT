@@ -1,5 +1,12 @@
 {
     "English": "영어",
     "Korean": "한국어",
-    "HomeTitle": "민연진의 홈페이지"
+    "HomeTitle": "민연진의 홈페이지",
+    "ThemeSetting": "테마 설정",
+    "ColorScheme": "배경 설정",
+    "Settings": "기타 설정",
+    "LanguageSetting": "언어 설정",
+    "RTL": "오른쪽 정렬 여부",
+    "ResponsiveFontSize": "글자 반응형 여부",
+    "BackToHome" : "메인으로 돌아가기"
 }
