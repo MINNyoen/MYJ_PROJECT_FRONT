@@ -68,9 +68,9 @@ export const Footer: FC = (props) => (
       borderTopColor: 'divider',
       borderTopStyle: 'solid',
       borderTopWidth: 1,
-      pb: 6,
+      pb: 3,
       pt: {
-        md: 15,
+        md: 10,
         xs: 6
       }
     }}

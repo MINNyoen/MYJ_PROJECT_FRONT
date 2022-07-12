@@ -8,5 +8,22 @@
     "LanguageSetting": "Language Settings",
     "RTL": "Activate RTL content",
     "ResponsiveFontSize": "Responsive font sizes",
-    "BackToHome" : "Back to Home"
+    "BackToHome" : "Back to Home",
+    "PortPolio": "PortPolio",
+    "MinNyeon": "MinNyeon",
+    "YeonJin" : "YeonJin",
+    "Community" : "Community",
+    "Chatting" : "Chatting",
+    "Forum" : "Forum",
+    "Travels" : "Travels",
+    "Gallery" : "Gallery",
+    "Study" : "Study",
+    "Calendar" : "Calendar",
+    "Management" : "Management",
+    "Users" : "Users",
+    "Group" : "Group",
+    "DashBoard" : "DashBoard",
+    "Login" : "Login",
+    "Logout" : "Logout",
+    "Register" : "Register" 
 }

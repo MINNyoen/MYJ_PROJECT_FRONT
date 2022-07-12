@@ -1,9 +1,13 @@
-import type { FC } from 'react';
-import PropTypes from 'prop-types';
-import NextLink from 'next/link';
-import { AppBar, Box, Button, Container, IconButton, Link, Toolbar } from '@mui/material';
+import { AppBar, Box, Button, Container, IconButton, Toolbar } from '@mui/material';
 import { Menu as MenuIcon } from 'components/icons/menu';
 import { Logo } from 'components/logo';
+import useTranslation from 'next-translate/useTranslation';
+import NextLink from 'next/link';
+import PropTypes from 'prop-types';
+import { FC } from 'react';
+import { MenuType } from 'types/menu';
+import { getMenuList } from './main-layout';
+import { MainNavbarPopover } from './main-navbar-popover';
 
 interface MainNavbarProps {
   onOpenSidebar?: () => void;
@@ -11,6 +15,7 @@ interface MainNavbarProps {
 
 export const MainNavbar: FC<MainNavbarProps> = (props) => {
   const { onOpenSidebar } = props;
+  const {t} = useTranslation('common');
 
   return (
     <AppBar
@@ -23,7 +28,7 @@ export const MainNavbar: FC<MainNavbarProps> = (props) => {
         color: 'text.secondary'
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Toolbar
           disableGutters
           sx={{ minHeight: 64 }}
@@ -63,58 +68,24 @@ export const MainNavbar: FC<MainNavbarProps> = (props) => {
               display: {
                 md: 'flex',
                 xs: 'none'
-              }
+              },
+              pr: '200px'
             }}
-          >
-            <NextLink
-              href="/dashboard"
-              passHref
-            >
-              <Link
-                color="textSecondary"
-                underline="none"
-                variant="subtitle2"
-              >
-                Live Demo
-              </Link>
-            </NextLink>
-            <NextLink
-              href="/browse"
-              passHref
-            >
-              <Link
-                color="textSecondary"
-                sx={{ ml: 2 }}
-                underline="none"
-                variant="subtitle2"
-              >
-                Components
-              </Link>
-            </NextLink>
-            <NextLink
-              href="/docs/welcome"
-              passHref
-            >
-              <Link
-                color="textSecondary"
-                component="a"
-                sx={{ ml: 2 }}
-                underline="none"
-                variant="subtitle2"
-              >
-                Documentation
-              </Link>
-            </NextLink>
+          > 
+          <>
+            {getMenuList().map((item : MenuType, index: number)=>(
+            <MainNavbarPopover key={'topMenu - ' + index.toString()} title={item.title} href={item.href} links={item.links}/>))}
             <Button
               component="a"
-              href="https://material-ui.com/store/items/devias-kit-pro"
+              href="#"
               size="medium"
               sx={{ ml: 2 }}
               target="_blank"
               variant="contained"
             >
-              Buy Now
+              {t('Login')}
             </Button>
+          </>
           </Box>
         </Toolbar>
       </Container>
