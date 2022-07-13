@@ -12,7 +12,7 @@ interface MainNavbarPopoverProps {
 }
 
 export const MainNavbarPopover: FC<MainNavbarPopoverProps> = (props) => {
-  const mainMenuRef = useRef<HTMLAnchorElement | null>(null); 
+  const mainMenuRef = useRef<HTMLAnchorElement | null>(null);
   const [bMenu, setBMenu] = useState(false);
 
   return (
@@ -25,10 +25,10 @@ export const MainNavbarPopover: FC<MainNavbarPopoverProps> = (props) => {
          color="textSecondary"
          underline="none"
          variant="subtitle2"
-         minWidth="50%"
+         minWidth="40%"
          textAlign='center'
-         onMouseEnter={()=>(setBMenu(true))}
-         //onMouseLeave={()=>(setBMenu(false))}
+         onMouseEnter={()=>setBMenu(!bMenu)}
+         //onMouseLeave={()=>setBMenu(false)}
          >
           {props.title}
           <KeyboardArrowDownIcon viewBox='0 -3 20 20' />

@@ -26,7 +26,8 @@ export const baseThemeOptions: ThemeOptions = {
       },
       styleOverrides: {
         root: {
-          textTransform: 'none'
+          textTransform: 'none',
+          whiteSpace: 'nowrap'
         },
         sizeSmall: {
           padding: '6px 16px'

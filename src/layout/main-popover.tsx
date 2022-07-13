@@ -1,6 +1,7 @@
-import { ListItemText, MenuItem, Popover, Typography } from '@mui/material';
+import { Fade, Link, ListItemText, MenuItem, Paper, Popper, Typography } from '@mui/material';
 import type { FC } from 'react';
 import { MenuType } from 'types/menu';
+import NextLink from 'next/link';
 
 interface MainPopoverProps {
   anchorEl: null | Element;
@@ -13,51 +14,61 @@ export const MainPopover: FC<MainPopoverProps> = (props) => {
   const { anchorEl, onClose, open, links, ...other } = props;
 
   return (
-    <Popover
-      
+    <Popper
       anchorEl={anchorEl}
-      anchorOrigin={{
-        horizontal: 'center',
-        vertical: 'bottom'
-      }}
-      keepMounted
-      onClose={onClose}
       open={!!open}
-      PaperProps={{ sx: { width: 240 } }}
-      transitionDuration={1000}
+      sx={{zIndex: 1300}}
+      transition
+      
       {...other}
     >
+     {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={1000}>
+            <Paper sx={{opacity: '1 !important', visibility: 'visible !important'}}>
       {links && links.map((item: MenuType, index: number) => (
-        <MenuItem
-          onClick={() => onClose?.()}
-          key={'bMenuItem - ' + index.toString()}
-        >
-          {/* <ListItemIcon>
-            <Box
-              sx={{
-                display: 'flex',
-                height: 20,
-                width: 20,
-                '& img': {
-                  width: '100%'
-                }
-              }}
+        <NextLink
+        href={item.href ? item.href : "#"}
+        key={'bMenuItem - ' + index.toString()}
+        passHref>
+          <Link
+            color="textSecondary"
+            underline="none"
+            variant="subtitle2"
             >
-              <img
-                alt={languageOptions[language].label}
-                src={languageOptions[language].icon}
+            <MenuItem
+              onClick={() => onClose()}
+            >
+              {/* <ListItemIcon>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    height: 20,
+                    width: 20,
+                    '& img': {
+                      width: '100%'
+                    }
+                  }}
+                >
+                  <img
+                    alt={languageOptions[language].label}
+                    src={languageOptions[language].icon}
+                  />
+                </Box>
+              </ListItemIcon> */}
+              <ListItemText
+                primary={(
+                  <Typography variant="subtitle2">
+                    {item.title}
+                  </Typography>
+                )}
               />
-            </Box>
-          </ListItemIcon> */}
-          <ListItemText
-            primary={(
-              <Typography variant="subtitle2">
-                {item.title}
-              </Typography>
-            )}
-          />
-        </MenuItem>
+            </MenuItem>
+          </Link>
+        </NextLink>
       ))}
-    </Popover>
+      </Paper>
+      </Fade>
+     )}
+    </Popper>
   );
 };
