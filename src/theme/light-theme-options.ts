@@ -71,6 +71,17 @@ const text = {
 
 export const lightThemeOptions: ThemeOptions = {
   components: {
+    MuiTooltip: {
+      styleOverrides: {
+        arrow: {
+          color: '#FFFFFF'
+        },
+        tooltipArrow: {
+          backgroundColor: '#FFFFFF',
+          color: neutral[900]
+        }
+      }
+    },
     MuiAvatar: {
       styleOverrides: {
         root: {

@@ -11,6 +11,13 @@ export const baseThemeOptions: ThemeOptions = {
     }
   },
   components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltipArrow: {
+          maxWidth: '100%'
+        }
+      }
+    },
     MuiAvatar: {
       styleOverrides: {
         root: {

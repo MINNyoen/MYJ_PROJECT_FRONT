@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { FC } from 'react';
 import { MenuType } from 'types/menu';
 import { getMenuList } from './main-layout';
-import { MainNavbarPopover } from './main-navbar-popover';
+import { MainNavbarItem } from './main-navbar-item';
 
 interface MainNavbarProps {
   onOpenSidebar?: () => void;
@@ -74,7 +74,7 @@ export const MainNavbar: FC<MainNavbarProps> = (props) => {
           > 
           <>
             {getMenuList().map((item : MenuType, index: number)=>(
-            <MainNavbarPopover key={'topMenu - ' + index.toString()} title={item.title} href={item.href} links={item.links}/>))}
+            <MainNavbarItem key={'topMenu - ' + index.toString()} title={item.title} href={item.href} icon={item.icon} links={item.links}/>))}
             <Button
               component="a"
               href="#"
