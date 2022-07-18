@@ -15,7 +15,7 @@ const MenuItemDetail: FC<MenuItemDetailProps> = (props) => {
     <Grid container sx={{p: 2}} direction="row" spacing={2}>
       {links && links.map((item, index)=>{
         return(
-          <Grid item xs={6}>
+          <Grid item xs={ links.length < 2 ? 12 : 6}>
             <Typography variant="subtitle1" fontWeight={'bold'} key={'MenuItem - ' + index.toString()} pb={2} whiteSpace={'nowrap'}>
              {item.title}
             </Typography>
@@ -53,13 +53,6 @@ const MenuItemDetail: FC<MenuItemDetailProps> = (props) => {
   </>
   );
 }
-
-
-
-
-
-
-
 interface MainNavbarItemProps {
   title?: string;
   icon?: ReactNode;
@@ -73,7 +66,9 @@ export const MainNavbarItem: FC<MainNavbarItemProps> = (props) => {
       <NextLink
          href={props.href ? props.href : "#"}
          passHref>
-        <Tooltip arrow title={<MenuItemDetail links={props.links}/>} TransitionComponent={Zoom} TransitionProps={{timeout : 300}} color={'white'} leaveDelay={100000}>
+        <Tooltip arrow title={<MenuItemDetail links={props.links}/>} TransitionComponent={Zoom} TransitionProps={{timeout : 300}} color={'white'} leaveDelay={100} 
+        PopperProps={{sx: {'&.MuiTooltip-popper' : {inset: '20px auto auto -35px !important'}}}}
+        >
           <Link
           color="textSecondary"
           underline="none"
@@ -92,7 +87,6 @@ export const MainNavbarItem: FC<MainNavbarItemProps> = (props) => {
           </Link>  
         </Tooltip>    
     </NextLink>
-    {/* <MainItem anchorEl={mainMenuRef.current} open={bMenu} onClose={()=>setBMenu(false)} links={props.links} /> */}
     </>
   );
 };
