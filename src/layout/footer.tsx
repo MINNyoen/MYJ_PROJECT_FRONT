@@ -14,52 +14,7 @@ import {
 import { alpha } from '@mui/material/styles';
 import { MinusOutlined as MinusOutlinedIcon } from 'components/icons/minus-outlined';
 import { Logo } from 'components/logo';
-
-const sections = [
-  {
-    title: 'Menu',
-    links: [
-      {
-        title: 'Browse Components',
-        href: '/browse'
-      },
-      {
-        title: 'Documentation',
-        href: '/docs/welcome'
-      }
-    ]
-  },
-  {
-    title: 'Placeholders',
-    links: [
-      {
-        title: 'Terms & Conditions',
-        href: '#'
-      },
-      {
-        title: 'License',
-        href: '#'
-      },
-      {
-        title: 'Contact',
-        href: '#'
-      }
-    ]
-  },
-  {
-    title: 'Social',
-    links: [
-      {
-        title: 'Instagram',
-        href: '#'
-      },
-      {
-        title: 'LinkedIn',
-        href: '#'
-      }
-    ]
-  }
-];
+import { getMenuList } from './main-layout';
 
 export const Footer: FC = (props) => (
   <Box
@@ -104,8 +59,9 @@ export const Footer: FC = (props) => (
             © 2021 Devias.
           </Typography>
         </Grid>
-        {sections.map((section, index) => (
-          <Grid
+        {getMenuList().map((sections, index) => {
+      return (<>{sections.links && sections.links.map((section, item) => (
+        <Grid
             item
             key={section.title}
             md={3}
@@ -125,7 +81,7 @@ export const Footer: FC = (props) => (
               {section.title}
             </Typography>
             <List disablePadding>
-              {section.links.map((link) => (
+              {section.links && section.links.map((link) => (
                 <ListItem
                   disableGutters
                   key={link.title}
@@ -159,7 +115,8 @@ export const Footer: FC = (props) => (
               ))}
             </List>
           </Grid>
-        ))}
+      ))}</>
+        )})}
       </Grid>
       <Divider
         sx={{
