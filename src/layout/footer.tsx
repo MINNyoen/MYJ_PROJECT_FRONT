@@ -23,11 +23,7 @@ export const Footer: FC = (props) => (
       borderTopColor: 'divider',
       borderTopStyle: 'solid',
       borderTopWidth: 1,
-      pb: 3,
-      pt: {
-        md: 10,
-        xs: 6
-      }
+      pb: 3
     }}
     {...props}
   >
@@ -39,16 +35,13 @@ export const Footer: FC = (props) => (
         <Grid
           item
           md={3}
-          sm={4}
+          sm={12}
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            order: {
-              md: 1,
-              xs: 4
+            mt: {
+              md: 10,
+              xs: 6
             }
           }}
-          xs={12}
         >
           <Logo />
           <Typography
@@ -59,17 +52,27 @@ export const Footer: FC = (props) => (
             © 2021 Devias.
           </Typography>
         </Grid>
+        <Grid
+        item
+        md={9}
+        sm={12}
+        spacing={3}
+        sx={{
+          display : 'flex',
+          flexWrap: 'wrap'
+        }}
+        >
         {getMenuList().map((sections, index) => {
       return (<>{sections.links && sections.links.map((section, item) => (
         <Grid
             item
             key={section.title}
-            md={3}
-            sm={4}
+            md={4}
+            sm={6}
             sx={{
-              order: {
-                md: index + 2,
-                xs: index + 1
+              pt: {
+                md: 10,
+                xs: 6
               }
             }}
             xs={12}
@@ -95,6 +98,7 @@ export const Footer: FC = (props) => (
                       alignItems: 'center',
                       display: 'flex',
                       minWidth: 0,
+                      pl : 1,
                       mr: 0.5
                     }}
                   >
@@ -117,6 +121,7 @@ export const Footer: FC = (props) => (
           </Grid>
       ))}</>
         )})}
+      </Grid>
       </Grid>
       <Divider
         sx={{
