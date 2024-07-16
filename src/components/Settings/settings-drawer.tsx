@@ -30,13 +30,13 @@ interface SettingsDrawerProps {
 
 const themes = [
   {
-    label: 'Light',
-    value: 'light',
+    label: 'Min',
+    value: 'min',
     icon: LightThemeIcon
   },
   {
-    label: 'Dark',
-    value: 'dark',
+    label: 'Yeon',
+    value: 'yeon',
     icon: DarkThemeIcon
   }
 ];
@@ -55,7 +55,6 @@ const languages = [
 ];
 
 const getValues = (settings: Settings) => ({
-  direction: settings.direction,
   responsiveFontSizes: settings.responsiveFontSizes,
   language: settings.language,
   theme: settings.theme
@@ -65,7 +64,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
   const { open, onClose, ...other } = props;
   const { settings, saveSettings } = useSettings();
   const [values, setValues] = useState<Settings>(getValues(settings));
-  const {t} = useTranslation('common');
+  const {t, lang} = useTranslation('common');
 
   useEffect(() => {
     setValues(getValues(settings));
@@ -190,27 +189,6 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
           <FormControlLabel
             control={(
               <Checkbox
-                checked={values.direction === 'rtl'}
-                name="direction"
-                onChange={(event): void => handleChange(
-                  'direction',
-                  event.target.checked
-                    ? 'rtl'
-                    : 'ltr'
-                )}
-              />
-            )}
-            label={(
-              <Typography variant="subtitle2">
-                {t('RTL')}
-              </Typography>
-            )}
-          />
-        </div>
-        <div>
-          <FormControlLabel
-            control={(
-              <Checkbox
                 checked={values.responsiveFontSizes}
                 name="direction"
                 onChange={(event): void => handleChange(
@@ -290,7 +268,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
           sx={{ mt: 3 }}
           variant="contained"
         >
-          Save Settings
+          {t('SaveSettings')}
         </Button>
       </Box>
     </Drawer>

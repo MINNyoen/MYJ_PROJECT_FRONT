@@ -1,0 +1,17 @@
+{
+    "Login" : "로그인",
+    "LogIn" : "로그인",
+    "Logout" : "로그아웃",
+    "Register" : "가입하기",
+    "E-Mail" : "이메일",
+    "PWD" : "패스워드",
+    "Remember" : "로그인 상태 유지",
+    "SignInContent": "로그인을 통해 다양한 서비스를 느껴보세요.",
+    "CreateNewAccount": "새로운 계정 생성하기",
+    "ForgotPassword": "비밀번호를 잊어 버리셨나요?",
+    "valEmail-t" : "유효한 이메일을 입력해주세요",
+    "valEmail-r" : "이메일을 입력해주세요",
+    "valPassword-r" : "비밀번호를 입력해주세요",
+    "PasswordRecovery" : "비밀번호 찾기",
+    "PasswordRecoveryContent" : "잃어버린 비밀번호의 이메일을 입력하여 새 비밀번호를 발급 후 로그인 해주세요"
+}

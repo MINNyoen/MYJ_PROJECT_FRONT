@@ -1,0 +1,42 @@
+{
+    "Board" : "게시판",
+    "MinYeonJin" : "민연진",
+    "Add" : "생성",
+    "NewBoard" : "새 게시글",
+    "BasicDetail" : "세부 내용",
+    "BoardTitle" : "게시글 제목",
+    "content" : "내용",
+    "WriteSomething" : "내용을 작성하세요",
+    "Files" : "첨부 파일",
+    "valTitle" : "게시글 제목을 입렵해주세요",
+
+    "seq" : "번호",
+    "title" : "제목",
+    "fileExist" : "첨부파일여부",
+    "views" : "조회수",
+    "writer" : "작성자",
+    "updDt" : "수정 일시",
+
+
+
+
+    "SuccessCreate" : "선택한 일정이 성공적으로 등록되었습니다.",
+    "ErrorCreate" : "일정을 등록하던 중 에러가 발생하였습니다.",
+    "CreateSchedule" : "일정 등록",
+    "SuccessModify" : "선택한 일정이 성공적으로 수정되었습니다.",
+    "ErrorModify" : "일정을 수정하던 중 에러가 발생하였습니다.",
+    "ModifySchedule" : "일정 변경",
+    "SuccessDelete" : "선택한 일정이 성공적으로 삭제되었습니다.",
+    "ErrorDelete" : "일정을 삭제하던 중 에러가 발생하였습니다.",
+    "DeleteSchedule" : "일정 삭제",
+
+    "schdlNm" : "일정 이름",
+    "schdlCd" : "일정 종류",
+    "loc" : "장소",
+    "startDt" : "일정 시작 날짜",
+    "endDt" : "일정 종료 날짜",
+
+    "Delete" : "삭제",
+    "Cancel" : "취소",
+    "Confirm" : "확인"
+}

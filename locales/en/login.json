@@ -1,0 +1,17 @@
+{
+    "Login" : "Log in",
+    "LogIn" : "Log In",
+    "Logout" : "Log out",
+    "Register" : "Register",
+    "E-Mail" : "Email Address",
+    "PWD" : "Password",
+    "Remember" : "Remember Login",
+    "SignInContent": "Feel many different types of service by sign in",
+    "CreateNewAccount": "Create new account",
+    "ForgotPassword": "Forgot password?",
+    "valEmail-t" : "Must be a valid email",
+    "valEmail-r" : "Email is required",
+    "valPassword-r" : "Password is required",
+    "PasswordRecovery" : "Password Recovery",
+    "PasswordRecoveryContent" : "Please sign in after issuing a new password by entering the email address of the lost password."
+}

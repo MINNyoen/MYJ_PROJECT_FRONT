@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import setLanguage from 'next-translate/setLanguage'
 
 export interface Settings {
-  direction?: 'ltr' | 'rtl';
   responsiveFontSizes?: boolean;
   language: 'ko' | 'en';
-  theme: 'light' | 'dark';
+  theme: 'yeon' | 'min';
 }
 
 export interface SettingsContextValue {
@@ -20,10 +19,9 @@ interface SettingsProviderProps {
 }
 
 const initialSettings: Settings = {
-  direction: 'ltr',
   responsiveFontSizes: true,
   language: 'ko',
-  theme: 'light'
+  theme: 'yeon'
 };
 
 export const restoreSettings = (): Settings | null => {
@@ -36,12 +34,11 @@ export const restoreSettings = (): Settings | null => {
       settings = JSON.parse(storedData);
     } else {
       settings = {
-        direction: 'ltr',
         responsiveFontSizes: true,
         language: 'ko',
-        theme: globalThis.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light'
+        theme: globalThis.matchMedia('(prefers-color-scheme: min)').matches
+          ? 'min'
+          : 'yeon'
       };
     }
   } catch (err) {

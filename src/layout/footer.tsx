@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { FC, Fragment } from 'react';
 import {
   Box,
   Container,
@@ -11,7 +11,6 @@ import {
   ListItemText,
   Typography
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { MinusOutlined as MinusOutlinedIcon } from 'components/icons/minus-outlined';
 import { Logo } from 'components/logo';
 import { getMenuList } from './main-layout';
@@ -31,55 +30,67 @@ export const Footer: FC = (props) => (
       <Grid
         container
         spacing={3}
+        flexDirection={{xs: 'column-reverse', md: 'row'}}
       >
         <Grid
           item
-          md={3}
+          lg={3}
+          md={4}
           sm={12}
-          sx={{
-            mt: {
-              md: 10,
-              xs: 6
-            }
-          }}
+          xs={12}
+          display={'flex'}
+          flexDirection={'column'}
+          alignItems={'center'} 
+          justifyContent={'center'}
         >
-          <Logo />
-          <Typography
-            color="textSecondary"
+        <Typography
+            color="text.secondary"
             sx={{ mt: 1 }}
             variant="caption"
           >
-            © 2021 Devias.
+            Logo
+          </Typography>
+          <Logo />
+          <Typography
+            color="text.secondary"
+            sx={{ mt: 1 }}
+            variant="caption"
+          >
+            © 2022 MinNyeon Dev.
           </Typography>
         </Grid>
         <Grid
         item
-        md={9}
+        lg={9}
+        md={8}
         sm={12}
-        spacing={3}
         sx={{
           display : 'flex',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
+          m: 'auto'
         }}
         >
         {getMenuList().map((sections, index) => {
-      return (<>{sections.links && sections.links.map((section, item) => (
+      return (<Fragment key={index}>{sections.links && sections.links.map((section, index2) => (
         <Grid
             item
-            key={section.title}
+            key={index2}
             md={4}
-            sm={6}
+            sm={4}
             sx={{
-              pt: {
-                md: 10,
-                xs: 6
-              }
+              pl: {
+                sm: 6,
+                xs: '10%'
+              },
+              pt: 8,
+              pb: 4
             }}
-            xs={12}
+            xs={6}
           >
             <Typography
-              color="textSecondary"
-              variant="overline"
+              color="text.secondary"
+              fontWeight={'bold'}
+              variant="h6"
             >
               {section.title}
             </Typography>
@@ -90,7 +101,7 @@ export const Footer: FC = (props) => (
                   key={link.title}
                   sx={{
                     pb: 0,
-                    pt: 1
+                    pt: 1,
                   }}
                 >
                   <ListItemAvatar
@@ -109,7 +120,9 @@ export const Footer: FC = (props) => (
                       <Link
                         href={link.href}
                         color="textPrimary"
-                        variant="subtitle2"
+                        fontWeight={'bold'}
+                        whiteSpace={'nowrap'}
+                        variant="body1"
                       >
                         {link.title}
                       </Link>
@@ -119,22 +132,10 @@ export const Footer: FC = (props) => (
               ))}
             </List>
           </Grid>
-      ))}</>
+      ))}</Fragment>
         )})}
       </Grid>
       </Grid>
-      <Divider
-        sx={{
-          borderColor: (theme) => alpha(theme.palette.primary.contrastText, 0.12),
-          my: 6
-        }}
-      />
-      <Typography
-        color="textSecondary"
-        variant="caption"
-      >
-        All Rights Reserved.
-      </Typography>
     </Container>
   </Box>
 );

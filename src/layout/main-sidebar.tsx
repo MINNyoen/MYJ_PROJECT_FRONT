@@ -1,44 +1,28 @@
-import { useEffect } from 'react';
-import type { FC } from 'react';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { Box, Drawer, Theme, useMediaQuery } from '@mui/material';
+import List from '@mui/material/List';
+import ListSubheader from '@mui/material/ListSubheader';
+import useTranslation from 'next-translate/useTranslation';
 import PropTypes from 'prop-types';
-import { Box, Button, Drawer, Link, useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import type { FC } from 'react';
+import { getMenuList } from './main-layout';
+import { MainSidebarItem } from './main-sidebar-item';
+import { AccountButton } from './navButton/account-button';
+import { ContactsButton } from './navButton/contacts-button';
+import { NotificationsButton } from './navButton/notifications-button';
 
 interface MainSidebarProps {
   onClose?: () => void;
   open?: boolean;
 }
 
-const MainSidebarLink = styled(Link)(
-  ({ theme }) => ({
-    borderRadius: theme.shape.borderRadius,
-    display: 'block',
-    padding: theme.spacing(1.5),
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover
-    }
-  })
-);
-
 export const MainSidebar: FC<MainSidebarProps> = (props) => {
   const { onClose, open } = props;
-  const router = useRouter();
+  const {t} = useTranslation('common');
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
-  const handlePathChange = () => {
-    if (open) {
-      onClose?.();
-    }
+  const handleSideChange = () => {
+    open && onClose?.();
   };
-
-  useEffect(
-    handlePathChange,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [router.asPath]
-  );
 
   return (
     <Drawer
@@ -51,54 +35,32 @@ export const MainSidebar: FC<MainSidebarProps> = (props) => {
       }}
       variant="temporary"
     >
-      <Box sx={{ p: 2 }}>
-        <NextLink
-          href="/dashboard"
-          passHref
-        >
-          <MainSidebarLink
-            color="textSecondary"
-            underline="none"
-            variant="subtitle2"
-          >
-            Live Demo
-          </MainSidebarLink>
-        </NextLink>
-        <NextLink
-          href="/browse"
-          passHref
-        >
-          <MainSidebarLink
-            color="textSecondary"
-            underline="none"
-            variant="subtitle2"
-          >
-            Components
-          </MainSidebarLink>
-        </NextLink>
-        <NextLink
-          href="/docs/welcome"
-          passHref
-        >
-          <MainSidebarLink
-            color="textSecondary"
-            underline="none"
-            variant="subtitle2"
-          >
-            Documentation
-          </MainSidebarLink>
-        </NextLink>
-        <Button
-          component="a"
-          fullWidth
-          href="https://material-ui.com/store/items/devias-kit-pro"
-          sx={{ mt: 1.5 }}
-          target="_blank"
-          variant="contained"
-        >
-          Buy Now
-        </Button>
-      </Box>
+    <Box sx={{display: 'inline-flex', backgroundColor: 'background.nav', height:'80px'}}>
+          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'} sx={{backgroundColor: 'background.sidebar.first'}}>
+          <ContactsButton />
+          </Box>
+          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'} sx={{backgroundColor: 'background.sidebar.secondary'}}>
+          <NotificationsButton />
+          </Box>
+          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'} sx={{backgroundColor: 'background.sidebar.third'}}>
+          <AccountButton />
+          </Box>
+    </Box>
+    {getMenuList().map((item, index)=>(
+      <List
+      key={index}
+      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+      component="nav"
+      aria-labelledby="nested-list-subheader"
+      subheader={
+        <ListSubheader component="div" id="nested-list-subheader">
+          {item.title}
+        </ListSubheader>
+      }
+    >
+      {item.links && item.links.map((item2, index2)=>(<MainSidebarItem key={index2} item={item2} handleSideChange={handleSideChange}/>))}
+    </List>
+    ))}
     </Drawer>
   );
 };

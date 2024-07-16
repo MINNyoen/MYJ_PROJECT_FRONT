@@ -2,83 +2,58 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { calendarApi } from 'api/calendar-api';
 import type { AppThunk } from 'store';
-import type { CalendarEvent } from 'types/calendar';
+import type { CalendarEvent, CalendarEventCd, CalendarGoalUsers } from 'types/calendar';
 
 interface CalendarState {
   events: CalendarEvent[];
+  eventsCd: CalendarEventCd[];
+  eventGoals: CalendarGoalUsers;
 }
 
 const initialState: CalendarState = {
-  events: []
+  events: [],
+  eventsCd: [],
+  eventGoals: {}
 };
 
 const slice = createSlice({
   name: 'calendar',
   initialState,
   reducers: {
+    getEventsCd(
+      state: CalendarState,
+      action: PayloadAction<CalendarEventCd[]>
+    ): void {
+      state.eventsCd = action.payload;
+    },
+    getGoals(
+      state: CalendarState,
+      action: PayloadAction<CalendarGoalUsers>
+    ): void {
+      state.eventGoals = action.payload;
+    },
     getEvents(
       state: CalendarState,
       action: PayloadAction<CalendarEvent[]>
     ): void {
       state.events = action.payload;
     },
-    createEvent(
-      state: CalendarState,
-      action: PayloadAction<CalendarEvent>
-    ): void {
-      state.events.push(action.payload);
-    },
-    updateEvent(
-      state: CalendarState,
-      action: PayloadAction<CalendarEvent>
-    ): void {
-      const event = action.payload;
-
-      state.events = state.events.map((_event) => {
-        if (_event.id === event.id) {
-          return event;
-        }
-
-        return _event;
-      });
-    },
-    deleteEvent(
-      state: CalendarState,
-      action: PayloadAction<string>
-    ): void {
-      state.events = state.events.filter((event) => event.id !== action.payload);
-    }
   }
 });
 
 export const { reducer } = slice;
 
-export const getEvents = (): AppThunk => async (dispatch): Promise<void> => {
-  const data = await calendarApi.getEvents();
+export const getEventsCd = (): AppThunk => async (dispatch): Promise<void> => {
+  const data = await calendarApi.getEventsCd();
+  dispatch(slice.actions.getEventsCd(data));
+};
 
+export const getEvents = (date: string, filterList: number[]): AppThunk => async (dispatch): Promise<void> => {
+  const data = await calendarApi.getEvents(date, filterList);
   dispatch(slice.actions.getEvents(data));
 };
 
-export const createEvent = (createData: { allDay: boolean, description: string, end: number, start: number, title: string }): AppThunk => async (dispatch): Promise<void> => {
-  const data = await calendarApi.createEvent(createData);
-
-  dispatch(slice.actions.createEvent(data));
-};
-
-export const updateEvent = (
-  eventId: string,
-  update: { allDay?: boolean, description?: string, end?: number, start?: number, title?: string }
-): AppThunk => async (dispatch): Promise<void> => {
-  const data = await calendarApi.updateEvent({
-    eventId,
-    update
-  });
-
-  dispatch(slice.actions.updateEvent(data));
-};
-
-export const deleteEvent = (eventId: string): AppThunk => async (dispatch): Promise<void> => {
-  await calendarApi.deleteEvent(eventId);
-
-  dispatch(slice.actions.deleteEvent(eventId));
+export const getGoals = (date: string): AppThunk => async (dispatch): Promise<void> => {
+  const data = await calendarApi.getGoals(date);
+  dispatch(slice.actions.getGoals(data));
 };

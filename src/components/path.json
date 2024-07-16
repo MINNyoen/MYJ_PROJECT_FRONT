@@ -1,0 +1,41 @@
+{
+    "pages": {
+
+        "authentication"  :{
+            "login" : "/authentication/login",
+            "register" : "/authentication/register"
+        },
+        "minnyeon": {
+            "tech" : "/minnyeon/tech",
+            "main" : "/minnyeon/main",
+            "detail" : "/minnyeon/detail"
+        },
+        "yeonjin": {
+            "tech" : "/yeonjin/tech",
+            "main" : "/yeonjin/main",
+            "detail" : "/yeonjin/detail"
+        },
+        "minyeonjin" : {
+            "main" : "/minyeonjin",
+            "mypage" : "/minyeonjin/mypage",
+            "community" : {
+                "chatting" : "/minyeonjin/community/chatting",
+                "board" : "/minyeonjin/community/board",
+                "boardCreate" : "/minyeonjin/community/board-create"
+            },
+            "planning" : {
+                "kanban" : "/minyeonjin/planning/kanban",
+                "calendar" : "/minyeonjin/planning/calendar"
+            },
+            "memories" : {
+                "travels" : "/minyeonjin/memories/travels",
+                "gallery" : "/minyeonjin/memories/gallery"
+            },
+            "manage" : {
+                "users" : "/minyeonjin/manage/users",
+                "groups" : "/minyeonjin/manage/groups",
+                "dashboard" : "/minyeonjin/manage/dashboard"
+            }
+        }
+    }
+}

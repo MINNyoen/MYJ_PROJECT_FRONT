@@ -1,0 +1,39 @@
+{
+    "Board" : "Board",
+    "MinYeonJin" : "MinYeonJin",
+    "Add" : "Add",
+    "NewBoard" : "New Board",
+    "BasicDetail" : "Basic Detail",
+    "BoardTitle" : "Board Title",
+    "content" : "content",
+    "WriteSomething" : "Write something",
+    "Files" : "Files",
+    "valTitle" : "Please Enter Board Title!",
+
+    "seq" : "Seq",
+    "title" : "Title",
+    "fileExist" : "FileExist",
+    "views" : "Views",
+    "writer" : "Writer",
+    "updDt" : "Update Date",
+
+    "SuccessCreate" : "The schedule has been successfully register.",
+    "ErrorCreate" : "An error occurred while registering the schedule.",
+    "CreateSchedule" : "Register Schedule",
+    "SuccessModify" : "The schedule has been successfully modified.",
+    "ErrorModify" : "An error occurred while editing the schedule.",
+    "ModifySchedule" : "Modify Schedule",
+    "SuccessDelete" : "The schedule has been successfully deleted.",
+    "ErrorDelete" : "An error occurred while deleting the schedule.",
+    "DeleteSchedule" : "Delete Schedule",
+
+    "schdlNm" : "Schedule Name",
+    "schdlCd" : "Schedule Category",
+    "loc" : "Location",
+    "startDt" : "Schedule Start Date",
+    "endDt" : "Schedule End Date",
+
+    "Delete" : "Delete",
+    "Cancel" : "Cancel",
+    "Confirm" : "Confirm"
+}

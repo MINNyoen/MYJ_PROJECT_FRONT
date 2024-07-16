@@ -1,45 +1,34 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import { Divider } from '@mui/material';
-import { MainLayout } from 'layout/main-layout';
-import { HomeClients } from 'components/home/home-clients';
-import { HomeHero } from 'components/home/home-hero';
-import { HomeDevelopers } from 'components/home/home-developers';
-import { HomeDesigners } from 'components/home/home-designers';
-import { HomeFeatures } from 'components/home/home-features';
-import { HomeTestimonials } from 'components/home/home-testimonials';
-import useTransition from 'next-translate/useTranslation'
+import type { NextPage } from "next";
+import Head from "next/head";
+import { MainLayout } from "layout/main-layout";
+import { MainFirst } from "components/home/home-first";
+import { HomeThird } from "components/home/home-third";
+import useTransition from "next-translate/useTranslation";
+import { AuthGuard } from "components/authentication/auth-guard";
+import { Box } from "@mui/material";
 
 const Home: NextPage = () => {
-  const {t} = useTransition('common');
+  const { t } = useTransition("common");
 
   return (
     <>
       <Head>
-        <title>
-        {t('HomeTitle')}
-        </title>
+        <title>{t("HomeTitle")}</title>
       </Head>
-      <main>
-        <HomeHero />
-        <Divider />
-        <HomeDevelopers />
-        <Divider />
-        <HomeDesigners />
-        <HomeTestimonials />
-        <HomeFeatures />
-        <Divider />
-        <HomeClients />
-      </main>
+      <Box role="main">
+        <MainFirst />
+        <HomeThird />
+      </Box>
     </>
   );
 };
 
 Home.getLayout = (page) => {
   return (
-  <MainLayout>
-    {page}
-  </MainLayout>
-)};
+    <AuthGuard>
+      <MainLayout>{page}</MainLayout>
+    </AuthGuard>
+  );
+};
 
 export default Home;

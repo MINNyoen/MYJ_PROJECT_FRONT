@@ -21,12 +21,14 @@ import ForumIcon from '@mui/icons-material/Forum';
 import SubjectIcon from '@mui/icons-material/Subject';
 import ComputerIcon from '@mui/icons-material/Computer';
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
+import path from 'components/path.json';
+import { Box } from '@mui/material';
 
 export const getMenuList = () => {
   const viewBox : string = '2 0 25 25';
   const {t} = useTranslation('common');
   const sections : MenuType[] = [
-    {title: t('About Us'),
+    {title: t('AboutUs'),
     icon: <AccountBoxIcon viewBox={viewBox}/>,
     links:[
       {
@@ -35,19 +37,17 @@ export const getMenuList = () => {
             {
               title: t('MinNyeon'),
               icon: <ComputerIcon/>,
-              href: '#'
             },
             {
               title: t('YeonJin'),
               icon: <HealthAndSafetyIcon/>,
-              href: '#'
             }
           ]
         }
       ]
     },
     {
-      title: t('For Us'),
+      title: t('ForUs'),
       icon: <InterestsIcon viewBox={viewBox}/>,
       links:[
         {
@@ -56,12 +56,12 @@ export const getMenuList = () => {
             {
               title: t('Chatting'),
               icon: <ForumIcon/>,
-              href: '#'
+              href: path.pages.minyeonjin.community.chatting
             },
             {
-              title: t('Forum'),
+              title: t('Board'),
               icon: <SubjectIcon/>,
-              href: '#'
+              href: path.pages.minyeonjin.community.board
             }
           ]
         },
@@ -69,29 +69,27 @@ export const getMenuList = () => {
           title: t('Planning'),
           links: [
             {
-              title: t('Study'),
+              title: t('Kanban'),
               icon: <AutoStoriesIcon/>,
-              href: '#'
+              href: path.pages.minyeonjin.planning.kanban
             },
             {
               title: t('Calendar'),
               icon: <CalendarMonthIcon/>,
-              href: '#'
+              href: path.pages.minyeonjin.planning.calendar
             }
           ]
-        },
-        {
+        }
+        ,{
           title: t('Memories'),
           links : [
             {
               title: t('Travels'),
               icon: <FlightTakeoffIcon/>,
-              href: '#'
             },
             {
               title: t('Gallery'),
               icon: <CollectionsIcon/>,
-              href: '#'
             },
           ]
         }
@@ -107,17 +105,14 @@ export const getMenuList = () => {
             {
               title: t('Users'),
               icon: <ManageAccountsIcon/>,
-              href: '#'
             },
             {
               title: t('Group'),
               icon: <GroupIcon/>,
-              href: '#'
             },
             {
               title: t('DashBoard'),
               icon: <DashboardIcon/>,
-              href: '#'
             }
           ]
         }
@@ -145,15 +140,17 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   return (
-    <MainLayoutRoot>
-      <MainNavbar onOpenSidebar={(): void => setIsSidebarOpen(true)} />
-      <MainSidebar
-        onClose={(): void => setIsSidebarOpen(false)}
-        open={isSidebarOpen}
-      />
-      {children}
-      <Footer />
-    </MainLayoutRoot>
+      <MainLayoutRoot>
+        <MainNavbar onOpenSidebar={(): void => setIsSidebarOpen(true)} />
+        <MainSidebar
+          onClose={(): void => setIsSidebarOpen(false)}
+          open={isSidebarOpen}
+        />
+        <Box component={'main'} minHeight={'90vh'}>
+        {children}
+        </Box>
+        <Footer />
+      </MainLayoutRoot>
   );
 };
 

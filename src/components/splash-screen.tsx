@@ -46,8 +46,8 @@ export const SplashScreen: FC = () => (
   >
     <Logo
       sx={{
-        height: 80,
-        width: 80,
+        height: 100,
+        width: 100,
         '& path:nth-of-type(1)': {
           animation: `${bounce1} 1s ease-in-out infinite`
         },

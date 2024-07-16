@@ -1,152 +1,111 @@
-import { addDays, endOfDay, setHours, setMinutes, startOfDay, subDays } from 'date-fns';
-import type { CalendarEvent } from '../types/calendar';
-import { createResourceId } from 'utils/create-resource-id';
+import type { CalendarEvent, CalendarEventCd, CalendarGoal, CalendarGoalUsers } from '../types/calendar';
 import { deepCopy } from 'utils/deep-copy';
-
-const now = new Date();
-
-let events: CalendarEvent[] = [
-  {
-    id: '5e8882e440f6322fa399eeb8',
-    allDay: false,
-    color: '#FFB020',
-    description: 'Inform about new contract',
-    end: setHours(setMinutes(subDays(now, 6), 0), 19).getTime(),
-    start: setHours(setMinutes(subDays(now, 6), 30), 17).getTime(),
-    title: 'Call Samantha'
-  },
-  {
-    id: '5e8882eb5f8ec686220ff131',
-    allDay: false,
-    color: '#14B8A6',
-    description: 'Discuss about new partnership',
-    end: setHours(setMinutes(addDays(now, 2), 30), 15).getTime(),
-    start: setHours(setMinutes(addDays(now, 2), 0), 12).getTime(),
-    title: 'Meet with IBM'
-  },
-  {
-    id: '5e8882f1f0c9216396e05a9b',
-    allDay: false,
-    color: '#2196F3',
-    description: 'Prepare docs',
-    end: setHours(setMinutes(addDays(now, 5), 0), 12).getTime(),
-    start: setHours(setMinutes(addDays(now, 5), 0), 8).getTime(),
-    title: 'SCRUM Planning'
-  },
-  {
-    id: '5e8882f6daf81eccfa40dee2',
-    allDay: true,
-    color: '#D14343',
-    description: 'Meet with team to discuss',
-    end: startOfDay(subDays(now, 11)).getTime(),
-    start: endOfDay(subDays(now, 12)).getTime(),
-    title: 'Begin SEM'
-  },
-  {
-    id: '5e8882fcd525e076b3c1542c',
-    allDay: false,
-    color: '#14B8A6',
-    description: 'Sorry, John!',
-    end: setHours(setMinutes(addDays(now, 3), 31), 7).getTime(),
-    start: setHours(setMinutes(addDays(now, 3), 30), 7).getTime(),
-    title: 'Fire John'
-  },
-  {
-    id: '5e888302e62149e4b49aa609',
-    allDay: false,
-    color: '#10B981',
-    description: 'Discuss about the new project',
-    end: setHours(setMinutes(subDays(now, 6), 30), 9).getTime(),
-    start: setHours(setMinutes(subDays(now, 6), 0), 9).getTime(),
-    title: 'Call Alex'
-  },
-  {
-    id: '5e88830672d089c53c46ece3',
-    allDay: false,
-    color: '#2196F3',
-    description: 'Get a new quote for the payment processor',
-    end: setHours(setMinutes(now, 30), 17).getTime(),
-    start: setHours(setMinutes(now, 30), 15).getTime(),
-    title: 'Visit Samantha'
-  }
-];
+import { commonApi } from './common-api';
+import moment from 'moment';
+import converter from 'xml-js';
+import { transFormData } from 'utils/transFromData';
 
 class CalendarApi {
-  getEvents(): Promise<CalendarEvent[]> {
-    return Promise.resolve(deepCopy(events));
-  }
 
-  createEvent(data: { allDay: boolean, description: string, end: number, start: number, title: string }): Promise<CalendarEvent> {
-    return new Promise((resolve, reject) => {
-      try {
-        const {
-          allDay,
-          description,
-          end,
-          start,
-          title
-        } = data;
-
-        // Make a deep copy
-        const clonedEvents = deepCopy(events);
-
-        // Create the new event
-        const event = {
-          id: createResourceId(),
-          allDay,
-          description,
-          end,
-          start,
-          title
-        };
-
-        // Add the new event to events
-        clonedEvents.push(event);
-
-        // Save changes
-        events = clonedEvents;
-
-        resolve(deepCopy(event));
-      } catch (err) {
-        console.error('[Calendar Api]: ', err);
-        reject(new Error('Internal server error'));
-      }
+  async getEventsCd(): Promise<CalendarEventCd[]> {
+    let eventCdList: CalendarEventCd[] = [];
+     await commonApi("get","/schedule/getScheduleCd", undefined).then((response)=>{
+      response.map((item: any)=>{
+        eventCdList.push({
+          schdlCategory: item.schdlCategory,
+          schdlColor: "#" + item.schdlColor,
+          schdlCd: item.schdlCd,
+          schdlIcon: item.schdlIcon,
+          schdlIconColor: "#" + item.schdlIconColor
+        })
+      })
     });
+    return Promise.resolve(deepCopy(eventCdList));
   }
 
-  updateEvent({
-    eventId,
-    update
-  }: {
-    eventId: string;
-    update: {
-      allDay?: boolean;
-      description?: string;
-      end?: number;
-      start?: number;
-      title?: string;
+  async getEvents(date: string, filterList: number[]): Promise<CalendarEvent[]> {
+    let eventList: CalendarEvent[] = [];
+     await commonApi("get","/schedule/selectSchedule", {
+      calendarStartDate: date,
+      schdlCdFilter: filterList
+    }).then(async (response)=>{
+      response = response ? response : [];
+      response.map((item : any)=>{
+        eventList.push({
+          seq: item.seq,
+          userSid: item.userSid,
+          loc: item.loc,
+          content: item.content,
+          startDt: new Date(item.startDt).getTime(),
+          start: new Date(item.startDt).getTime(),
+          end: new Date(moment(item.endDt).add(1, 'days').format()).getTime(),
+          endDt: new Date(item.endDt).getTime(),
+          allDay: item.allDay,
+          regDt: item.regDt,
+          regId: item.regId,
+          updDt: item.updDt,
+          updId: item.updId,
+          color: "#"+item.schdlColor,
+          schdlCd: item.schdlCd,
+          schdlNm: item.schdlNm,
+          schdlIcon: item.schdlIcon,
+          schdlIconColor: "#"+item.schdlIconColor,
+          schdlCategory: item.schdlCategory
+        });
+      })
+    });
+    const holiday = await this.getholidays(date);
+    //날짜 정해서 매년 + 
+    const addDays : {title:string, day: string}[]= [];
+    let ceilDay;
+    let floorDay;
+    let thisDay;
+    if(process.env.NEXT_PUBLIC_MYJ_DATE){
+      let nowCount = moment(new Date(date)).diff(moment(new Date(process.env.NEXT_PUBLIC_MYJ_DATE)), 'days') + 2;
+      let ceil = Math.ceil(nowCount/100)*100;
+      ceilDay = moment(new Date(process.env.NEXT_PUBLIC_MYJ_DATE)).add(ceil - 1, 'days').format("YYYY-MM-DD");
+      let floor = Math.floor(nowCount/100)*100;
+      floorDay = moment(new Date(process.env.NEXT_PUBLIC_MYJ_DATE)).add(floor - 1, 'days').format("YYYY-MM-DD");
+      thisDay = moment(new Date(process.env.NEXT_PUBLIC_MYJ_DATE)).year(moment(new Date()).year()).format("YYYY-MM-DD");
+      let year = moment(new Date()).year() - moment(new Date(process.env.NEXT_PUBLIC_MYJ_DATE)).year();
+      addDays.push({title:ceil + "일", day:ceilDay});
+      addDays.push({title:floor + "일", day:floorDay});
+      addDays.push({title:"MYJ " + year + "주년", day:thisDay});
     }
-  }): Promise<CalendarEvent> {
-    return new Promise((resolve, reject) => {
+    addDays.forEach((item) => {
+      let eventDay: CalendarEvent = {
+        seq: 0,
+        userSid: 0,
+        startDt: new Date(item.day).getTime(),
+        start: new Date(item.day).getTime(),
+        end: new Date(moment(item.day).add(1, 'days').format("YYYY-MM-DD")).getTime(),
+        endDt: new Date(item.day).getTime(),
+        loc: '',
+        content: '',
+        schdlNm: item.title,
+        schdlCategory: 'MYJ 기념일',
+        color: '#e089f0',
+        schdlCd: 6,
+        schdlIcon: '',
+        allDay: true,
+        schdlIconColor: '#ffffff',
+        regDt: new Date().toISOString(),
+        regId: 0,
+        updDt: new Date().toISOString(),
+        updId: 0,
+      }
+      eventList.push(eventDay);
+    });
+    return Promise.resolve(deepCopy(eventList.concat(holiday)));
+  }
+
+  createEvent(data: {schdlCd: number, schdlNm: string, loc: string, content: string, startDt: string, endDt: string, allDay: boolean}): Promise<any> {
+    return new Promise(async (resolve, reject) => {
       try {
-        // Make a deep copy
-        const clonedEvents = deepCopy(events);
-
-        // Find the event that will be updated
-        const event = events.find((_event) => _event.id === eventId);
-
-        if (!event) {
-          reject(new Error('Event not found'));
-          return;
-        }
-
-        // Update the event
-        Object.assign(event, update);
-
-        // Save changes
-        events = clonedEvents;
-
-        resolve(deepCopy(event));
+        await commonApi("post","/schedule/insertSchedule",undefined, transFormData(data),{'Content-Type': `multipart/form-data;`}).then((response)=>{
+          resolve(response);
+        })
+        
       } catch (err) {
         console.error('[Calendar Api]: ', err);
         reject(new Error('Internal server error'));
@@ -154,32 +113,135 @@ class CalendarApi {
     });
   }
 
-  deleteEvent(eventId: string): Promise<true> {
-    return new Promise((resolve, reject) => {
+  updateEvent(data: {seq: number, schdlCd: number, schdlNm: string, loc: string, content: string, startDt: string, endDt: string, allDay: boolean}): Promise<any> {
+    return new Promise(async (resolve, reject) => {
       try {
-        // Make a deep copy
-        const clonedEvents = deepCopy(events);
-
-        // Find the event that will be removed
-        const event = events.find((_event) => _event.id === eventId);
-
-        if (!event) {
-          reject(new Error('Event not found'));
-          return;
-        }
-
-        events = events.filter((_event) => _event.id !== eventId);
-
-        // Save changes
-        events = clonedEvents;
-
-        resolve(true);
+        await commonApi("put","/schedule/updateSchedule",undefined, transFormData(data),{'Content-Type': `multipart/form-data;`}).then((response)=>{
+          resolve(response);
+        })
       } catch (err) {
         console.error('[Calendar Api]: ', err);
         reject(new Error('Internal server error'));
       }
     });
   }
+
+  deleteEvent(eventId: number): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await commonApi("get","/schedule/deleteSchedule", {
+          seq: eventId
+        }).then((response)=>{
+          resolve(response);
+        })
+        
+      } catch (err) {
+        console.error('[Calendar Api]: ', err);
+        reject(new Error('Internal server error'));
+      }
+    });
+  }
+
+
+  async getholidays (calendarStartDate: string): Promise<CalendarEvent[]> {
+    let holidays: any[] = [];
+    await commonApi("get","/schedule/getholidayList",{
+      'solYear' : moment(calendarStartDate).format("YYYY"),
+      'solMonth' : moment(calendarStartDate).format("MM")
+    }).then((response: string)=>{
+        response.split('<?xml').forEach((item,index)=>{
+          const xmlResponse: any = converter.xml2js('<?xml'+item);
+          if(xmlResponse.elements){
+            const list : any[] = xmlResponse.elements[0].elements[1].elements[0].elements
+            if(list) {
+              let itemBefore: any;
+              let holiday: any;
+              let oneday: any;
+              list.map((item1: any, index1: number)=>{
+                var title = item1.elements[1].elements[0].text;
+                var startDate = item1.elements[3].elements[0].text.substring(0,4) + "-" + item1.elements[3].elements[0].text.substring(4,6) + "-" + item1.elements[3].elements[0].text.substring(6,8);
+                var endDate = moment(moment(startDate).add(1, 'days')).format('YYYY-MM-DD');
+                var originalEndDate = moment(startDate).format('YYYY-MM-DD');
+                oneday = true;
+                if(itemBefore == title) {
+                  oneday = false;
+                  startDate = holidays[holidays.length-1].start;
+                  holidays.pop();
+                }
+                let holiday: CalendarEvent = {
+                  seq: 0,
+                  userSid: 0,
+                  startDt: new Date(startDate).getTime(),
+                  start: new Date(startDate).getTime(),
+                  end: new Date(endDate).getTime(),
+                  endDt: new Date(originalEndDate).getTime(),
+                  loc: '',
+                  content: '',
+                  schdlNm: title,
+                  schdlCategory: '공휴일',
+                  color: '#f26363',
+                  schdlCd: 5,
+                  schdlIcon: 'fas fa-hand-peace',
+                  allDay: true,
+                  schdlIconColor: '#ffffff',
+                  regDt: new Date().toISOString(),
+                  regId: 0,
+                  updDt: new Date().toISOString(),
+                  updId: 0,
+                }
+                itemBefore = holiday.schdlNm;
+                holidays.push(holiday);
+              })
+            }
+          }
+        })
+    })
+    return holidays;
+  }
+
+  async getGoals(date: string): Promise<CalendarGoalUsers> {
+    let eventCdList: CalendarGoalUsers = {};
+     await commonApi("get","/schedule/selectScheduelGoal", {date: date}).then((response)=>{
+      response.map((item : CalendarGoal)=>{
+        if(item.goalUser === "MinNyeon") {
+          eventCdList.MinNyeon = item;
+        }
+        else if(item.goalUser === "YeonJin") {
+          eventCdList.YeonJin = item;
+        }
+      })
+    });
+    return Promise.resolve(deepCopy(eventCdList));
+  }
+
+  createGoal(data: { goalDate: string, goalContent: string, goalUser: string}): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await commonApi("post","/schedule/insertScheduleGoal",undefined, transFormData(data),{'Content-Type': `multipart/form-data;`}).then((response)=>{
+          resolve(response);
+        })
+        
+      } catch (err) {
+        console.error('[Calendar Goal Api]: ', err);
+        reject(new Error('Internal server error'));
+      }
+    });
+  }
+
+  updateGoal(data: { goalSid: number, goalDate: string, goalContent: string, goalUser: string}): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await commonApi("put","/schedule/updateScheduleGoal",undefined, transFormData(data),{'Content-Type': `multipart/form-data;`}).then((response)=>{
+          resolve(response);
+        })
+        
+      } catch (err) {
+        console.error('[Calendar Goal Api]: ', err);
+        reject(new Error('Internal server error'));
+      }
+    });
+  }
+
 }
 
 export const calendarApi = new CalendarApi();
