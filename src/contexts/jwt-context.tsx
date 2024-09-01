@@ -3,8 +3,6 @@ import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { authApi } from 'api/auth-api';
 import type { Login, User } from 'types/user';
-import { Cookies } from "react-cookie";
-import Router from 'next/router';
 
 interface State {
   isInitialized: boolean;
@@ -100,11 +98,10 @@ export const AuthContext = createContext<AuthContextValue>({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
-  modifyUserAvatar: () => Promise.resolve()
+  modifyUserAvatar: () => Promise.resolve(),
 });
 
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
-  const cookie = new Cookies;
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -130,8 +127,6 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
                 user: null
               }
             });
-            globalThis.localStorage.removeItem('accessToken');
-            Router.push("/authentication/login");
           }
       } else {
         dispatch({

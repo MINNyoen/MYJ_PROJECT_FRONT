@@ -5,6 +5,7 @@ import { Avatar, Box, Paper, Typography } from '@mui/material';
 import { useSelector } from 'store';
 import type { RootState } from 'store';
 import type { Member } from 'types/kanban';
+import useTransition from 'next-translate/useTranslation';
 
 interface KanbanCommentProps {
   createdAt: number;
@@ -14,13 +15,15 @@ interface KanbanCommentProps {
 
 const memberSelector = (state: RootState, memberId: string): Member => {
   const { members } = state.kanban;
-
   return members.byId[memberId];
 };
 
 export const KanbanComment: FC<KanbanCommentProps> = (props) => {
   const { createdAt, memberId, message, ...other } = props;
+  
   const member = useSelector((state) => memberSelector(state, memberId));
+  console.log(member);
+  const {t} = useTransition("kanban");
 
   return (
     <Box
@@ -58,7 +61,7 @@ export const KanbanComment: FC<KanbanCommentProps> = (props) => {
           sx={{ mt: 1 }}
           variant="caption"
         >
-          {format(createdAt, 'MMM dd, yyyy \'at\' hh:mm a')}
+          {format(createdAt, t('DateFormat'))}
         </Typography>
       </Box>
     </Box>

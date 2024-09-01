@@ -1,4 +1,9 @@
 {
+    "MyPage" : "My Page",
+    "MinYeonJin" : "MinYeonJin",
+    "General" : "General",
+    "Notifications" : "Notifications",
+    "Security" : "Security",
     "BasicDetails" : "Basic details",
     "ProfileChange" : "Profile change",
     "EmailAddress" : "Email Address",
@@ -24,11 +29,19 @@
     "ChangePassword" : "Change password",
     "Edit" : "Edit",
     "Password" : "Password",
+    "NewPassword" : "New Password",
+    "NewPasswordCheck" : "New Password Check",
     "LoginHistory" : "Login history",
     "LoginHistoryInfo" : "Your recent login activity.",
     "LoginType" : "Login type",
     "IPAddress" : "IP Address",
     "Client" : "Client",
-
-    "Confirm" : "Confirm"
+    "Confirm" : "Confirm",
+    "SuccessUpdate" : "Update Success!",
+    "SuccessFailed" : "Update Failed!",
+    "VerifyYourIdentity" : "Verify your identity",
+    "VerifyPassword" : "Your password has been verified!",
+    "NotVerifyPassword" : "Your password has not been verified!",
+    "NotMatchesPassword" : "The password you entered does not match the new password!",
+    "NewPasswordPatternCheck" : "Password must contain at least 8 characters, at least one letter, one number and one special character"
 }

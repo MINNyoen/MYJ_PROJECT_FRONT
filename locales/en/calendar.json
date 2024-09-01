@@ -11,19 +11,16 @@
     "SuccessDelete" : "The schedule has been successfully deleted.",
     "ErrorDelete" : "An error occurred while deleting the schedule.",
     "DeleteSchedule" : "Delete Schedule",
-
     "schdlNm" : "Schedule Name",
     "schdlCd" : "Schedule Category",
     "loc" : "Location",
     "startDt" : "Schedule Start Date",
     "endDt" : "Schedule End Date",
     "content" : "Content",
-
     "checkCreateSchedule" : "Are you sure you want to register this schedule?",
     "checkModifySchedule" : "Are you sure you want to modify this schedule?",
     "checkDeleteSchedule" : "Are you sure you want to delete this schedule?",
     "checkModifyPeriodSchedule" : "Are you sure you want to reschedule to the selected time period?",
-
     "GoalMinNyeonTM" : "MinNyeon's Goal In This Month!",
     "GoalRequired" : "Please enter your goal for the month!",
     "GoalYeonJinTM" : "YeonJin's Goal In This Month!",
@@ -39,13 +36,10 @@
     "WhoseGoal" : "Whose goal is it?",
     "WhenGoal" : "When is the goal for?",
     "WhatGoal" : "What's Goal?",
-
     "valSchdlCd" : "Please Choice Schedule Category!",
     "valSchdlNm" : "Please Enter Schedule Name!",
-
     "modalSideName" : "MinYeonJin Memories!",
     "modalSideContent" : "In the Lotte World\n2019.10.28 Holloween Day at in front of the Merry-go-round\nThe first day I rode a viking with Yeonjin\nMinNyeon hope next time I can even ride the roller coaster...\n",
-
     "Delete" : "Delete",
     "Cancel" : "Cancel",
     "Confirm" : "Confirm"

@@ -13,16 +13,35 @@ import {
   Typography
 } from '@mui/material';
 import { Scrollbar } from 'components/scrollbar';
-import type { FC } from 'react';
-import { useState } from 'react';
 import useTransition from 'next-translate/useTranslation';
+import { ChangeEvent, useState } from 'react';
+import { PasswordExp } from 'utils/regExp';
 
-export const AccountSecuritySettings: FC = () => {
+interface PropsType {
+  handleCheckMeAlert: (type : 'DeleteAccount' | 'ChangePassword', newPassword : string) => void;
+}
+
+
+export const AccountSecuritySettings = ({handleCheckMeAlert} : PropsType) => {
   const {t} = useTransition("mypage");
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [checkNewPassword, setCheckNewPassword] = useState<string>('');
+  const [isSame, setIsSame] = useState<boolean>();
 
-  const handleEdit = (): void => {
-    setIsEditing(!isEditing);
+  const changePassword = () => handleCheckMeAlert('ChangePassword', newPassword);
+
+  const handleChangeNewPassword = (event: ChangeEvent<HTMLInputElement>): void => {
+    setNewPassword(event.target.value);
+  };
+
+  const handleChangeNewPasswordCheck = (event: ChangeEvent<HTMLInputElement>): void => {
+    setCheckNewPassword(event.target.value);
+    if(newPassword != event.target.value) {
+      setIsSame(true);
+    }
+    else {
+      setIsSame(false);
+    }
   };
 
   return (
@@ -35,43 +54,56 @@ export const AccountSecuritySettings: FC = () => {
           >
             <Grid
               item
-              md={4}
+              md={2}
               xs={12}
             >
-              <Typography variant="h6">
+              <Typography variant="h6" mt={'5px'}>
               {t("ChangePassword")}
               </Typography>
             </Grid>
             <Grid
               item
-              md={8}
+              md={10}
               sm={12}
               xs={12}
             >
               <Box
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center'
+                  display: 'flex'
                 }}
               >
                 <TextField
-                  disabled={!isEditing}
-                  label={t("Password")}
+                  label={t("NewPassword")}
                   type="password"
-                  defaultValue="Thebestpasswordever123#"
+                  defaultValue={newPassword}
+                  onChange={handleChangeNewPassword}
                   size="small"
                   sx={{
                     flexGrow: 1,
                     mr: 3,
-                    ...(!isEditing && {
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderStyle: 'dotted'
-                      }
-                    })
                   }}
+                  color={!newPassword.match(PasswordExp) ? 'primary' :'success'}
+                  error={newPassword != '' && !newPassword.match(PasswordExp)}
+                  helperText={newPassword != '' && !newPassword.match(PasswordExp) ? t('NewPasswordPatternCheck') : undefined}
+                  FormHelperTextProps={{ style: { minHeight: '1.5em' } }}
                 />
-                <Button onClick={handleEdit}>
-                  {isEditing ? t("Save") : t("Edit")}
+                <TextField
+                  label={t("NewPasswordCheck")}
+                  type="password"
+                  defaultValue={checkNewPassword}
+                  onChange={handleChangeNewPasswordCheck}
+                  size="small"
+                  sx={{
+                    flexGrow: 1,
+                    mr: 3,
+                  }}
+                  color={!!isSame ? 'primary' :'success'}
+                  error={!!isSame}
+                  helperText={!!isSame ? t('NotMatchesPassword') : undefined}
+                  FormHelperTextProps={{ style: { minHeight: '1.5em' } }}
+                />
+                <Button onClick={changePassword}>
+                  {t("Save")}
                 </Button>
               </Box>
             </Grid>

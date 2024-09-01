@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import type { ChangeEvent, FC } from 'react';
-import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import { Box, Button, Checkbox, IconButton, Input, OutlinedInput, Typography } from '@mui/material';
 import type { Theme } from '@mui/material';
+import { Box, Button, Checkbox, IconButton, Input, OutlinedInput } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import type { SxProps } from '@mui/system';
 import { Trash as TrashIcon } from 'components/icons/trash';
-import { deleteCheckItem, getBoard, updateCheckItem } from 'slices/kanban';
+import PropTypes from 'prop-types';
+import type { ChangeEvent, FC } from 'react';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { deleteCheckItem, updateCheckItem } from 'slices/kanban';
 import { useDispatch } from 'store';
 import type { CheckItem } from 'types/kanban';
+import useTransition from 'next-translate/useTranslation';
 
 interface KanbanCheckItemProps {
   cardId: string;
@@ -46,6 +47,7 @@ export const KanbanCheckItem: FC<KanbanCheckItemProps> = (props) => {
   } = props;
   const dispatch = useDispatch();
   const [name, setName] = useState<string>(checkItem.name);
+  const {t} = useTransition("kanban");
 
   const handleStateChange = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
     try {
@@ -57,10 +59,10 @@ export const KanbanCheckItem: FC<KanbanCheckItemProps> = (props) => {
         checkItem.id,
         { state }
       ));
-      toast.success('Check item updated!');
+      toast.success(t('CheckItemUpdated'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -76,11 +78,11 @@ export const KanbanCheckItem: FC<KanbanCheckItemProps> = (props) => {
         checkItem.id,
         { name }
       ));
-      toast.success('Check item updated!');
+      toast.success(t('CheckItemUpdated'));
       onEditComplete?.();
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -94,10 +96,10 @@ export const KanbanCheckItem: FC<KanbanCheckItemProps> = (props) => {
       await dispatch(deleteCheckItem(
         checkItem.id
       ));
-      toast.success('Check item deleted!');
+      toast.success(t('CheckItemDeleted'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -137,14 +139,14 @@ export const KanbanCheckItem: FC<KanbanCheckItemProps> = (props) => {
                 sx={{ ml: 2 }}
                 variant="contained"
               >
-                Update
+                {t('Update')}
               </Button>
               <Button
                 onClick={handleCancel}
                 size="small"
                 sx={{ ml: 2 }}
               >
-                Cancel
+               {t('Cancel')}
               </Button>
             </Box>
           )

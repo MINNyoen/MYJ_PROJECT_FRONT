@@ -13,26 +13,25 @@ export const commonApi  = async (method: 'get' | 'post' | 'put' | 'delete', url:
       headers: {Authorization: globalThis.localStorage.getItem("accessToken"), 'Access-Control-Allow-Origin': '*', ...headers},
       withCredentials: true,
     }).then(function (response: any) {
+      console.log(response);
       //성공
       if(response.data.status === process.env.NEXT_PUBLIC_HTTP_STATUS_OK){
         returnData = response.data.data;
+      }
+      else {
+        const liveError = [404,500,403];
+        if(response.data.code === 401){
+          globalThis.localStorage.removeItem('accessToken');
+          location.href = path.pages.authentication.login;
+        }
+        else if(liveError.includes(response.data.status)){
+          location.href = "/" + response.data.status;
+        }
       }
   });
       return returnData;
   } catch (error: any) {
     console.log(error);
-    const liveError = [404,500,403];
-    if(error.response.code === 401){
-      location.href = path.pages.authentication.login;
-      globalThis.localStorage.removeItem('accessToken');
-    }
-    else if(liveError.includes(error.response.status)){
-      location.href = "/"+error.response.status;
-    }
-    //만들어지지 않은 페이지
-    else {
-      //location.href = "/500";
-    }
   }
 
 }

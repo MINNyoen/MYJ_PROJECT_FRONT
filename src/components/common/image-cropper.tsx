@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Cropper, ReactCropperElement } from "react-cropper";
 import useTranslation from "next-translate/useTranslation";
 import { Box, Button, Dialog, Grid, Input, Typography } from "@mui/material";
@@ -48,10 +48,6 @@ const ImageCropper = ({ children, aspectRatio, onCrop }: PropsType) => {
       setImage(null);
     }
   };
-
-  useEffect(()=>{
-    console.log("변화");
-  },[open])
 
   return (
     <>

@@ -13,15 +13,16 @@ import type { Settings } from 'contexts/settings-context';
 import { useSettings } from 'hooks/use-settings';
 import { X as XIcon } from 'components/icons/x';
 // @ts-ignore
-import LightThemeIcon from './light-theme.svg';
+import pinkThemeIcon from './pinkTheme.jpg';
 // @ts-ignore
-import DarkThemeIcon from './dark-theme.svg';
+import blueThemeIcon from './blueTheme.jpg';
 // @ts-ignore
 import KoLanguageIcon from './flag-ko.svg';
 // @ts-ignore
 import UsLanguageIcon from './flag-en.svg';
 import PropTypes from 'prop-types';
 import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
 
 interface SettingsDrawerProps {
   onClose?: () => void;
@@ -30,14 +31,14 @@ interface SettingsDrawerProps {
 
 const themes = [
   {
-    label: 'Min',
-    value: 'min',
-    icon: LightThemeIcon
+    label: 'Ocean',
+    value: 'Ocean',
+    img: blueThemeIcon
   },
   {
-    label: 'Yeon',
-    value: 'yeon',
-    icon: DarkThemeIcon
+    label: 'Flower',
+    value: 'Flower',
+    img: pinkThemeIcon
   }
 ];
 
@@ -64,7 +65,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
   const { open, onClose, ...other } = props;
   const { settings, saveSettings } = useSettings();
   const [values, setValues] = useState<Settings>(getValues(settings));
-  const {t, lang} = useTranslation('common');
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     setValues(getValues(settings));
@@ -139,7 +140,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
           }}
         >
           {themes.map((theme) => {
-            const { label, icon: Icon , value } = theme;
+            const { label, img: imgLink , value } = theme;
             return (
               <div key={value}>
                 <Box
@@ -161,7 +162,17 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
                     }
                   }}
                 >
-                  <Icon />
+                  <Box
+                    sx={{
+                      '& img': {
+                        width: 100
+                      }
+                    }}
+                  >
+                    <Image
+                      src={imgLink}
+                    />
+                  </Box>
                 </Box>
                 <Typography
                   align="center"
@@ -218,6 +229,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
         <Box
           sx={{
             alignItems: 'center',
+            justifyContent: 'space-around',
             display: 'flex',
             m: -1
           }}

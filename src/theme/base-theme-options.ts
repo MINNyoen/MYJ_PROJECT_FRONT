@@ -1,7 +1,5 @@
 import { ThemeOptions } from "@mui/material";
 
-export const loadingColor : string = "rgba(0,0,0,0.3)"; 
-
 export const baseThemeOptions: ThemeOptions = {
   breakpoints: {
     values: {

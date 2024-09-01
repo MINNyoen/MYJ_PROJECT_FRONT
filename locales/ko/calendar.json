@@ -11,19 +11,16 @@
     "SuccessDelete" : "선택한 일정이 성공적으로 삭제되었습니다.",
     "ErrorDelete" : "일정을 삭제하던 중 에러가 발생하였습니다.",
     "DeleteSchedule" : "일정 삭제",
-
     "schdlNm" : "일정 이름",
     "schdlCd" : "일정 종류",
     "loc" : "장소",
     "startDt" : "일정 시작 날짜",
     "endDt" : "일정 종료 날짜",
     "content" : "내용",
-
     "checkCreateSchedule" : "입력하신 내용으로 일정을 등록하시겠습니까?",
     "checkModifySchedule" : "입력하신 내용으로 일정을 수정하시겠습니까?",
     "checkDeleteSchedule" : "해당 일정을 삭제하시겠습니까?",
     "checkModifyPeriodSchedule" : "선택하신 기간으로 일정을 수정하시겠습니까?",
-
     "GoalMinNyeonTM" : "민년의 이달의 목표!",
     "GoalRequired" : "이달의 목표를 입력해주세요!",
     "GoalYeonJinTM" : "연진의 이달의 목표!",
@@ -39,13 +36,10 @@
     "WhoseGoal" : "누구의 목표인가요?",
     "WhenGoal" : "언제의 목표인가요?",
     "WhatGoal" : "어떤 목표인가요?",
-
     "valSchdlCd" : "일정 종류를 선택해주세요!",
     "valSchdlNm" : "일정 이름을 입력해주세요!",
-
     "modalSideName" : "민연진 추억!",
     "modalSideContent" : "롯데월드에서 교복을 입고..\n 2019년 10월 28일 할로윈 데이에 회전 목마 앞에서!\n 민년이는 연진이와 함께 바이킹을 처음 탔어요. (무서워 죽을 뻔...)\n 그리고 그는 다음에는 롤러코스터를 정복하기로 합니다...",
-
     "Delete" : "삭제",
     "Cancel" : "취소",
     "Confirm" : "확인"

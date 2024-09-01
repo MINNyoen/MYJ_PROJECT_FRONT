@@ -1,28 +1,24 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
+import LogoutIcon from '@mui/icons-material/Logout';
 import {
   Avatar,
   Box,
-  Divider,
   ButtonBase,
+  Divider,
   ListItemIcon,
   ListItemText,
   MenuItem,
   Popover,
   Typography
 } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { useAuth } from 'hooks/use-auth';
 import { UserCircle as UserCircleIcon } from 'components/icons/user-circle';
-import path from 'components/path.json'
+import path from 'components/path.json';
+import { useAuth } from 'hooks/use-auth';
 import useTranslation from 'next-translate/useTranslation';
-import ImageCropper from 'components/common/image-cropper';
-import { dataURItoFile } from 'utils/file-util';
-import useImageCompress from 'utils/use-image-compress';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { FC, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface AccountPopoverProps {
   anchorEl: null | Element;
@@ -33,7 +29,7 @@ interface AccountPopoverProps {
 const AccountPopover: FC<AccountPopoverProps> = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
   const router = useRouter();
-  const { logout, user, modifyUserAvatar } = useAuth();
+  const { logout } = useAuth();
 
   const {t} = useTranslation('common');
 
@@ -47,32 +43,6 @@ const AccountPopover: FC<AccountPopoverProps> = (props) => {
       toast.error('Unable to logout.');
     }
   };
-
-
-  //==========image
-  const [uploadImage, setUploadImage] = useState<string | null>(null);
-  const { isLoading: isCompressLoading, compressImage } = useImageCompress();
-
-  const handleUploadImage = (image: string) => setUploadImage(image);
-
-  const handleCompressImage = async () => {
-    if (!uploadImage) return;
-
-    const imageFile = dataURItoFile(uploadImage);
-
-    const compressedImage = await compressImage(imageFile);
-
-    // 이미지 서버 저장 로직
-    if (!compressedImage) return;
-    //const imageUrl = URL.createObjectURL(compressedImage);
-    modifyUserAvatar(compressedImage);
-  };
-
-  useEffect(() => {
-    if (uploadImage) {
-      handleCompressImage();
-    }
-  }, [uploadImage]);
 
   return (
     <Popover
@@ -88,36 +58,6 @@ const AccountPopover: FC<AccountPopoverProps> = (props) => {
       transitionDuration={0} 
       {...other}
     >
-      {/* <Box
-        sx={{
-          alignItems: 'center',
-          p: 2,
-          display: 'flex'
-        }}
-      >
-        <ImageCropper aspectRatio={1} onCrop={handleUploadImage}>
-        <Avatar
-          src={user?.avatar}
-          sx={{
-            height: 40,
-            width: 40
-          }}
-        >
-          <UserCircleIcon fontSize="small" />
-        </Avatar>
-        <SettingsIcon viewBox={'2 0 25 25'} sx={{position: 'absolute', top: 25, left: 25, color: 'background.nav'}}/>
-        </ImageCropper>
-        <Box
-          sx={{
-            ml: 2
-          }}
-        >
-          <Typography variant="body1" letterSpacing={3}>
-            {user?.userNm}
-          </Typography>
-        </Box>
-      </Box>
-      <Divider /> */}
       <Box sx={{ my: 1 }}>
         <NextLink
           href={path.pages.minyeonjin.mypage}

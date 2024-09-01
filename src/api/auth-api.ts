@@ -9,6 +9,7 @@ import path from 'components/path.json';
 
 
 
+
 class AuthApi {
   
   async login(login?: Login): Promise<{accessToken : string, user: User}> {
@@ -18,9 +19,18 @@ class AuthApi {
         await commonApi("post", "/login", login ?{
             loginId : login.loginId,
             pwd : login.pwd,
+            remember : login.remember
         } : undefined).then((response: any)=> {
           if(response.result) {
-            resolve({accessToken : response.accessToken, user : response.user});
+            const user : User = {
+              userSid: response.user.userSid,
+              userNm: response.user.userNm,
+              birthDt: response.user.birthDt,
+              loginId: response.user.id,
+              pwd: response.password,
+              avatar: process.env.NEXT_PUBLIC_BACKEND_URL + response.user.avatar
+            }
+            resolve({accessToken : response.accessToken, user : user});
           }
           else {
             toast.error(response.errorMsg, {style: {textAlign: 'center', maxWidth: '100%'}});
@@ -62,27 +72,6 @@ class AuthApi {
     });
   }
 
-  async autoLogin(): Promise<{user: User}> {
-    await wait(500);
-    return new Promise( async (resolve, reject) => {
-      try {
-        await commonApi("get", "/autoLogin").then((response: any)=> {
-          if(response.result) {
-            resolve({user : response.user});
-          }
-          else {
-            toast.error(response.errorMsg, {style: {textAlign: 'center', maxWidth: '100%'}});
-          }
-          
-        })
-        
-      } catch (err) {
-        console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
-      }
-    });
-  }
-
   async lostChangePwd(email: string): Promise<void> {
     await commonApi("put","/user/LostchangePwd",{loginId : email}).then((response)=>{
       if(response.status){
@@ -95,26 +84,23 @@ class AuthApi {
   }
 
 
-  async me(): Promise<{user: User | undefined}> {
+  async me(): Promise<{user: User}> {
     await wait(500);
     return new Promise( async (resolve, reject) => {
       try {
         await commonApi("get", "/user/getMyInfo").then((response: any)=> {
+          console.log(response);
           if(response) {
             const user : User = {
               userSid: response.userSid,
               userNm: response.userNm,
               birthDt: response.birthDt,
               loginId: response.id,
-              pwd: response.pwd,
+              pwd: response.password,
               avatar: process.env.NEXT_PUBLIC_BACKEND_URL + response.avatar
             } 
             resolve({user : user});
           }
-          else {
-            resolve({user : undefined});
-          }
-          
         })
         
       } catch (err) {
@@ -128,7 +114,6 @@ class AuthApi {
     await wait(500);
     return new Promise( async (resolve, reject) => {
       try {
-        console.log(img);
         await commonApi("post", "/user/modifyUserAvatar", undefined, transFormData({img : img}),{'Content-Type': `multipart/form-data;`}).then((response: any)=> {
           if(response) {
             const user : User = {
@@ -136,18 +121,53 @@ class AuthApi {
               userNm: response.userNm,
               birthDt: response.birthDt,
               loginId: response.id,
-              pwd: response.pwd,
+              pwd: response.password,
               avatar: process.env.NEXT_PUBLIC_BACKEND_URL + response.avatar
             } 
             resolve({user : user});
           }
-          else {
-            toast.error(response.errorMsg, {style: {textAlign: 'center', maxWidth: '100%'}});
-          }
-          
+        })
+      } catch (err) {
+        console.error('[Auth Api]: ', err);
+        reject(new Error('Internal server error'));
+      }
+    });
+  }
+
+  async checkLogin(loginId: string, passowrd : string): Promise<Boolean> {
+    await wait(500);
+    return new Promise( async (resolve, reject) => {
+      try {
+        await commonApi("get", "/user/checkLogin", {
+            loginId : loginId,
+            pwd : passowrd
+        }).then((response: Boolean)=> {
+            resolve(response);
         })
         
+      } catch (err) {
+        console.error('[Auth Api]: ', err);
+        reject(new Error('Internal server error'));
+      }
+    });
+  }
 
+  async changePwd(loginId: string, newPassowrd : string): Promise<Boolean> {
+    await wait(500);
+    return new Promise( async (resolve, reject) => {
+      try {
+        await commonApi("put", "/user/changePwd", {
+            loginId : loginId,
+            newPwd : newPassowrd
+        }).then((response: any)=> {
+          if(response === 1) {
+            resolve(true);
+          }
+          else {
+            resolve(false);
+          }
+        })
+        
       } catch (err) {
         console.error('[Auth Api]: ', err);
         reject(new Error('Internal server error'));

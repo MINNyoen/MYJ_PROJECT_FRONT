@@ -8,20 +8,56 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import ImageCropper from 'components/common/image-cropper';
 import { UserCircle as UserCircleIcon } from 'components/icons/user-circle';
 import { useAuth } from 'hooks/use-auth';
-import type { FC } from 'react';
 import useTransition from 'next-translate/useTranslation';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { dataURItoFile } from 'utils/file-util';
+import useImageCompress from 'utils/use-image-compress';
 
-export const AccountGeneralSettings: FC = (props) => {
+interface PropsType {
+  handleCheckMeAlert: (type : 'DeleteAccount' | 'ChangePassword') => void;
+}
 
-  const { user } = useAuth();
+export const AccountGeneralSettings = ({handleCheckMeAlert} : PropsType) => {
+
+  const { user, modifyUserAvatar } = useAuth();
   const {t} = useTransition("mypage");
+
+  const [uploadImage, setUploadImage] = useState<string | null>(null);
+  const { isLoading: isCompressLoading, compressImage } = useImageCompress();
+
+  const handleUploadImage = (image: string) => setUploadImage(image);
+
+  const deleteAccount = () => handleCheckMeAlert('DeleteAccount');
+
+  const handleCompressImage = async () => {
+    if (!uploadImage) return;
+
+    const imageFile = dataURItoFile(uploadImage);
+
+    const compressedImage = await compressImage(imageFile);
+
+    // 이미지 서버 저장 로직
+    if (!compressedImage) return;
+    await modifyUserAvatar(compressedImage).then(()=>{
+      toast.success(t('SuccessUpdate'));
+    }).catch (()=>{
+      toast.error(t('SuccessFailed'), {style: {textAlign: 'center', maxWidth: '100%'}});
+    });
+  };
+
+  useEffect(() => {
+    if (uploadImage) {
+      handleCompressImage();
+    }
+  }, [uploadImage]);
 
   return (
     <Box
       sx={{ mt: 4 }}
-      {...props}
     >
       <Card>
         <CardContent>
@@ -59,9 +95,11 @@ export const AccountGeneralSettings: FC = (props) => {
                 >
                   <UserCircleIcon fontSize="small" />
                 </Avatar>
-                <Button>
-                {t("ProfileChange")}
-                </Button>
+                <ImageCropper aspectRatio={1} onCrop={handleUploadImage}>
+                  <Button>
+                  {t("ProfileChange")}
+                  </Button>
+                </ImageCropper>
               </Box>
               <Box
                 sx={{
@@ -138,6 +176,7 @@ export const AccountGeneralSettings: FC = (props) => {
               <Button
                 color="error"
                 variant="outlined"
+                onClick={deleteAccount}
               >
                {t("DeleteAccount")}
               </Button>

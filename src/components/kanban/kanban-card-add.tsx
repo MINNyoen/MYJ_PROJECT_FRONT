@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import type { ChangeEvent, FC } from 'react';
-import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import { Box, Button, Link, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Box, Button, Link, OutlinedInput, Typography } from '@mui/material';
 import { Plus as PlusIcon } from 'components/icons/plus';
-import { createCard, getBoard } from 'slices/kanban';
+import useTransition from 'next-translate/useTranslation';
+import type { ChangeEvent, FC } from 'react';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { createCard } from 'slices/kanban';
 import { useDispatch } from 'store';
 import { Column } from 'types/kanban';
 
@@ -17,6 +17,7 @@ export const KanbanCardAdd: FC<KanbanCardAddProps> = (props) => {
   const dispatch = useDispatch();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
+  const {t} = useTransition("kanban");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setName(event.target.value);
@@ -33,13 +34,13 @@ export const KanbanCardAdd: FC<KanbanCardAddProps> = (props) => {
 
   const handleAddConfirm = async (): Promise<void> => {
     try {
-      await dispatch(createCard(column, name || 'Untitled Card'));
+      await dispatch(createCard(column, name || t('NewCard')));
       setIsExpanded(false);
       setName('');
-      toast.success('Card created!');
+      toast.success(t('CardCreated'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -52,7 +53,7 @@ export const KanbanCardAdd: FC<KanbanCardAddProps> = (props) => {
               <OutlinedInput
                 autoFocus
                 fullWidth
-                placeholder="My new task"
+                placeholder={t('MyNewTask')}
                 name="cardName"
                 onChange={handleChange}
                 sx={{
@@ -80,14 +81,14 @@ export const KanbanCardAdd: FC<KanbanCardAddProps> = (props) => {
                   startIcon={(<PlusIcon fontSize="small" />)}
                   variant="contained"
                 >
-                  Add Card
+                  {t('AddCard')}
                 </Button>
                 <Button
                   onClick={handleAddCancel}
                   size="small"
                   sx={{ ml: 2 }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </Box>
             </>
@@ -108,7 +109,7 @@ export const KanbanCardAdd: FC<KanbanCardAddProps> = (props) => {
                 color="textSecondary"
                 variant="subtitle1"
               >
-                Add Card
+                {t('AddCard')}
               </Typography>
             </Link>
           )

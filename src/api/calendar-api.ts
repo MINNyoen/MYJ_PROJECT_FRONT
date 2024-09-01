@@ -149,6 +149,7 @@ class CalendarApi {
       'solYear' : moment(calendarStartDate).format("YYYY"),
       'solMonth' : moment(calendarStartDate).format("MM")
     }).then((response: string)=>{
+      if(response) {
         response.split('<?xml').forEach((item,index)=>{
           const xmlResponse: any = converter.xml2js('<?xml'+item);
           if(xmlResponse.elements){
@@ -195,6 +196,7 @@ class CalendarApi {
             }
           }
         })
+      }
     })
     return holidays;
   }

@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import type { ChangeEvent, FC, KeyboardEvent } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 import { Avatar, Box, TextField } from '@mui/material';
-import { addComment, getBoard } from 'slices/kanban';
+import { addComment } from 'slices/kanban';
 import { useDispatch, useSelector } from 'store';
 import { KanbanCardAction } from './kanban-card-action';
+import useTransition from 'next-translate/useTranslation';
+import { useAuth } from 'hooks/use-auth';
 
 interface KanbanCommentAddProps {
   cardId: string;
@@ -15,11 +17,10 @@ export const KanbanCommentAdd: FC<KanbanCommentAddProps> = (props) => {
   const { cardId, ...other } = props;
   const dispatch = useDispatch();
   const { cards } = useSelector((state) => state.kanban);
+  const {t} = useTransition("kanban");
+
   // To get the user from the authContext, you can use
-  // `const { user } = useAuth();`
-  const user = {
-    avatar: '/static/mock-images/avatars/avatar-anika_visser.png'
-  };
+  const { user } = useAuth();
   const [message, setMessage] = useState<string>('');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -31,11 +32,11 @@ export const KanbanCommentAdd: FC<KanbanCommentAddProps> = (props) => {
       if (message) {
         await dispatch(addComment(cards.byId[cardId], message));
         setMessage('');
-        toast.success('Comment added!');
+        toast.success(t('CommentAdded'));
       }
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -49,13 +50,13 @@ export const KanbanCommentAdd: FC<KanbanCommentAddProps> = (props) => {
       {...other}
     >
       <Avatar
-        src={user.avatar}
+        src={user?.avatar}
         sx={{ mr: 2 }}
       />
       <TextField
         fullWidth
         onChange={handleChange}
-        placeholder="Write a comment..."
+        placeholder={t('writeAComment')}
         size="small"
         value={message}
       />
@@ -63,7 +64,7 @@ export const KanbanCommentAdd: FC<KanbanCommentAddProps> = (props) => {
         sx={{width: 'auto', ml: 1}}
         onClick={handleOnclick}
       >
-        Comment
+       {t('Comment')}
       </KanbanCardAction>
     </Box>
   );

@@ -23,6 +23,7 @@ import type { Card as CardType, Checklist } from 'types/kanban';
 import { KanbanCheckItem } from './kanban-check-item';
 import { KanbanCheckItemAdd } from './kanban-check-item-add';
 import { Trash as TrashIcon } from 'components/icons/trash';
+import useTransition from 'next-translate/useTranslation';
 
 interface KanbanChecklistProps {
   card: CardType;
@@ -38,6 +39,7 @@ export const KanbanChecklist: FC<KanbanChecklistProps> = (props) => {
   const [name, setName] = useState<string>(checklist.name);
   const [editingName, setEditingName] = useState<boolean>(false);
   const [editingCheckItem, setEditingCheckItem] = useState<string | null>(null);
+  const {t} = useTransition("kanban");
 
   const handleNameEdit = (): void => {
     setEditingName(true);
@@ -56,10 +58,10 @@ export const KanbanChecklist: FC<KanbanChecklistProps> = (props) => {
       }
       setEditingName(false);
       await dispatch(updateChecklist(card, checklist.id, { name }));
-      toast.success('Checklist updated!');
+      toast.success(t('ChecklistUpdated'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -71,10 +73,10 @@ export const KanbanChecklist: FC<KanbanChecklistProps> = (props) => {
   const handleDelete = async (): Promise<void> => {
     try {
       await dispatch(deleteChecklist(checklist.id));
-      toast.success('Checklist deleted!');
+      toast.success(t('ChecklistDeleted'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -137,14 +139,14 @@ export const KanbanChecklist: FC<KanbanChecklistProps> = (props) => {
                       sx={{ ml: 2 }}
                       variant="contained"
                     >
-                      Save
+                      {t('Save')}
                     </Button>
                     <Button
                       onClick={handleCancel}
                       size="small"
                       sx={{ ml: 2 }}
                     >
-                      Cancel
+                      {t('Cancel')}
                     </Button>
                   </Box>
                 )

@@ -21,13 +21,14 @@ import { DocumentText as DocumentTextIcon } from 'components/icons/document-text
 import { Eye as EyeIcon } from 'components/icons/eye';
 import { EyeOff as EyeOffIcon } from 'components/icons/eye-off';
 import { Users as UsersIcon } from 'components/icons/users';
-import { addChecklist, deleteCard, getBoard, moveCard, updateCard } from 'slices/kanban';
+import { addChecklist, deleteCard, moveCard, updateCard } from 'slices/kanban';
 import { useDispatch, useSelector } from 'store';
 import type { Card, Column } from 'types/kanban';
 import { KanbanCardAction } from './kanban-card-action';
 import { KanbanChecklist } from './kanban-checklist';
 import { KanbanCommentAdd } from './kanban-comment-add';
 import { KanbanComment } from './kanban-comment';
+import useTransition from 'next-translate/useTranslation';
 
 interface KanbanCardModalProps {
   card: Card;
@@ -47,14 +48,15 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
   const { card, column, onClose, open, ...other } = props;
   const dispatch = useDispatch();
   const { columns } = useSelector((state) => state.kanban);
+  const {t} = useTransition("kanban");
 
   const handleDetailsUpdate = debounce(async (update: { name?: string; description?: string; }) => {
     try {
       await dispatch(updateCard(card, update));
-      toast.success('Card updated!');
+      toast.success(t('CardUpdated'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   }, 1000);
 
@@ -67,50 +69,50 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
           columns.byId[event.target.value],
           event.target.value
         ));
-      toast.success('Card moved!');
+      toast.success(t('CardMoved'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
   const handleSubscribe = async (): Promise<void> => {
     try {
       await dispatch(updateCard(card, { isSubscribed: true }));
-      toast.success('Unsubscribed!');
+      toast.success(t('Unsubscribed'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
   const handleUnsubscribe = async (): Promise<void> => {
     try {
       await dispatch(updateCard(card, { isSubscribed: false }));
-      toast.success('Subscribed!');
+      toast.success(t('Subscribed'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
   const handleDelete = async (): Promise<void> => {
     try {
       await dispatch(deleteCard(card, columns.byId[card.columnId]));
-      toast.success('Card archived!');
+      toast.success(t('CardArchived'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
   const handleAddChecklist = async (): Promise<void> => {
     try {
-      await dispatch(addChecklist(card, 'Untitled Checklist'));
-      toast.success('Checklist added!');
+      await dispatch(addChecklist(card, t('NewCheckList')));
+      toast.success(t('ChecklistCreated'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -128,10 +130,10 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
         card,
         { labels: newValue }
       ));
-      toast.success('Card updated!');
+      toast.success(t('CardUpdated'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -158,16 +160,16 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
             <TextField
               defaultValue={card.name}
               fullWidth
-              label="Task name"
+              label={t('TaskName')}
               onChange={(event): Promise<void> => handleDetailsUpdate({ name: event.target.value })}
             />
             <TextField
               defaultValue={card.description}
               fullWidth
-              label="Description"
+              label={t('Description')}
               multiline
               onChange={(event): Promise<void> => handleDetailsUpdate({ description: event.target.value })}
-              placeholder="Leave a message"
+              placeholder={t('LeaveAMessage')}
               rows={6}
               sx={{ mt: 3 }}
             />
@@ -177,7 +179,7 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
                   sx={{ my: 3 }}
                   variant="h6"
                 >
-                  Comment
+                  {t('Comment')}
                 </Typography>
                 <div>
                 {card.comments.map((comment, index) => (
@@ -194,7 +196,7 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
                   sx={{ my: 3 }}
                   variant="h6"
                 >
-                  Checklist
+                  {t('Checklist')}
                 </Typography>
                 <div>
                   {card.checklists.map((checklist) => (
@@ -227,11 +229,11 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
               color="textSecondary"
               variant="overline"
             >
-              Status
+              {t('Status')}
             </Typography>
             <TextField
               fullWidth
-              placeholder="Status"
+              placeholder={t('Status')}
               onChange={handleColumnChange}
               select
               SelectProps={{
@@ -254,27 +256,27 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
                 color="textSecondary"
                 variant="overline"
               >
-                Add
+                {t('Add')}
               </Typography>
               <Box sx={{ mt: 2 }}>
                 <KanbanCardAction
                   icon={<CheckIcon fontSize="small" />}
                   onClick={handleAddChecklist}
                 >
-                  Checklist
+                  {t('Checklist')}
                 </KanbanCardAction>
-                <KanbanCardAction
+                {/* <KanbanCardAction
                   disabled
                   icon={<UsersIcon fontSize="small" />}
                 >
-                  Members
+                  {t('Members')}
                 </KanbanCardAction>
                 <KanbanCardAction
                   disabled
                   icon={<DocumentTextIcon fontSize="small" />}
                 >
-                  Attachments
-                </KanbanCardAction>
+                  {t('Attachments')}
+                </KanbanCardAction> */}
               </Box>
             </Box>
             <Box sx={{ mt: 3 }}>
@@ -287,32 +289,32 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
                 }}
                 variant="overline"
               >
-                Actions
+                {t('Actions')}
               </Typography>
               {
-                card.isSubscribed
-                  ? (
-                    <KanbanCardAction
-                      icon={<EyeOffIcon fontSize="small" />}
-                      onClick={handleUnsubscribe}
-                    >
-                      Unwatch
-                    </KanbanCardAction>
-                  )
-                  : (
-                    <KanbanCardAction
-                      icon={<EyeIcon fontSize="small" />}
-                      onClick={handleSubscribe}
-                    >
-                      Watch
-                    </KanbanCardAction>
-                  )
+                // card.isSubscribed
+                //   ? (
+                //     <KanbanCardAction
+                //       icon={<EyeOffIcon fontSize="small" />}
+                //       onClick={handleUnsubscribe}
+                //     >
+                //       {t('Unwatch')}
+                //     </KanbanCardAction>
+                //   )
+                //   : (
+                //     <KanbanCardAction
+                //       icon={<EyeIcon fontSize="small" />}
+                //       onClick={handleSubscribe}
+                //     >
+                //       {t('Watch')}
+                //     </KanbanCardAction>
+                //   )
               }
               <KanbanCardAction
                 icon={<ArchiveIcon fontSize="small" />}
                 onClick={handleDelete}
               >
-                Archive
+                {t('Archive')}
               </KanbanCardAction>
             </Box>
             <Box sx={{ mt: 2 }}>
@@ -322,7 +324,7 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
                 sx={{ mb: 2 }}
                 variant="overline"
               >
-                Labels
+                {t('Labels')}
               </Typography>
               <Box
                 sx={{

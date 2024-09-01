@@ -3,13 +3,15 @@ import type { ChangeEvent, FC } from 'react';
 import toast from 'react-hot-toast';
 import { Box, Button, Link, OutlinedInput, Typography } from '@mui/material';
 import { Plus as PlusIcon } from 'components/icons/plus';
-import { createColumn, getBoard } from 'slices/kanban';
+import { createColumn } from 'slices/kanban';
 import { useDispatch } from 'store';
+import useTransition from 'next-translate/useTranslation';
 
 export const KanbanColumnAdd: FC = (props) => {
   const dispatch = useDispatch();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
+  const {t} = useTransition("kanban");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setName(event.target.value);
@@ -26,13 +28,13 @@ export const KanbanColumnAdd: FC = (props) => {
 
   const handleAddConfirm = async (): Promise<void> => {
     try {
-      await dispatch(createColumn(name || 'Untitled column'));
+      await dispatch(createColumn(name || t('NewColumn')));
       setIsExpanded(false);
       setName('');
-      toast.success('Column created!');
+      toast.success(t('ColumnCreated'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -60,7 +62,7 @@ export const KanbanColumnAdd: FC = (props) => {
                   <OutlinedInput
                     autoFocus
                     fullWidth
-                    placeholder="My new board"
+                    placeholder={t('MyNewBoard')}
                     name="cardName"
                     onChange={handleChange}
                     value={name}
@@ -88,14 +90,14 @@ export const KanbanColumnAdd: FC = (props) => {
                       startIcon={(<PlusIcon fontSize="small" />)}
                       variant="contained"
                     >
-                      Add Column
+                      {t('AddColumn')}
                     </Button>
                     <Button
                       onClick={handleAddCancel}
                       size="small"
                       sx={{ ml: 2 }}
                     >
-                      Cancel
+                      {t('Cancel')}
                     </Button>
                   </Box>
                 </>
@@ -116,7 +118,7 @@ export const KanbanColumnAdd: FC = (props) => {
                     color="textSecondary"
                     variant="subtitle1"
                   >
-                    Add Column
+                    {t('AddColumn')}
                   </Typography>
                 </Link>
               )

@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
 import { Box, Button, OutlinedInput } from '@mui/material';
 import { Plus as PlusIcon } from 'components/icons/plus';
-import { addCheckItem, getBoard } from 'slices/kanban';
+import { addCheckItem } from 'slices/kanban';
 import { useDispatch } from 'store';
+import useTransition from 'next-translate/useTranslation';
 
 interface KanbanCheckItemAddProps {
   cardId: string;
@@ -17,6 +18,7 @@ export const KanbanCheckItemAdd: FC<KanbanCheckItemAddProps> = (props) => {
   const dispatch = useDispatch();
   const [name, setName] = useState<string>('');
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const {t} = useTransition("kanban");
 
   const handleAdd = (): void => {
     setIsExpanded(true);
@@ -39,10 +41,10 @@ export const KanbanCheckItemAdd: FC<KanbanCheckItemAddProps> = (props) => {
       await dispatch(addCheckItem(checklistId, name));
       setIsExpanded(false);
       setName('');
-      toast.success('Check item added!');
+      toast.success(t('CheckItemAdded'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -63,7 +65,7 @@ export const KanbanCheckItemAdd: FC<KanbanCheckItemAddProps> = (props) => {
             >
               <OutlinedInput
                 onChange={handleChange}
-                placeholder="Add an item"
+                placeholder={t('AddAnItem')}
                 value={name}
                 sx={{
                   flexGrow: 1,
@@ -79,14 +81,14 @@ export const KanbanCheckItemAdd: FC<KanbanCheckItemAddProps> = (props) => {
                 sx={{ ml: 2 }}
                 variant="contained"
               >
-                Add
+                {t('Add')}
               </Button>
               <Button
                 onClick={handleCancel}
                 size="small"
                 sx={{ ml: 2 }}
               >
-                Cancel
+                {t('Cancel')}
               </Button>
             </Box>
           )
@@ -96,7 +98,7 @@ export const KanbanCheckItemAdd: FC<KanbanCheckItemAddProps> = (props) => {
               size="small"
               startIcon={(<PlusIcon fontSize="small" />)}
             >
-              Add Item
+              {t('AddItem')}
             </Button>
           )
       }

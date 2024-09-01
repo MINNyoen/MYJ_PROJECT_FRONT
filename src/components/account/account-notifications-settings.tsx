@@ -1,8 +1,8 @@
-import type { FC } from 'react';
 import { Box, Card, CardContent, Divider, Grid, Switch, Typography } from '@mui/material';
 import useTransition from 'next-translate/useTranslation';
 
-export const AccountNotificationsSettings: FC = () => {
+
+export const AccountNotificationsSettings = () => {
   const {t} = useTransition("mypage");
   return (
     <Card>

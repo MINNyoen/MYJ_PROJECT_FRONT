@@ -1,4 +1,9 @@
 {
+    "MyPage" : "내 정보",
+    "MinYeonJin" : "민연진",
+    "General" : "일반",
+    "Notifications" : "알림",
+    "Security" : "보안",
     "BasicDetails" : "기본 정보",
     "ProfileChange" : "프로필 사진 변경",
     "EmailAddress" : "이메일 주소",
@@ -24,12 +29,20 @@
     "ChangePassword" : "비밀번호 변경",
     "Edit" : "수정",
     "Password" : "비밀번호",
+    "NewPassword" : "새 비밀번호",
+    "NewPasswordCheck" : "새 비밀번호 확인",
     "LoginHistory" : "로그인 기록",
     "LoginHistoryInfo" : "최근 로그인 기록입니다.",
     "LoginType" : "로그인 방식",
     "IPAddress" : "IP 주소",
     "Client" : "클라이언트",
-
-    "Confirm" : "확인"
+    "Confirm" : "확인",
+    "SuccessUpdate" : "성공적으로 변경되었습니다!",
+    "SuccessFailed" : "변경에 실패하였습니다!",
+    "VerifyYourIdentity" : "본인 확인",
+    "VerifyPassword" : "비밀번호가 인증되었습니다!",
+    "NotVerifyPassword" : "비밀번호가 인증되지않았습니다!",
+    "NotMatchesPassword" : "입력한 비밀번호가 새 비밀번호와 일치 하지 않습니다!",
+    "NewPasswordPatternCheck" : "비밀번호는 최소 8자 이상, 문자 1개, 숫자 1개, 특수문자 1개 이상을 포함해야 합니다."
 
 }

@@ -21,7 +21,7 @@
     "valPasswordChk-c": "Passwords must match",
     "valBirth-r": "Birth is required",
     "valPolicy-r" : "This field must be checked",
-    "IHaveRead" : "I have read the",
+    "IHaveRead" : "have been read by me.",
     "TermsAndConditions" : "Terms and Conditions",
     "PleaseCE" : "Please certify your email",
     "emailCodeSend" : "A verification code has been sent to you by e-mail",

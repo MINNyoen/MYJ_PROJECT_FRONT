@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
@@ -15,12 +15,13 @@ import {
   OutlinedInput
 } from '@mui/material';
 import { DotsHorizontal as DotsHorizontalIcon } from 'components/icons/dots-horizontal';
-import { deleteColumn, updateColumn, getBoard } from 'slices/kanban';
+import { deleteColumn, updateColumn } from 'slices/kanban';
 import { useDispatch, useSelector } from 'store';
 import type { RootState } from 'store';
 import type { Column } from 'types/kanban';
 import { KanbanCard } from './kanban-card';
 import { KanbanCardAdd } from './kanban-card-add';
+import useTransition from 'next-translate/useTranslation';
 
 interface KanbanColumnProps {
   columnId: string;
@@ -40,6 +41,7 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [name, setName] = useState<string>(column.name);
   const [isRenaming, setIsRenaming] = useState<boolean>(false);
+  const {t} = useTransition("kanban");
 
   const handleMenuOpen = (): void => {
     setOpenMenu(true);
@@ -59,14 +61,13 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
 
   const handleRename = async (): Promise<void> => {
     try {
-      // If name is empty use the initial column name
+
       if (!name) {
         setName(column.name);
         setIsRenaming(false);
         return;
       }
 
-      // If name is equal to column name, it means there are no changes
       if (name === column.name) {
         setIsRenaming(false);
         return;
@@ -76,10 +77,10 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
 
       await dispatch(updateColumn(column, update));
       setIsRenaming(false);
-      toast.success('Column updated!');
+      toast.success(t('ColumnUpdated'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -87,10 +88,10 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
     try {
       setOpenMenu(false);
       await dispatch(deleteColumn(column.id, column.cardIds));
-      toast.success('Column deleted!');
+      toast.success(t('ColumnDeleted'));
     } catch (err) {
       console.error(err);
-      toast.error('Something went wrong!');
+      toast.error(t('ErrMsg'));
     }
   };
 
@@ -254,7 +255,7 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
           open={openMenu}
         >
           <MenuItem onClick={handleDelete}>
-            Delete
+            {t('Delete')}
           </MenuItem>
         </Menu>
       </Box>

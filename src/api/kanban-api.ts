@@ -486,9 +486,11 @@ class KanbanApi {
         const checkItem: CheckItem | any = {
           id: checkItemId,
           checklistId,
-          name: update.name,
           state: update.state
         };
+        if(update.name) {
+          checkItem["name"] = update.name;
+        }
 
         await commonApi("put","/kanban/updateCheckItem", undefined, transFormData(checkItem),{'Content-Type': `multipart/form-data;`}).then((response)=>{
           dataSetting(response);

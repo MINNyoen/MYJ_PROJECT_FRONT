@@ -34,8 +34,6 @@ import { calendarApi } from 'api/calendar-api';
 import toast from 'react-hot-toast';
 import { CheckModal } from 'components/checkModal';
 import useTransition from 'next-translate/useTranslation';
-import { loadingColor } from 'theme/base-theme-options';
-import { Bars } from 'react-loader-spinner';
 
 const FullCalendarWrapper = styled('div')(
   ({ theme }) => ({
@@ -65,8 +63,8 @@ const FullCalendarWrapper = styled('div')(
       color: 'blue'
     },
     '& .fc .fc-daygrid-day-frame': {
-      height: '150px',
-      minHeight: '150px'
+      height: '100%',
+      minHeight: '100%'
     },
     '& .fc .fc-col-header-cell-cushion': {
       paddingBottom: '4px',
@@ -106,7 +104,6 @@ const Calendar: NextPage = () => {
   const [sendData, setSendData] = useState<any>();
   const [checkModal, setCheckModal] = useState<boolean>(false);
   const [checkedList, setCheckedList] = useState<number[]>([1,2,3,4]);
-  const [loading, setLoading] = useState(true);
 
   const unModifiedEvent = (event : EventApi) => {
     if(event.extendedProps.schdlCd >= 5) {
@@ -126,7 +123,6 @@ const Calendar: NextPage = () => {
     () => {
       dispatch(getEvents(moment(date).format('YYYY-MM-DD'),checkedList));
       dispatch(getGoals(moment(date).format('YYYY-MM')));
-      setTimeout(()=>{setLoading(false);},1000);
     },[date,checkedList]
   );
 
@@ -390,36 +386,14 @@ const Calendar: NextPage = () => {
         </title>
       </Head>
       <Box
-        component="main"
-        sx={loading ? {
-          backgroundColor: 'background.paper',
-          justifyContent: 'center',
-          display: 'flex',
-          minHeight: '700px',
-          flexGrow: 1,
-          p: '8%',
-          py: 3.5
-        } : {
+        sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
           p: '8%',
           py: 3.5
         }}
       >
-      {loading ? 
-          <Box sx={{
-            margin: 'auto'}}>
-          <Bars
-            height="80"
-            width="80"
-            color={loadingColor}
-            ariaLabel="bars-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-            /> 
-            </Box>
-            :<>
+      {<>
         <Box>
           <Grid display={'flex'} width="100%" justifyContent={'space-between'} mb={4} px={'10%'} pt={1} pb={1} sx={{backgroundColor: 'background.calendar.categoryBar', borderRadius: '0.25rem', border: '1px solid #dee2e6' }}>
             {eventsCd.map((item, index)=>(
