@@ -13,7 +13,6 @@ import path from 'components/path.json';
 class AuthApi {
   
   async login(login?: Login): Promise<{accessToken : string, user: User}> {
-    await wait(500);
     return new Promise( async (resolve, reject) => {
       try {
         await commonApi("post", "/login", login ?{
@@ -26,8 +25,8 @@ class AuthApi {
               userSid: response.user.userSid,
               userNm: response.user.userNm,
               birthDt: response.user.birthDt,
-              loginId: response.user.id,
-              pwd: response.password,
+              loginId: response.user.loginId,
+              pwd: response.pwd,
               avatar: process.env.NEXT_PUBLIC_BACKEND_URL + response.user.avatar
             }
             resolve({accessToken : response.accessToken, user : user});
@@ -45,8 +44,6 @@ class AuthApi {
   }
 
   async register(user: User): Promise<string> {
-    await wait(1000);
-
     return new Promise( async (resolve, reject) => {
       try {
         await commonApi("post", "/user/register",undefined,transFormData({
@@ -85,11 +82,9 @@ class AuthApi {
 
 
   async me(): Promise<{user: User}> {
-    await wait(500);
     return new Promise( async (resolve, reject) => {
       try {
         await commonApi("get", "/user/getMyInfo").then((response: any)=> {
-          console.log(response);
           if(response) {
             const user : User = {
               userSid: response.userSid,
@@ -110,21 +105,21 @@ class AuthApi {
     });
   }
 
-  async modifyUserAvatar(img : File): Promise<{user: User}> {
-    await wait(500);
+  async modifyUserAvatar(img : File, user : User): Promise<{updateUser: User}> {
     return new Promise( async (resolve, reject) => {
       try {
-        await commonApi("post", "/user/modifyUserAvatar", undefined, transFormData({img : img}),{'Content-Type': `multipart/form-data;`}).then((response: any)=> {
+        await commonApi("post", "/user/modifyUserAvatar", undefined, transFormData({img : img}),{'Content-Type': `multipart/form-data;`}).then(async (response: any)=> {
           if(response) {
-            const user : User = {
-              userSid: response.userSid,
-              userNm: response.userNm,
-              birthDt: response.birthDt,
-              loginId: response.id,
-              pwd: response.password,
-              avatar: process.env.NEXT_PUBLIC_BACKEND_URL + response.avatar
-            } 
-            resolve({user : user});
+            const updateUser : User = {
+              userSid: user.userSid,
+              userNm: user.userNm,
+              birthDt: user.birthDt,
+              loginId: user.loginId,
+              pwd: user.pwd,
+              avatar: process.env.NEXT_PUBLIC_BACKEND_URL + response
+            }
+            await wait(2000);
+            resolve({updateUser : updateUser});
           }
         })
       } catch (err) {
@@ -135,7 +130,6 @@ class AuthApi {
   }
 
   async checkLogin(loginId: string, passowrd : string): Promise<Boolean> {
-    await wait(500);
     return new Promise( async (resolve, reject) => {
       try {
         await commonApi("get", "/user/checkLogin", {
@@ -153,13 +147,59 @@ class AuthApi {
   }
 
   async changePwd(loginId: string, newPassowrd : string): Promise<Boolean> {
-    await wait(500);
     return new Promise( async (resolve, reject) => {
       try {
         await commonApi("put", "/user/changePwd", {
             loginId : loginId,
             newPwd : newPassowrd
         }).then((response: any)=> {
+          if(response === 1) {
+            resolve(true);
+          }
+          else {
+            resolve(false);
+          }
+        })
+        
+      } catch (err) {
+        console.error('[Auth Api]: ', err);
+        reject(new Error('Internal server error'));
+      }
+    });
+  }
+
+  async changeMyName(user: User, newName : string): Promise<{updateUser: User}> {
+    return new Promise( async (resolve, reject) => {
+      try {
+        await commonApi("put", "/user/changeMyName", {
+            loginId : user.loginId,
+            newName : newName
+        }).then((response: any)=> {
+          if(response === 1) {
+              const updateUser : User = {
+                userSid: user.userSid,
+                userNm: newName,
+                birthDt: user.birthDt,
+                loginId: user.loginId,
+                pwd: user.pwd,
+                avatar: user.avatar
+              }
+              resolve({updateUser : updateUser});
+          }
+        })
+        
+      } catch (err) {
+        console.error('[Auth Api]: ', err);
+        reject(new Error('Internal server error'));
+      }
+    });
+  }
+
+  async deleteAccount(): Promise<Boolean> {
+
+    return new Promise( async (resolve, reject) => {
+      try {
+        await commonApi("delete", "/user/deleteUser").then((response: any)=> {
           if(response === 1) {
             resolve(true);
           }

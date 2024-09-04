@@ -15,7 +15,8 @@ export interface AuthContextValue extends State {
   login: (login: Login) => Promise<void>;
   logout: () => Promise<void>;
   register: (user: User) => Promise<void>;
-  modifyUserAvatar: (img: File) => Promise<void>;
+  modifyUserAvatar: (img: File, user: User) => Promise<void>;
+  changeMyName: (user: User, newName: string) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -99,6 +100,7 @@ export const AuthContext = createContext<AuthContextValue>({
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
   modifyUserAvatar: () => Promise.resolve(),
+  changeMyName: () => Promise.resolve(),
 });
 
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
@@ -162,17 +164,26 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     await authApi.register(user);
   };
 
-  const modifyUserAvatar = async (img: File): Promise<void> => {
-    const {user} = await authApi.modifyUserAvatar(img);
-    if(user) {
-      dispatch({
-        type: ActionType.INITIALIZE,
-        payload: {
-          isAuthenticated: true,
-          user: user
-        }
-      });
-    }
+  const modifyUserAvatar = async (img: File, user: User): Promise<void> => {
+    const { updateUser } = await authApi.modifyUserAvatar(img, user);
+    dispatch({
+      type: ActionType.INITIALIZE,
+      payload: {
+        isAuthenticated: true,
+        user: updateUser
+      }
+    });
+  };
+
+  const changeMyName = async (user: User, newName: string): Promise<void> => {
+    const { updateUser } = await authApi.changeMyName(user, newName);
+    dispatch({
+      type: ActionType.INITIALIZE,
+      payload: {
+        isAuthenticated: true,
+        user: updateUser
+      }
+    });
   };
 
   return (
@@ -182,7 +193,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         login,
         logout,
         register,
-        modifyUserAvatar
+        modifyUserAvatar,
+        changeMyName
       }}
     >
       {children}

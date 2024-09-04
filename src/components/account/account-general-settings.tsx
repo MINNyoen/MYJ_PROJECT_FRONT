@@ -12,7 +12,7 @@ import ImageCropper from 'components/common/image-cropper';
 import { UserCircle as UserCircleIcon } from 'components/icons/user-circle';
 import { useAuth } from 'hooks/use-auth';
 import useTransition from 'next-translate/useTranslation';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { dataURItoFile } from 'utils/file-util';
 import useImageCompress from 'utils/use-image-compress';
@@ -23,11 +23,12 @@ interface PropsType {
 
 export const AccountGeneralSettings = ({handleCheckMeAlert} : PropsType) => {
 
-  const { user, modifyUserAvatar } = useAuth();
+  const { user, modifyUserAvatar, changeMyName } = useAuth();
   const {t} = useTransition("mypage");
 
   const [uploadImage, setUploadImage] = useState<string | null>(null);
   const { isLoading: isCompressLoading, compressImage } = useImageCompress();
+  const [name, setName] = useState<string>(user?.userNm ? user?.userNm : '');
 
   const handleUploadImage = (image: string) => setUploadImage(image);
 
@@ -42,12 +43,26 @@ export const AccountGeneralSettings = ({handleCheckMeAlert} : PropsType) => {
 
     // 이미지 서버 저장 로직
     if (!compressedImage) return;
-    await modifyUserAvatar(compressedImage).then(()=>{
+    user && await modifyUserAvatar(compressedImage, user).then(()=>{
       toast.success(t('SuccessUpdate'));
     }).catch (()=>{
-      toast.error(t('SuccessFailed'), {style: {textAlign: 'center', maxWidth: '100%'}});
+      toast.error(t('SuccessFailed'));
     });
+
+    setUploadImage(null);
   };
+
+  const changeName = async (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  }
+
+  const changeNameClick = async () => {
+    user && await changeMyName(user,name).then(()=>{
+      toast.success(t('SuccessUpdate'));
+    }).catch (()=>{
+      toast.error(t('SuccessFailed'));
+    });;
+  }
 
   useEffect(() => {
     if (uploadImage) {
@@ -84,17 +99,17 @@ export const AccountGeneralSettings = ({handleCheckMeAlert} : PropsType) => {
                   alignItems: 'center',
                   display: 'flex'
                 }}
-              >
+              > 
                 <Avatar
-                  src={user?.avatar}
-                  sx={{
-                    height: 64,
-                    mr: 2,
-                    width: 64
-                  }}
-                >
-                  <UserCircleIcon fontSize="small" />
-                </Avatar>
+                src={user?.avatar}
+                sx={{
+                  height: 64,
+                  mr: 2,
+                  width: 64
+                }}
+              >
+                <UserCircleIcon fontSize="small" />
+              </Avatar>
                 <ImageCropper aspectRatio={1} onCrop={handleUploadImage}>
                   <Button>
                   {t("ProfileChange")}
@@ -131,15 +146,16 @@ export const AccountGeneralSettings = ({handleCheckMeAlert} : PropsType) => {
                 }}
               >
                 <TextField
-                  defaultValue={user?.userNm}
+                  defaultValue={name}
                   label={t("FullName")}
+                  onChange={changeName}
                   size="small"
                   sx={{
                     flexGrow: 1,
                     mr: 3
                   }}
                 />
-                <Button>
+                <Button onClick={changeNameClick}>
                 {t("Save")}
                 </Button>
               </Box>

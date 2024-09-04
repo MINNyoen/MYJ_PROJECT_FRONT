@@ -15,6 +15,7 @@ interface checkeModalProps {
         cancel?: string,
         ok?: string,
     }
+    cancelButton?: Boolean
     maxWidth?: Breakpoint
     icon?: JSX.Element
   }
@@ -23,7 +24,7 @@ export const CheckModal: FC<checkeModalProps> = (props) => {
 
     const {t} = useTranslation('common');
     
-    const {defaultCallback, cancelCallback, callback, onClose, open, maxWidth="xs", icon, data: {title, content, cancel=t("Cancel"), ok=t("Ok")}} = props;
+    const {defaultCallback, cancelCallback, callback, onClose, open, maxWidth="xs", icon, data: {title, content, cancel=t("Cancel"), ok=t("Ok")}, cancelButton=true} = props;
 
     return (
     <Dialog
@@ -66,7 +67,7 @@ export const CheckModal: FC<checkeModalProps> = (props) => {
                 py: 1.5
             }}
             >
-            <Button
+            {cancelButton && <Button
                 sx={{ mr: 2 }}
                 variant="outlined"
                 onClick={()=>{
@@ -77,8 +78,8 @@ export const CheckModal: FC<checkeModalProps> = (props) => {
             >
                 {cancel}
             </Button>
+            }
             <Button
-
                 variant="contained"
                 onClick={async ()=>{
                     await callback().then(()=>{

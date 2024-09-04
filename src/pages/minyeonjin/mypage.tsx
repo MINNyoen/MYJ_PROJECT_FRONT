@@ -12,6 +12,9 @@ import useTransition from 'next-translate/useTranslation';
 import { authApi } from 'api/auth-api';
 import { useAuth } from 'hooks/use-auth';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import { CheckModal } from 'components/checkModal';
+import PersonIcon from '@mui/icons-material/Person';
 
 const tabs = [
   { label: 'General', value: 'general' },
@@ -20,9 +23,11 @@ const tabs = [
 ];
 
 const Mypage: NextPage = () => {
-  const {user} = useAuth();
+  const {user, logout} = useAuth();
+  const router = useRouter();
   const [currentTab, setCurrentTab] = useState<string>('general');
   const [checkMeAlert, setCheckMeAlert] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [checkMeType, setCheckMeType] = useState<'DeleteAccount' | 'ChangePassword'>();
   const [verifyPassword, setVerifyPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
@@ -35,6 +40,13 @@ const Mypage: NextPage = () => {
   const handleVerifyPassword = (event: ChangeEvent<HTMLInputElement>): void => {
     setVerifyPassword(event.target.value);
   };
+
+  const handleLogout = async () : Promise<void> => {
+    setDeleteModal(false)
+    logout();
+    router.push('/authentication/login').catch(console.error);
+  };
+
 
   const handleCheckMeAlert = (type : 'DeleteAccount' | 'ChangePassword'): void => {
     setVerifyPassword('');
@@ -52,35 +64,40 @@ const Mypage: NextPage = () => {
   const verifyIdentity = async (): Promise<void> => {
     setCheckMeAlert(!checkMeAlert);
     //본인 확인
-
-
     if(user) {
-      await authApi.checkLogin(user?.loginId, verifyPassword).then((response)=> {
-        if(!response) {
-          return;
+      await authApi.checkLogin(user?.loginId, verifyPassword).then( async (response)=> {
+        if(!!response) {
+          //계정 탈퇴 로직
+          if(checkMeType === 'DeleteAccount') {
+            await authApi.deleteAccount().then((response)=> {
+              if(response) {
+                toast.success(t('SuccessUpdate'));
+                setDeleteModal(true);
+              }
+              else {
+                toast.error(t('SuccessFailed'));
+              }
+            })
+          }
+          //비밀번호 변경 로직
+          else if(checkMeType === 'ChangePassword') {
+              await authApi.changePwd(user?.loginId, newPassword).then((response)=> {
+                if(response) {
+                  toast.success(t('SuccessUpdate'));
+                  window.location.reload();
+                }
+                else {
+                  toast.error(t('SuccessFailed'));
+                }
+              })
+          }  
         }
-      })
-
-
-      //계정 탈퇴 로직
-      if(checkMeType === 'DeleteAccount') {
-        if(user) {
+        else {
+          toast.error(t('NotVerifyPassword'));
         }
-      }
-      //비밀번호 변경 로직
-      else if(checkMeType === 'ChangePassword') {
-        if(user) {
-          await authApi.changePwd(user?.loginId, newPassword).then((response)=> {
-            if(response) {
-              toast.success(t('SuccessUpdate'));
-              window.location.reload();
-            }
-            else {
-              toast.error(t('SuccessFailed'));
-            }
-          })
-        }
-      }      
+      }).catch((error)=>{
+        return;
+      })    
     }
   };
 
@@ -168,6 +185,17 @@ const Mypage: NextPage = () => {
           </Box>
     </Dialog>
     }
+    {
+      <CheckModal
+        callback={handleLogout}
+        icon={<PersonIcon fontSize='large' color={"secondary"}/>}
+        open={deleteModal}
+        data={{
+          title:  t("DeleteAccount"),
+          content: t("DeleteAccountComplete")
+        }}
+        cancelButton={false}
+      />}
     </>
   );
 };

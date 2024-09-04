@@ -13,7 +13,6 @@ export const commonApi  = async (method: 'get' | 'post' | 'put' | 'delete', url:
       headers: {Authorization: globalThis.localStorage.getItem("accessToken"), 'Access-Control-Allow-Origin': '*', ...headers},
       withCredentials: true,
     }).then(function (response: any) {
-      console.log(response);
       //성공
       if(response.data.status === process.env.NEXT_PUBLIC_HTTP_STATUS_OK){
         returnData = response.data.data;

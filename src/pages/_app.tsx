@@ -40,9 +40,6 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>
-          Basic Template - MYJ
-        </title>
         <meta name="viewport" content="initial-scale=1, width=device-width"/>
         <meta name="description" content="" />
       </Head>

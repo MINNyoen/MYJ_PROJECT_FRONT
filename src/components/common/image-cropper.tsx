@@ -32,7 +32,7 @@ const ImageCropper = ({ children, aspectRatio, onCrop }: PropsType) => {
 
     const files = e.target.files;
 
-    if (!files) return;
+    if (files?.length === 0 || !files) return;
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -40,6 +40,8 @@ const ImageCropper = ({ children, aspectRatio, onCrop }: PropsType) => {
     };
     reader.readAsDataURL(files[0]);
     setopen(true);
+
+    if (inputRef.current) inputRef.current.value = '';
   };
 
   const getCropData = () => {

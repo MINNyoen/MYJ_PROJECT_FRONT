@@ -11,6 +11,7 @@
     "Save" : "저장",
     "DeleteAccount" : "계정 삭제",
     "DeleteAccountInfo" : "계정을 삭제하면 관련 모든 데이터가 삭제됩니다. 이는 되돌릴 수 없습니다.",
+    "DeleteAccountComplete" : "계정 삭제가 완료 되었습니다.",
     "Community" : "커뮤니티",
     "ChattingUpdates" : "대화 알림",
     "ChattingUpdatesInfo" : "대화 변경에 대한 알림 여부.",
@@ -41,7 +42,7 @@
     "SuccessFailed" : "변경에 실패하였습니다!",
     "VerifyYourIdentity" : "본인 확인",
     "VerifyPassword" : "비밀번호가 인증되었습니다!",
-    "NotVerifyPassword" : "비밀번호가 인증되지않았습니다!",
+    "NotVerifyPassword" : "비밀번호가 올바르지 않습니다!",
     "NotMatchesPassword" : "입력한 비밀번호가 새 비밀번호와 일치 하지 않습니다!",
     "NewPasswordPatternCheck" : "비밀번호는 최소 8자 이상, 문자 1개, 숫자 1개, 특수문자 1개 이상을 포함해야 합니다."
 
