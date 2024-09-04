@@ -43,11 +43,14 @@ export const AccountGeneralSettings = ({handleCheckMeAlert} : PropsType) => {
 
     // 이미지 서버 저장 로직
     if (!compressedImage) return;
-    user && await modifyUserAvatar(compressedImage, user).then(()=>{
-      toast.success(t('SuccessUpdate'));
-    }).catch (()=>{
-      toast.error(t('SuccessFailed'));
-    });
+    user && toast.promise(
+      modifyUserAvatar(compressedImage,user),
+       {
+         loading: t("Registering"),
+         success: t('SuccessUpdate'),
+         error: t('SuccessFailed'),
+       }
+     );
 
     setUploadImage(null);
   };

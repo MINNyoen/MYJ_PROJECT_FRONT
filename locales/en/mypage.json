@@ -38,6 +38,7 @@
     "IPAddress" : "IP Address",
     "Client" : "Client",
     "Confirm" : "Confirm",
+    "Registering" : "Registering...",
     "SuccessUpdate" : "Update Success!",
     "SuccessFailed" : "Update Failed!",
     "VerifyYourIdentity" : "Verify your identity",

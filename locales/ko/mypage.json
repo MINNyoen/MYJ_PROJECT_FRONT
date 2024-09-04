@@ -38,6 +38,7 @@
     "IPAddress" : "IP 주소",
     "Client" : "클라이언트",
     "Confirm" : "확인",
+    "Registering" : "등록 중...",
     "SuccessUpdate" : "성공적으로 변경되었습니다!",
     "SuccessFailed" : "변경에 실패하였습니다!",
     "VerifyYourIdentity" : "본인 확인",
