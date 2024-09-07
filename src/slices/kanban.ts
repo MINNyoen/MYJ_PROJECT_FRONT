@@ -14,10 +14,6 @@ interface KanbanState {
     byId: Record<string, Card>;
     allIds: string[];
   };
-  members: {
-    byId: Record<string, Member>;
-    allIds: string[];
-  };
 }
 
 const initialState: KanbanState = {
@@ -26,10 +22,6 @@ const initialState: KanbanState = {
     allIds: []
   },
   cards: {
-    byId: {},
-    allIds: []
-  },
-  members: {
     byId: {},
     allIds: []
   }
@@ -49,8 +41,6 @@ const slice = createSlice({
       state.columns.allIds = Object.keys(state.columns.byId);
       state.cards.byId = objFromArray(board.cards);
       state.cards.allIds = Object.keys(state.cards.byId);
-      state.members.byId = objFromArray(board.members);
-      state.members.allIds = Object.keys(state.members.byId);
     },
     moveCard(
       state: KanbanState,
@@ -150,6 +140,13 @@ export const addComment = (
   message: string
 ): AppThunk => async (dispatch): Promise<void> => {
   const data = await kanbanApi.addComment({ card, message });
+  dispatch(slice.actions.getBoard(data));
+};
+
+export const deleteComment = (
+  commentId: string
+): AppThunk => async (dispatch): Promise<void> => {
+  const data = await kanbanApi.deleteComment(commentId);
   dispatch(slice.actions.getBoard(data));
 };
 

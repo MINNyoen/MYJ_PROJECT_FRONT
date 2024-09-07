@@ -1,19 +1,17 @@
-import type { Board, Card, CheckItem, Checklist, Column, Comment } from 'types/kanban';
+import type { Board, Card, CheckItem, Checklist, Column } from 'types/kanban';
 import { deepCopy } from 'utils/deep-copy';
 import { commonApi } from './common-api';
 import { transFormData } from 'utils/transFromData';
 
 let board : Board = {
   cards: [],
-  columns: [],
-  members: []
+  columns: []
 };
 
 const dataSetting = (response : any) => {
   board = {
     cards: [],
-    columns: [],
-    members: []
+    columns: []
   };
   response.cards.map((item: any)=>{
     if(item != undefined) {
@@ -61,20 +59,8 @@ const dataSetting = (response : any) => {
       name: item.name
     })
   });
-  response.members.map((item: any)=>{
-    board.members.push({
-      id: item.userSid.toString(),
-      avatar: null,
-      name: item.userName
-    })
-  });
   return board;
 }
-
-// You'll see here that we start with a deep clone of the board.
-// The reason for that is to create a db session wannabe strategy.
-// If something fails, we do not affect the original data until everything worked as expected.
-const now = new Date();
 
 class KanbanApi {
 
@@ -114,10 +100,7 @@ class KanbanApi {
       try {
         let columnCopy = deepCopy(column);
 
-        if(columnCopy != undefined) {
-        // Update the column
         Object.assign(columnCopy, update);
-        }
 
         await commonApi("put","/kanban/updateColumn", undefined, transFormData(columnCopy),{'Content-Type': `multipart/form-data;`}).then((response)=>{
           dataSetting(response);
@@ -133,7 +116,7 @@ class KanbanApi {
   deleteColumn(columnId: string, cardIds: string[]): Promise<Board> {
     return new Promise(async (resolve, reject) => {
       try {
-        await commonApi("get","/kanban/deleteColumn",{
+        await commonApi("delete","/kanban/deleteColumn",{
           columnId: columnId,
           cardIds: cardIds.toString()
         }).then((response)=>{
@@ -209,19 +192,21 @@ class KanbanApi {
     return new Promise(async (resolve, reject) => {
       try {
 
-        Object.assign(card, update);
+        let cardCopy = deepCopy(card);
+
+        Object.assign(cardCopy, update);
 
         // Create the new card
         const cardData: Card | any = {
-          id: card.id,
-          attachments: card.attachments.toString(),
-          columnId: card.columnId,
-          cover: card.cover,
-          description: card.description,
-          isSubscribed: card.isSubscribed,
-          labels: card.labels.toString(),
-          memberIds: card.memberIds.toString(),
-          name: card.name
+          id: cardCopy.id,
+          attachments: cardCopy.attachments.toString(),
+          columnId: cardCopy.columnId,
+          cover: cardCopy.cover,
+          description: cardCopy.description,
+          isSubscribed: cardCopy.isSubscribed,
+          labels: cardCopy.labels.toString(),
+          memberIds: cardCopy.memberIds.toString(),
+          name: cardCopy.name
         };
 
         await commonApi("put","/kanban/updateCard", undefined, transFormData(cardData),{'Content-Type': `multipart/form-data;`}).then((response)=>{
@@ -323,7 +308,7 @@ class KanbanApi {
         });
 
         // Remove the card from board
-        await commonApi("get","/kanban/deleteCard",{
+        await commonApi("delete","/kanban/deleteCard",{
           cardId: clonedCard.id,
           checkListIds: checkListIds.toString()
         });
@@ -363,6 +348,22 @@ class KanbanApi {
         };
 
         await commonApi("post","/kanban/addComment", undefined, transFormData(comment),{'Content-Type': `multipart/form-data;`}).then((response)=>{
+          dataSetting(response);
+        })
+
+      } catch (err) {
+        console.error('[Kanban Api]: ', err);
+        reject(new Error('Internal server error'));
+      }
+      resolve(deepCopy(board));
+    });
+  }
+
+  deleteComment(commentId: string ): Promise<Board> {
+    return new Promise(async (resolve, reject) => {
+      try {
+
+        await commonApi("delete","/kanban/deleteComment", {commentId: commentId}).then((response)=>{
           dataSetting(response);
         })
 
@@ -511,7 +512,7 @@ class KanbanApi {
   }): Promise<Board> {
     return new Promise(async (resolve, reject) => {
       try {
-        await commonApi("get","/kanban/deleteCheckItem", {id: checkItemId}).then((response)=>{
+        await commonApi("delete","/kanban/deleteCheckItem", {id: checkItemId}).then((response)=>{
           dataSetting(response);
         })
       } catch (err) {

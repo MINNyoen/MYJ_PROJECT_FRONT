@@ -20,6 +20,8 @@ export interface Comment {
   cardId: string;
   createdAt: number;
   memberId: string;
+  userNm: string;
+  avatar: string;
   message: string;
 }
 
@@ -53,5 +55,4 @@ export interface Member {
 export interface Board {
   cards: Card[];
   columns: Column[];
-  members: Member[];
 }

@@ -1,9 +1,7 @@
-import { Fragment } from 'react';
-import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
+import type { ChangeEvent, FC } from 'react';
+import { Fragment } from 'react';
 import toast from 'react-hot-toast';
-// @ts-ignore
-import debounce from 'lodash.debounce';
 import {
   Box,
   Checkbox,
@@ -17,18 +15,16 @@ import {
 } from '@mui/material';
 import { Archive as ArchiveIcon } from 'components/icons/archive';
 import { Check as CheckIcon } from 'components/icons/check';
-import { DocumentText as DocumentTextIcon } from 'components/icons/document-text';
-import { Eye as EyeIcon } from 'components/icons/eye';
-import { EyeOff as EyeOffIcon } from 'components/icons/eye-off';
-import { Users as UsersIcon } from 'components/icons/users';
+//@ts-ignore
+import debounce from 'lodash.debounce';
+import useTransition from 'next-translate/useTranslation';
 import { addChecklist, deleteCard, moveCard, updateCard } from 'slices/kanban';
 import { useDispatch, useSelector } from 'store';
 import type { Card, Column } from 'types/kanban';
 import { KanbanCardAction } from './kanban-card-action';
 import { KanbanChecklist } from './kanban-checklist';
-import { KanbanCommentAdd } from './kanban-comment-add';
 import { KanbanComment } from './kanban-comment';
-import useTransition from 'next-translate/useTranslation';
+import { KanbanCommentAdd } from './kanban-comment-add';
 
 interface KanbanCardModalProps {
   card: Card;
@@ -38,10 +34,10 @@ interface KanbanCardModalProps {
 }
 
 const labels = [
-  'Business',
-  'Planning',
-  'Frontend',
-  'Design'
+  'MinYeonJin',
+  'MinNyeon',
+  'YeonJin',
+  'ETC'
 ];
 
 export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
@@ -70,26 +66,6 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
           event.target.value
         ));
       toast.success(t('CardMoved'));
-    } catch (err) {
-      console.error(err);
-      toast.error(t('ErrMsg'));
-    }
-  };
-
-  const handleSubscribe = async (): Promise<void> => {
-    try {
-      await dispatch(updateCard(card, { isSubscribed: true }));
-      toast.success(t('Unsubscribed'));
-    } catch (err) {
-      console.error(err);
-      toast.error(t('ErrMsg'));
-    }
-  };
-
-  const handleUnsubscribe = async (): Promise<void> => {
-    try {
-      await dispatch(updateCard(card, { isSubscribed: false }));
-      toast.success(t('Subscribed'));
     } catch (err) {
       console.error(err);
       toast.error(t('ErrMsg'));
@@ -125,7 +101,6 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
       } else {
         newValue = newValue.filter((item) => item !== event.target.value);
       }
-
       await dispatch(updateCard(
         card,
         { labels: newValue }
@@ -176,14 +151,14 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
             {card.comments.length > 0 && (
               <>
                 <Typography
-                  sx={{ my: 3 }}
+                  sx={{ mt: 3, mb: 1 }}
                   variant="h6"
                 >
                   {t('Comment')}
                 </Typography>
                 <div>
                 {card.comments.map((comment, index) => (
-                  <KanbanComment key={comment.id} memberId={comment.memberId} message={comment.message} createdAt={comment.createdAt}/>
+                  <KanbanComment key={comment.id} commentId={comment.id} memberId={comment.memberId} message={comment.message} avatar={comment.avatar} name={comment.userNm} createdAt={comment.createdAt}/>
                 ))
                 }
                 </div>
@@ -265,18 +240,6 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
                 >
                   {t('Checklist')}
                 </KanbanCardAction>
-                {/* <KanbanCardAction
-                  disabled
-                  icon={<UsersIcon fontSize="small" />}
-                >
-                  {t('Members')}
-                </KanbanCardAction>
-                <KanbanCardAction
-                  disabled
-                  icon={<DocumentTextIcon fontSize="small" />}
-                >
-                  {t('Attachments')}
-                </KanbanCardAction> */}
               </Box>
             </Box>
             <Box sx={{ mt: 3 }}>
@@ -291,25 +254,6 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
               >
                 {t('Actions')}
               </Typography>
-              {
-                // card.isSubscribed
-                //   ? (
-                //     <KanbanCardAction
-                //       icon={<EyeOffIcon fontSize="small" />}
-                //       onClick={handleUnsubscribe}
-                //     >
-                //       {t('Unwatch')}
-                //     </KanbanCardAction>
-                //   )
-                //   : (
-                //     <KanbanCardAction
-                //       icon={<EyeIcon fontSize="small" />}
-                //       onClick={handleSubscribe}
-                //     >
-                //       {t('Watch')}
-                //     </KanbanCardAction>
-                //   )
-              }
               <KanbanCardAction
                 icon={<ArchiveIcon fontSize="small" />}
                 onClick={handleDelete}

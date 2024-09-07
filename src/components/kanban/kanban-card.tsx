@@ -18,18 +18,11 @@ interface KanbanCardProps {
   style?: Record<any, any>;
 }
 
-interface PopulatedCard extends CardType {
-  members: Member[];
-}
-
-const cardSelector = (state: RootState, cardId: string): PopulatedCard => {
-  const { cards, members } = state.kanban;
+const cardSelector = (state: RootState, cardId: string): CardType => {
+  const { cards } = state.kanban;
   const card = cards.byId[cardId];
 
-  return {
-    ...card,
-    members: card.memberIds.map((memberId: string) => members.byId[memberId])
-  };
+  return card;
 };
 
 export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>((props, ref) => {
@@ -115,17 +108,6 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>((props, re
             {card.attachments.length > 0 && <DocumentTextIcon fontSize="small" />}
             {card.checklists.length > 0 && <CheckIcon fontSize="small" />}
             {card.comments.length > 0 && <ChatAltIcon fontSize="small" />}
-            <Box sx={{ flexGrow: 1 }} />
-            {card.members.length > 0 && (
-              <AvatarGroup max={5}>
-                {card.members.map((member) => (
-                  <Avatar
-                    key={member.id}
-                    src={member.avatar || undefined}
-                  />
-                ))}
-              </AvatarGroup>
-            )}
           </Box>
         </Box>
       </Card>

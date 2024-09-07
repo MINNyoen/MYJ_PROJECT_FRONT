@@ -42,6 +42,7 @@
     "ColumnUpdated" : "Column updated!",
     "ColumnDeleted" : "Column deleted!",
     "CommentAdded" : "Comment added!",
+    "CommentDeleted" : "Comment deleted!",
     "Delete" : "Delete",
     "Cancel" : "Cancel",
     "Confirm" : "Confirm",

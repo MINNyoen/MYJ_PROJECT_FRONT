@@ -42,6 +42,7 @@
     "ColumnUpdated" : "간판을 변경하였습니다!",
     "ColumnDeleted" : "간판을 삭제하였습니다!",
     "CommentAdded" : "댓글을 작성하였습니다!",
+    "CommentDeleted" : "댓글을 삭제하였습니다!",
     "Delete" : "삭제",
     "Cancel" : "취소",
     "Confirm" : "확인",
