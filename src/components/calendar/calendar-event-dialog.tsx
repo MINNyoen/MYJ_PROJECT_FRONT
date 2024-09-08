@@ -194,7 +194,7 @@ export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
                   render={({ field : {value, onChange}, ...props}) => {
                     return (
                       <FormControlLabel
-                        sx={{color: getValues('allDay') ? "background.navtooltip" : "background.secondary"}}
+                        sx={{color: getValues('allDay') ? "primary.dark" : "primary.light"}}
                         control={
                           <Switch
                           checked={value}
@@ -213,7 +213,7 @@ export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
                           }
                           checkedIcon={
                             <Box>
-                              <EventIcon sx={{borderRadius: '50%', backgroundColor: 'background.calendar.button', padding: '2px', color: 'background.default'}}/>
+                              <EventIcon sx={{borderRadius: '50%', backgroundColor: 'primary.main', padding: '2px', color: 'background.default'}}/>
                             </Box>
                           }
                         />

@@ -21,7 +21,7 @@ export const MainNavbar: FC<MainNavbarProps> = (props) => {
     <AppBar
       elevation={0}
       sx={{
-        backgroundColor: 'background.nav',
+        backgroundColor: 'primary.main',
         color: 'white'
       }}
     >

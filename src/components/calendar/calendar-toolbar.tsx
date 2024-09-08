@@ -98,10 +98,10 @@ export const CalendarToolbar: FC<CalendarToolbarProps> = (props) => {
     <Tooltip {...props} arrow classes={{ popper: className }} />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.arrow}`]: {
-      color: "rgb(109, 229, 237)",
+      color: "background.goals.blue",
     },
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: "rgb(109, 229, 237)",
+      backgroundColor: "background.goals.blue",
       borderRadius: "5px",
       padding: "3px 3px",
     },
@@ -111,10 +111,10 @@ export const CalendarToolbar: FC<CalendarToolbarProps> = (props) => {
     <Tooltip {...props} arrow classes={{ popper: className }} />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.arrow}`]: {
-      color: "rgb(230, 61, 203)",
+      color: "background.goals.pink",
     },
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: "rgb(230, 61, 203)",
+      backgroundColor: "background.goals.pink",
       borderRadius: "5px",
       padding: "3px 3px",
     },
@@ -143,7 +143,7 @@ export const CalendarToolbar: FC<CalendarToolbarProps> = (props) => {
         >
           <Box
             sx={{
-              backgroundColor: "background.calendar.button",
+              backgroundColor: "primary.main",
               borderRadius: "10px",
               width: "140px",
               height: "40px",
@@ -325,7 +325,7 @@ export const CalendarToolbar: FC<CalendarToolbarProps> = (props) => {
                 onClick={onDatePrev}
                 sx={{
                   width: "100%",
-                  backgroundColor: "background.calendar.button",
+                  backgroundColor: "primary.main",
                   ":hover": {
                     backgroundColor: "primary.dark",
                     transform: "translateY(-2px)",
@@ -338,10 +338,11 @@ export const CalendarToolbar: FC<CalendarToolbarProps> = (props) => {
             <Grid item xs={3}>
               <IconButton
                 onClick={onDateNext}
+                color={'primary'}
                 sx={{
                   width: "100%",
                   ml: "10%",
-                  backgroundColor: "background.calendar.button",
+                  backgroundColor: "primary.main",
                   ":hover": {
                     backgroundColor: "primary.dark",
                     transform: "translateY(-2px)",

@@ -32,12 +32,12 @@ interface SettingsDrawerProps {
 const themes = [
   {
     label: 'Ocean',
-    value: 'Ocean',
+    value: 'blue',
     img: blueThemeIcon
   },
   {
     label: 'Flower',
-    value: 'Flower',
+    value: 'pink',
     img: pinkThemeIcon
   }
 ];

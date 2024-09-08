@@ -264,7 +264,7 @@ const NotificationsPopover: FC<NotificationsPopoverProps> = (props) => {
       }}
       onClose={onClose}
       open={!!open}
-      PaperProps={{ sx: { width: 380 } }}
+      PaperProps={{ sx: { width: 380} }}
       transitionDuration={0}
       {...other}
     >
@@ -280,7 +280,7 @@ const NotificationsPopover: FC<NotificationsPopoverProps> = (props) => {
         }}
       >
         <Typography
-          color="inherit"
+          color={'inherit'}
           variant="h6"
         >
           {t('Notifications')}
@@ -373,7 +373,7 @@ export const NotificationsButton = () => {
 
   return (
     <>
-      <Tooltip title={t('Notifications')}>
+      <Tooltip title={t('Notifications')} color={'inherit'}>
         <IconButton
           ref={anchorRef}
           sx={{color: 'unset'}}

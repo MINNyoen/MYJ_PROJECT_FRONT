@@ -14,84 +14,73 @@ const neutral = {
   900: '#111827'
 };
 
+
+
 const divider = '#E6E8F0';
 
 const primary = {
-  main: '#7582EB',
-  light: '#909BEF',
-  dark: '#515BA4',
-  contrastText: neutral[800]
+  main: 'rgba(3, 50, 94, 0.6)',
+  light: 'rgba(3, 50, 94, 0.2)',
+  dark: 'rgba(3, 50, 94,1)',
+  contrastText: '#FFFFFF'
 };
 
 const secondary = {
-  main: '#10B981',
-  light: '#3FC79A',
-  dark: '#0B815A',
-  contrastText: neutral[900]
+  main: 'rgba(145, 103, 6, 0.6)',
+  light: 'rgba(145, 103, 6, 0.2)',
+  dark: 'rgba(145, 103, 6, 1)',
+  contrastText: '#FFFFFF'
 };
 
 const success = {
   main: '#14B8A6',
   light: '#43C6B7',
   dark: '#0E8074',
-  contrastText: neutral[900]
+  contrastText: '#FFFFFF'
 };
 
 const info = {
   main: '#2196F3',
   light: '#64B6F7',
   dark: '#0B79D0',
-  contrastText: neutral[900]
+  contrastText: '#FFFFFF'
 };
 
 const warning = {
   main: '#FFB020',
   light: '#FFBF4C',
   dark: '#B27B16',
-  contrastText: neutral[900]
+  contrastText: '#FFFFFF'
 };
 
 const error = {
   main: '#D14343',
   light: '#DA6868',
   dark: '#922E2E',
-  contrastText: neutral[900]
+  contrastText: '#FFFFFF'
 };
 
 const text = {
-  nav: neutral[700],
-  primary: neutral[600],
-  secondary: neutral[800],
-  disabled: 'rgba(255, 255, 255, 0.48)'
+  primary: '#121828',
+  secondary: '#65748B',
+  disabled: 'rgba(55, 65, 81, 0.48)'
 };
 
 const background = {
   default: '#F9FAFC',
-  secondary: '#6B7280',
   paper: '#FFFFFF',
-  nav: '#7582EB',
-  sidebar: {
-    first: '#f5a59f',
-    secondary: '#a56ded',
-    third: '#f74fd0'
-  },
-  navtooltip: '#7582EB',
-  calendar : {
-    categoryBar : '#F6F8FF',
-    button : primary.main
-  }
 };
 
-export const minThemeOptions: ThemeOptions = {
+export const blueThemeOptions: ThemeOptions = {
   components: {
     MuiTooltip: {
       styleOverrides: {
         arrow: {
-          color: background.navtooltip
+          color: primary.main
         },
         tooltipArrow: {
-          backgroundColor: background.navtooltip,
-        }
+          backgroundColor: primary.main,
+        },
       }
     },
     MuiAvatar: {
@@ -106,15 +95,14 @@ export const minThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           '&.MuiChip-filledDefault': {
-            backgroundColor: neutral[800],
+            backgroundColor: neutral[200],
             '& .MuiChip-deleteIcon': {
-              color: neutral[500]
+              color: neutral[400]
             }
           },
           '&.MuiChip-outlinedDefault': {
-            borderColor: neutral[700],
             '& .MuiChip-deleteIcon': {
-              color: neutral[700]
+              color: neutral[300]
             }
           }
         }
@@ -125,10 +113,7 @@ export const minThemeOptions: ThemeOptions = {
         input: {
           '&::placeholder': {
             opacity: 1,
-            color: text.primary
-          },
-          '&::--webkit-autofill': {
-            boxShadow: text.secondary
+            color: text.secondary
           }
         }
       }
@@ -161,10 +146,10 @@ export const minThemeOptions: ThemeOptions = {
     MuiSwitch: {
       styleOverrides: {
         switchBase: {
-          color: neutral[700]
+          color: neutral[500]
         },
         track: {
-          backgroundColor: neutral[500],
+          backgroundColor: neutral[400],
           opacity: 1
         }
       }
@@ -179,9 +164,9 @@ export const minThemeOptions: ThemeOptions = {
     MuiTableHead: {
       styleOverrides: {
         root: {
-          backgroundColor: neutral[800],
+          backgroundColor: neutral[100],
           '.MuiTableCell-root': {
-            color: neutral[300]
+            color: neutral[700]
           }
         }
       }
@@ -189,50 +174,50 @@ export const minThemeOptions: ThemeOptions = {
   },
   palette: {
     action: {
-      active: neutral[400],
-      hover: 'rgba(255, 255, 255, 0.04)',
-      selected: 'rgba(255, 255, 255, 0.08)',
-      disabledBackground: 'rgba(255, 255, 255, 0.12)',
-      disabled: 'rgba(255, 255, 255, 0.26)'
+      active: neutral[500],
+      focus: 'rgba(55, 65, 81, 0.12)',
+      hover: 'rgba(55, 65, 81, 0.04)',
+      selected: 'rgba(55, 65, 81, 0.08)',
+      disabledBackground: 'rgba(55, 65, 81, 0.12)',
+      disabled: 'rgba(55, 65, 81, 0.26)'
     },
     background,
     divider,
     error,
     info,
-    mode: 'dark',
+    mode: 'light',
     neutral,
     primary,
     secondary,
     success,
     text,
-    warning,
-    
+    warning
   },
   shadows: [
     'none',
-    '0px 1px 2px rgba(0, 0, 0, 0.24)',
-    '0px 1px 2px rgba(0, 0, 0, 0.24)',
-    '0px 1px 4px rgba(0, 0, 0, 0.24)',
-    '0px 1px 5px rgba(0, 0, 0, 0.24)',
-    '0px 1px 6px rgba(0, 0, 0, 0.24)',
-    '0px 2px 6px rgba(0, 0, 0, 0.24)',
-    '0px 3px 6px rgba(0, 0, 0, 0.24)',
-    '0px 4px 6px rgba(0, 0, 0, 0.24)',
-    '0px 5px 12px rgba(0, 0, 0, 0.24)',
-    '0px 5px 14px rgba(0, 0, 0, 0.24)',
-    '0px 5px 15px rgba(0, 0, 0, 0.24)',
-    '0px 6px 15px rgba(0, 0, 0, 0.24)',
-    '0px 7px 15px rgba(0, 0, 0, 0.24)',
-    '0px 8px 15px rgba(0, 0, 0, 0.24)',
-    '0px 9px 15px rgba(0, 0, 0, 0.24)',
-    '0px 10px 15px rgba(0, 0, 0, 0.24)',
-    '0px 12px 22px -8px rgba(0, 0, 0, 0.24)',
-    '0px 13px 22px -8px rgba(0, 0, 0, 0.24)',
-    '0px 14px 24px -8px rgba(0, 0, 0, 0.24)',
-    '0px 20px 25px rgba(0, 0, 0, 0.24)',
-    '0px 25px 50px rgba(0, 0, 0, 0.24)',
-    '0px 25px 50px rgba(0, 0, 0, 0.24)',
-    '0px 25px 50px rgba(0, 0, 0, 0.24)',
-    '0px 25px 50px rgba(0, 0, 0, 0.24)'
+    '0px 1px 1px rgba(100, 116, 139, 0.06), 0px 1px 2px rgba(100, 116, 139, 0.1)',
+    '0px 1px 2px rgba(100, 116, 139, 0.12)',
+    '0px 1px 4px rgba(100, 116, 139, 0.12)',
+    '0px 1px 5px rgba(100, 116, 139, 0.12)',
+    '0px 1px 6px rgba(100, 116, 139, 0.12)',
+    '0px 2px 6px rgba(100, 116, 139, 0.12)',
+    '0px 3px 6px rgba(100, 116, 139, 0.12)',
+    '0px 2px 4px rgba(31, 41, 55, 0.06), 0px 4px 6px rgba(100, 116, 139, 0.12)',
+    '0px 5px 12px rgba(100, 116, 139, 0.12)',
+    '0px 5px 14px rgba(100, 116, 139, 0.12)',
+    '0px 5px 15px rgba(100, 116, 139, 0.12)',
+    '0px 6px 15px rgba(100, 116, 139, 0.12)',
+    '0px 7px 15px rgba(100, 116, 139, 0.12)',
+    '0px 8px 15px rgba(100, 116, 139, 0.12)',
+    '0px 9px 15px rgba(100, 116, 139, 0.12)',
+    '0px 10px 15px rgba(100, 116, 139, 0.12)',
+    '0px 12px 22px -8px rgba(100, 116, 139, 0.25)',
+    '0px 13px 22px -8px rgba(100, 116, 139, 0.25)',
+    '0px 14px 24px -8px rgba(100, 116, 139, 0.25)',
+    '0px 10px 10px rgba(31, 41, 55, 0.04), 0px 20px 25px rgba(31, 41, 55, 0.1)',
+    '0px 25px 50px rgba(100, 116, 139, 0.25)',
+    '0px 25px 50px rgba(100, 116, 139, 0.25)',
+    '0px 25px 50px rgba(100, 116, 139, 0.25)',
+    '0px 25px 50px rgba(100, 116, 139, 0.25)'
   ]
 };

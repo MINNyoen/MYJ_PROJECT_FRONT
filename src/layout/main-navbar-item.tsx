@@ -70,7 +70,7 @@ export const MainNavbarItem: FC<MainNavbarItemProps> = (props) => {
         PopperProps={{sx: {'&.MuiTooltip-popper' : {inset: '20px auto auto -35px !important'}}}}
         >
           <Link
-          color="primary.contrastText"
+          color="primary.contrastTexty"
           underline="none"
           minWidth={"50%"}
           textAlign='center'

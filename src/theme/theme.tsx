@@ -1,8 +1,8 @@
 import type { Direction, Theme } from '@mui/material';
 import { createTheme as createMuiTheme, responsiveFontSizes } from '@mui/material/styles';
 import { baseThemeOptions } from './base-theme-options';
-import { minThemeOptions } from './min-theme-options';
-import { yeonThemeOptions } from './yeon-theme-options';
+import { blueThemeOptions } from './blue-theme-options';
+import { pinkThemeOptions } from './pink-theme-options';
 
 interface Neutral {
   100: string;
@@ -29,13 +29,13 @@ declare module '@mui/material/styles' {
 interface ThemeConfig {
   direction?: Direction;
   responsiveFontSizes?: boolean;
-  mode: 'min' | 'yeon';
+  mode: 'blue' | 'pink';
 }
 
 export const createTheme = (config: ThemeConfig): Theme => {
   let theme = createMuiTheme(
     baseThemeOptions,
-    config.mode === 'min' ? minThemeOptions : yeonThemeOptions,
+    config.mode === 'blue' ? blueThemeOptions : pinkThemeOptions,
     {
       direction: config.direction
     }

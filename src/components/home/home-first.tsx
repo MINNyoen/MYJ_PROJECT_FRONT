@@ -12,7 +12,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { ArrowRight as ArrowRightIcon } from "components/icons/arrow-right";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -22,10 +22,13 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useDispatch, useSelector } from "store";
 import { getEvents, getGoals } from 'slices/calendar';
 import moment from "moment";
+import useTranslation from 'next-translate/useTranslation';
 
 export const MainFirst: FC = (props) => {
 
   const { eventGoals, events } = useSelector((state) => state.calendar);
+
+  const {t} = useTranslation('home');
 
   const dispatch = useDispatch();
 
@@ -83,7 +86,7 @@ export const MainFirst: FC = (props) => {
                       sx={{ pl: 1 }}
                       variant="h6"
                     >
-                      공지 사항
+                      {t('Notice')}
                     </Typography>
                   </Box>
                   {["1", "2", "3"].map((i) => (
@@ -121,12 +124,12 @@ export const MainFirst: FC = (props) => {
                           sx={{ pl: 1 }}
                           variant="subtitle1"
                         >
-                          이번 달 목표!
+                          {t('ThisMonthGoals')}
                         </Typography>
                       </Box>
                       <Box>
                         <Typography variant="h6" sx={{ mt: 2, ml: 1 }}>
-                          연진
+                        {t('YeonJin')}
                         </Typography>
                         <Typography
                           color="textSecondary"
@@ -134,12 +137,12 @@ export const MainFirst: FC = (props) => {
                           whiteSpace={'nowrap'}
                           sx={{ ml: 3, mt: 1 }}
                         >
-                          {eventGoals.YeonJin?.goalContent ? eventGoals.YeonJin?.goalContent : "이번달의 목표를 작성해주세요!"}
+                          {eventGoals.YeonJin?.goalContent ? eventGoals.YeonJin?.goalContent : t('GoalRequired')}
                         </Typography>
                       </Box>
                       <Box>
                         <Typography variant="h6" sx={{ mt: 2, ml: 1 }}>
-                          민년
+                        {t('MinNyeon')}
                         </Typography>
                         <Typography
                           color="textSecondary"
@@ -147,7 +150,7 @@ export const MainFirst: FC = (props) => {
                           whiteSpace={'nowrap'}
                           sx={{ ml: 3, mt: 1 }}
                         >
-                          {eventGoals.MinNyeon?.goalContent ? eventGoals.MinNyeon?.goalContent : "이번달의 목표를 작성해주세요!"}
+                          {eventGoals.MinNyeon?.goalContent ? eventGoals.MinNyeon?.goalContent : t('GoalRequired')}
                         </Typography>
                       </Box>
                     </CardContent>
@@ -162,13 +165,13 @@ export const MainFirst: FC = (props) => {
                       }}
                     >
                       <Box display={"inline-flex"} pr={2}>
-                        <FavoriteIcon color="primary" fontSize="large" viewBox="-3 -3 25 25" />
+                        <FavoriteIcon color="primary" fontSize="large" viewBox="-3 0 25 25" />
                         <Typography
                           color="primary.main"
                           sx={{ pl: 1, pb: 2 }}
-                          variant="h4"
+                          variant="h5"
                         >
-                          MYJ
+                          {t('MYJDays')}
                         </Typography>
                       </Box>
                       <Typography
@@ -176,7 +179,7 @@ export const MainFirst: FC = (props) => {
                         sx={{ whiteSpace: 'nowrap' }}
                         variant="h4"
                       >
-                        {process.env.NEXT_PUBLIC_MYJ_DATE && moment(new Date()).diff(moment(new Date(process.env.NEXT_PUBLIC_MYJ_DATE)), "days")+1} 일
+                        {process.env.NEXT_PUBLIC_MYJ_DATE && moment(new Date()).diff(moment(new Date(process.env.NEXT_PUBLIC_MYJ_DATE)), "days")+1} {t('Days')}
                       </Typography>
                     </CardContent>
                     <Divider />
@@ -187,7 +190,7 @@ export const MainFirst: FC = (props) => {
                         size="small"
                         sx={{fontSize: '16px', fontWeight: '800',":hover":{transform: "translateY(-4px)"}}}
                       >
-                        추억 보러 가기
+                        {t('GoToMemories')}
                       </Button>
                     </CardActions>
                   </Card>
@@ -210,7 +213,7 @@ export const MainFirst: FC = (props) => {
                     sx={{ pl: 1 }}
                     variant="subtitle1"
                   >
-                    오늘의 공부 계획
+                     {t('Kanban')}
                   </Typography>
                 </Box>
                 <List disablePadding sx={{ pt: 2, maxHeight: '200px', overflow: 'auto'}}>
@@ -280,7 +283,7 @@ export const MainFirst: FC = (props) => {
                     sx={{ pl: 1 }}
                     variant="subtitle1"
                   >
-                    오늘의 일정
+                     {t("Today'sPlan")}
                   </Typography>
                 </Box>
                   <List disablePadding sx={{ pt: 2, height: '200px', overflow: 'auto' }}>

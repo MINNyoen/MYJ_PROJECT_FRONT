@@ -19,16 +19,16 @@ const neutral = {
 const divider = '#E6E8F0';
 
 const primary = {
-  main: 'rgba(243,129,129,0.5)',
-  light: '#828DF8',
-  dark: 'rgba(243,129,129,0.9)',
+  main: 'rgba(243,129,129,0.8)',
+  light: '#6B7280',
+  dark: 'rgba(243,129,129,1)',
   contrastText: '#FFFFFF'
 };
 
 const secondary = {
-  main: '#6B7280',
-  light: '#3FC79A',
-  dark: '#41444a',
+  main: 'rgba(82, 57, 0, 0.6)',
+  light: 'rgba(82, 57, 0, 0.2)',
+  dark: 'rgba(82, 57, 0, 1)',
   contrastText: '#FFFFFF'
 };
 
@@ -61,7 +61,6 @@ const error = {
 };
 
 const text = {
-  nav: '#FFFFFF',
   primary: '#121828',
   secondary: '#65748B',
   disabled: 'rgba(55, 65, 81, 0.48)'
@@ -69,31 +68,19 @@ const text = {
 
 const background = {
   default: '#F9FAFC',
-  secondary: '#6B7280',
   paper: '#FFFFFF',
-  nav: 'rgba(241, 114, 114, 0.96)',
-  sidebar: {
-    first: '#f5a59f',
-    secondary: '#a56ded',
-    third: '#f74fd0'
-  },
-  navtooltip: 'rgba(241, 114, 114, 0.96)',
-  calendar : {
-    categoryBar : '#F6F8FF',
-    button : primary.main
-  }
 };
 
-export const yeonThemeOptions: ThemeOptions = {
+export const pinkThemeOptions: ThemeOptions = {
   components: {
     MuiTooltip: {
       styleOverrides: {
         arrow: {
-          color: background.navtooltip
+          color: primary.main
         },
         tooltipArrow: {
-          backgroundColor: background.navtooltip,
-        }
+          backgroundColor: primary.main,
+        },
       }
     },
     MuiAvatar: {

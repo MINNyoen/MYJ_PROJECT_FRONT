@@ -48,7 +48,7 @@ export const ChatMessage: FC<ChatMessageProps> = (props) => {
               ? 'primary.main'
               : 'background.paper',
             color: authorType === 'user'
-              ? 'primary.contrastText'
+              ? 'text.primary'
               : 'text.primary',
             px: 2,
             py: 1

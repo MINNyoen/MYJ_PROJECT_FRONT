@@ -35,14 +35,14 @@ export const MainSidebar: FC<MainSidebarProps> = (props) => {
       }}
       variant="temporary"
     >
-    <Box sx={{display: 'inline-flex', backgroundColor: 'background.nav', height:'80px'}}>
-          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'} sx={{backgroundColor: 'background.sidebar.first'}}>
+    <Box sx={{display: 'inline-flex', backgroundColor: 'primary.main', color: 'primary.contrastText', height:'80px'}}>
+          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'}>
           <ContactsButton />
           </Box>
-          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'} sx={{backgroundColor: 'background.sidebar.secondary'}}>
+          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'}>
           <NotificationsButton />
           </Box>
-          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'} sx={{backgroundColor: 'background.sidebar.third'}}>
+          <Box flexGrow={1} textAlign={"center"} height={'100%'} pt={'8%'}>
           <AccountButton />
           </Box>
     </Box>

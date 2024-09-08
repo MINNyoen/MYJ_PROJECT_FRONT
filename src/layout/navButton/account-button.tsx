@@ -54,7 +54,6 @@ const AccountPopover: FC<AccountPopoverProps> = (props) => {
       keepMounted
       onClose={onClose}
       open={!!open}
-      PaperProps={{ sx: { width: 150 } }}
       transitionDuration={0} 
       {...other}
     >
@@ -64,7 +63,7 @@ const AccountPopover: FC<AccountPopoverProps> = (props) => {
           passHref
         >
           <MenuItem component="a">
-            <ListItemIcon>
+            <ListItemIcon sx={{mr: 1}}>
               <UserCircleIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText
@@ -78,7 +77,7 @@ const AccountPopover: FC<AccountPopoverProps> = (props) => {
         </NextLink>
         <Divider />
         <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
+          <ListItemIcon sx={{mr: 1}}>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText

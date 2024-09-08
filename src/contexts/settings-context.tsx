@@ -6,7 +6,7 @@ import setLanguage from 'next-translate/setLanguage'
 export interface Settings {
   responsiveFontSizes?: boolean;
   language: 'ko' | 'en';
-  theme: 'yeon' | 'min';
+  theme: 'pink' | 'blue';
 }
 
 export interface SettingsContextValue {
@@ -21,7 +21,7 @@ interface SettingsProviderProps {
 const initialSettings: Settings = {
   responsiveFontSizes: true,
   language: 'ko',
-  theme: 'yeon'
+  theme: 'pink'
 };
 
 export const restoreSettings = (): Settings | null => {
@@ -37,8 +37,8 @@ export const restoreSettings = (): Settings | null => {
         responsiveFontSizes: true,
         language: 'ko',
         theme: globalThis.matchMedia('(prefers-color-scheme: min)').matches
-          ? 'min'
-          : 'yeon'
+          ? 'blue'
+          : 'pink'
       };
     }
   } catch (err) {

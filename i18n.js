@@ -9,6 +9,7 @@ module.exports = {
         "/403": ["403"],
         "/404": ["404"],
         "/500": ["500"],
+        "/": ["home"],
         "/authentication/login": ["login"],
         "/authentication/register": ["register"],
         "/minyeonjin/planning/calendar": ["calendar"],

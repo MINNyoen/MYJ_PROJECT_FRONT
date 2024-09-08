@@ -108,7 +108,7 @@ const Calendar: NextPage = () => {
   const unModifiedEvent = (event : EventApi) => {
     if(event.extendedProps.schdlCd >= 5) {
       event.setStart(event.extendedProps.startDt);
-      event.setEnd(moment(event.extendedProps.endDt).add(-1,"days").format("YYYY-MM-DD HH:mm:ss"));
+      event.setEnd(moment(event.extendedProps.endDt).add(1,"days").format("YYYY-MM-DD HH:mm:ss"));
       toast.error(event.extendedProps.schdlCategory +  t("CantModify"));
       return false;
     }

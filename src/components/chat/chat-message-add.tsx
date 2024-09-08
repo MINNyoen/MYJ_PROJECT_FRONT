@@ -89,13 +89,6 @@ export const ChatMessageAdd: FC<ChatMessageAddProps> = (props) => {
             <IconButton
               color="primary"
               disabled={!body || disabled}
-              sx={{
-                backgroundColor: 'primary.main',
-                color: 'primary.contrastText',
-                '&:hover': {
-                  backgroundColor: 'primary.dark'
-                }
-              }}
               onClick={handleSend}
             >
               <PaperAirplaneIcon fontSize="small" />

@@ -153,7 +153,7 @@ const Chatting: NextPage = () => {
                 <Avatar
                   sx={{
                     backgroundColor: 'primary.main',
-                    color: 'primary.contrastText',
+                    color: 'text.primary',
                     height: 56,
                     width: 56
                   }}

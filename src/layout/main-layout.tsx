@@ -146,7 +146,7 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           onClose={(): void => setIsSidebarOpen(false)}
           open={isSidebarOpen}
         />
-        <Box component={'main'} minHeight={'90vh'}>
+        <Box component={'main'}>
         {children}
         </Box>
         <Footer />
