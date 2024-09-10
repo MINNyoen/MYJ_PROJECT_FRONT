@@ -43,14 +43,7 @@ export const Footer: FC = (props) => (
           alignItems={'center'} 
           justifyContent={'center'}
         >
-        <Typography
-            color="text.secondary"
-            sx={{ mt: 1 }}
-            variant="caption"
-          >
-            Logo
-          </Typography>
-          <Logo />
+          <Logo color={'primary.main'}/>
           <Typography
             color="text.secondary"
             sx={{ mt: 1 }}

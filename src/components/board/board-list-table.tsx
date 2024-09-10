@@ -42,23 +42,22 @@ export const BoardListTable: FC<BoardListTableProps> = (props) => {
         <Table sx={{ minWidth: 1200 }}>
           <TableHead>
             <TableRow>
-              <TableCell />
-              <TableCell width="25%">
+              <TableCell align='center'>
               {t("seq")}
               </TableCell>
-              <TableCell width="25%">
+              <TableCell width="30%" align='center'>
               {t("title")}
               </TableCell>
-              <TableCell>
+              <TableCell align='center'>
               {t("fileExist")}
               </TableCell>
-              <TableCell>
+              <TableCell align='center'>
               {t("views")}
               </TableCell>
-              <TableCell>
+              <TableCell align='center'>
               {t("writer")}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align='center'>
               {t("updDt")}
               </TableCell>
             </TableRow>
@@ -71,30 +70,27 @@ export const BoardListTable: FC<BoardListTableProps> = (props) => {
                     hover
                     key={board.id}
                   >
-                    <TableCell
-                      padding="checkbox"
-                      width="25%"
-                    >
+                    <TableCell align='center'>
                       {board.id}
                     </TableCell>
-                    <TableCell width="25%">
+                    <TableCell width="30%" align='center'>
                       {board.title}
                     </TableCell>
-                    <TableCell width="25%">
+                    <TableCell align='center'>
                       <SeverityPill color={board.fileExist ? 'success' : 'info'}>
                       {board.fileExist ? 'exist' : 'empty'}
                       </SeverityPill>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align='center'>
                       {board.views}
                     </TableCell>
-                    <TableCell>
+                    <TableCell align='center'>
                       {board.writer}
                     </TableCell>
-                    <TableCell>
+                    <TableCell align='center'>
                       {board.updDt}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align='center'>
                       <IconButton>
                         <DotsHorizontalIcon fontSize="small" />
                       </IconButton>

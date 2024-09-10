@@ -25,7 +25,7 @@ interface BoardCreateFormProps {
 }
 
 export const BoardCreateForm: FC<BoardCreateFormProps> = (props) => {
-  const {t} = useTransition("board");
+  const {t} = useTransition('board');
   const {t:c} = useTransition("common");
   const {board} = props;
   const router = useRouter();

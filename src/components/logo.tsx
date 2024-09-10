@@ -1,30 +1,22 @@
-import PropTypes from 'prop-types';
+
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 
-type Variant = 'light' | 'primary';
+
 
 interface LogoProps {
-  variant?: Variant;
+  color?: string;
 }
 
 export const Logo = styled((props: LogoProps) => {
-  const { variant, ...other } = props;
+  const { color, ...other } = props;
 
   return (
     <Typography
-    color={'primary'}
+    color={color ? color : 'black'}
     variant="h2"
     >
       MinYeonJin
     </Typography>
   );
 })``;
-
-Logo.defaultProps = {
-  variant: 'primary'
-};
-
-Logo.propTypes = {
-  variant: PropTypes.oneOf<Variant>(['light', 'primary'])
-};

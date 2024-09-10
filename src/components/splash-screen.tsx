@@ -31,7 +31,7 @@ export const SplashScreen: FC = () => (
   <Box
     sx={{
       alignItems: 'center',
-      backgroundColor: 'neutral.900',
+      backgroundColor: 'white',
       display: 'flex',
       flexDirection: 'column',
       height: '100vh',

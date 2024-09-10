@@ -389,6 +389,7 @@ const Calendar: NextPage = () => {
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
+          minHeight: '90vh',
           p: '8%',
           py: 3.5
         }}

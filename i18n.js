@@ -15,6 +15,7 @@ module.exports = {
         "/minyeonjin/planning/calendar": ["calendar"],
         "/minyeonjin/planning/kanban": ["kanban"],
         "/minyeonjin/community/board": ["board"],
+        "/minyeonjin/community/board-create": ["board"],
         "/minyeonjin/community/chatting": ["chatting"],
         "/minyeonjin/mypage": ["mypage"],
     },

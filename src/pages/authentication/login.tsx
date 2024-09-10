@@ -60,6 +60,7 @@ const Login: NextPage = () => {
               >
                 <a>
                   <Logo
+                    color={'primary.main'}
                     sx={{
                       height: 40,
                       width: 40

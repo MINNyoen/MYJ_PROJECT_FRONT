@@ -1,7 +1,7 @@
 import { File } from "types/file";
 
 export interface Board {
-  id: string;
+  seq: string;
   title: string;
   content: string;
   views: number;
@@ -10,6 +10,6 @@ export interface Board {
   regId: string;
   regDt: number;
   updDt: number;
-  files: File[];
+  fileList: File[];
 }
 
