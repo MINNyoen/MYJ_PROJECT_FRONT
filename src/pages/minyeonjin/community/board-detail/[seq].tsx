@@ -1,14 +1,15 @@
 import { Box, Container, Typography } from '@mui/material';
 import { AuthGuard } from 'components/authentication/auth-guard';
-import { BoardCreateForm } from 'components/board/board-create-form';
+import { BoardDetail } from 'components/board/board-detail';
 import { MainLayout } from 'layout/main-layout';
 import type { NextPage } from 'next';
 import useTransition from 'next-translate/useTranslation';
 import Head from 'next/head';
+import { useSelector } from 'store';
 
-
-const BoardCreate: NextPage = () => {
+const boardDetail: NextPage = () => {
   const {t} = useTransition("board");
+  const { selectedBoard } = useSelector((state) => state.board);
   return (
     <>
       <Head>
@@ -20,23 +21,27 @@ const BoardCreate: NextPage = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8
+          minHeight: '90vh',
+          py: 3
         }}
       >
-        <Container maxWidth="md">
-          <Box sx={{ mb: 3 }}>
+        <Container maxWidth="xl">
+          <Box sx={{ mb: 4}}>
             <Typography variant="h4">
-            {t("NewBoard")}
+            {selectedBoard?.title}
+            </Typography>
+            <Typography sx={{float : 'right', mr: 2}} variant="h6" >
+                {t('views') + ' : '} {selectedBoard?.views}
             </Typography>
           </Box>
-          <BoardCreateForm />
+          <BoardDetail />
         </Container>
       </Box>
     </>
   );
 };
 
-BoardCreate.getLayout = (page) => (
+boardDetail.getLayout = (page) => (
   <AuthGuard>
     <MainLayout>
       {page}
@@ -44,4 +49,4 @@ BoardCreate.getLayout = (page) => (
   </AuthGuard>
 );
 
-export default BoardCreate;
+export default boardDetail;

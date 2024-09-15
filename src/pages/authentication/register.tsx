@@ -87,17 +87,13 @@ const Login: NextPage = () => {
               <Grid item xs={9}>
               <Box>
             <div>
-              <NextLink
-                href={path.pages.authentication.login}
-                passHref
-              >
                 <Link
+                  href={path.pages.authentication.login}
                   color="textSecondary"
                   variant="body2"
                 >
                   {r('HavingAnAccount')}
                 </Link>
-              </NextLink>
             </div>
               </Box>
               </Grid>

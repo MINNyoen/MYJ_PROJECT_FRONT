@@ -17,23 +17,26 @@ import {
 import { Duplicate as DuplicateIcon } from 'components/icons/duplicate';
 import { X as XIcon } from 'components/icons/x';
 import { bytesToSize } from 'utils/bytes-to-size';
+import { File as BoardFile } from 'types/file';
+import useTransition from 'next-translate/useTranslation';
 
 export type File = FileWithPath;
 
 interface FileDropzoneProps extends DropzoneOptions {
   files?: File[];
+  existFiles?: BoardFile[];
   onRemove?: (file: File) => void;
   onRemoveAll?: () => void;
-  onUpload?: () => void;
+  onDeleteExistFile?: (fileSeq: number) => void;
 }
 
 export const FileDropzone: FC<FileDropzoneProps> = (props) => {
   const {
     // Own props
     files = [],
+    existFiles = [],
     onRemove,
     onRemoveAll,
-    onUpload,
     // DropzoneOptions props
     accept,
     disabled,
@@ -50,6 +53,7 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
     onDropRejected,
     onFileDialogCancel,
     onFileDialogOpen,
+    onDeleteExistFile,
     useFsAccessApi,
     autoFocus,
     preventDropOnDocument,
@@ -62,8 +66,6 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
     ...other
   } = props;
 
-  // We did not add the remaining props to avoid component complexity
-  // but you can simply add it if you need to.
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept,
     maxFiles,
@@ -71,6 +73,7 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
     minSize,
     onDrop
   });
+  const { t: c } = useTransition("common");
 
   return (
     <div {...other}>
@@ -109,34 +112,57 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
           }}
         >
           <img
-            alt="Select file"
+            alt={c('SelectFile')}
             src="/static/undraw_add_file2_gvbb.svg"
           />
         </Box>
         <Box sx={{ p: 2 }}>
           <Typography variant="h6">
-            {`Select file${(
-              maxFiles && maxFiles === 1
-            ) ? '' : 's'}`}
+            {c('SelectFile')}
           </Typography>
           <Box sx={{ mt: 2 }}>
             <Typography variant="body1">
-              {`Drop file${(
-                maxFiles && maxFiles === 1
-              ) ? '' : 's'}`}
-              {' '}
-              <Link underline="always">
-                browse
-              </Link>
-              {' '}
-              thorough your machine
+            {c('SelectFileComment')}
             </Typography>
           </Box>
         </Box>
       </Box>
-      {files.length > 0 && (
+      {(files.length > 0 || existFiles.length > 0)  && (
         <Box sx={{ mt: 2 }}>
           <List>
+          {existFiles.map((file) => (
+              <ListItem
+                key={file.fileSeq}
+                sx={{
+                  border: 1,
+                  borderColor: 'divider',
+                  borderRadius: 1,
+                  '& + &': {
+                    mt: 1
+                  }
+                }}
+              >
+                <ListItemIcon>
+                  <DuplicateIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={file.fileName}
+                  primaryTypographyProps={{
+                    color: 'textPrimary',
+                    variant: 'subtitle2'
+                  }}
+                  secondary={bytesToSize(file.fileSize)}
+                />
+                <Tooltip title="Remove">
+                  <IconButton
+                    edge="end"
+                    onClick={() => onDeleteExistFile?.(file.fileSeq)}
+                  >
+                    <XIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </ListItem>
+            ))}
             {files.map((file) => (
               <ListItem
                 key={file.path}
@@ -183,16 +209,7 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
               size="small"
               type="button"
             >
-              Remove All
-            </Button>
-            <Button
-              onClick={onUpload}
-              size="small"
-              sx={{ ml: 2 }}
-              type="button"
-              variant="contained"
-            >
-              Upload
+              {c('RemoveAll')}
             </Button>
           </Box>
         </Box>

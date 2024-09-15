@@ -58,7 +58,6 @@ const Login: NextPage = () => {
                 href="/"
                 passHref
               >
-                <a>
                   <Logo
                     color={'primary.main'}
                     sx={{
@@ -66,7 +65,6 @@ const Login: NextPage = () => {
                       width: 40
                     }}
                   />
-                </a>
               </NextLink>
               <Typography variant="h4">
                 {l('Login')}
@@ -92,31 +90,23 @@ const Login: NextPage = () => {
               <Grid item xs={9}>
               <Box>
             <div>
-              <NextLink
-                href={path.pages.authentication.register}
-                passHref
-              >
                 <Link
+                  href={path.pages.authentication.register}
                   color="textSecondary"
                   variant="body2"
                 >
                   {l('CreateNewAccount')}
                 </Link>
-              </NextLink>
             </div>
               <Box sx={{ mt: 1, pointerEvents: 'fill' }}>
-               <NextLink
-                href={'#'}
-                passHref
-                >
                   <Link
+                    href={'#'}
                     color="textSecondary"
                     variant="body2"
                     onClick={()=>{setModalPwdR(true)}}
                   >
                     {l('ForgotPassword')}
                   </Link>
-                </NextLink>
               </Box>
               </Box>
               </Grid>

@@ -62,7 +62,7 @@ const AccountPopover: FC<AccountPopoverProps> = (props) => {
           href={path.pages.minyeonjin.mypage}
           passHref
         >
-          <MenuItem component="a">
+          <MenuItem>
             <ListItemIcon sx={{mr: 1}}>
               <UserCircleIcon fontSize="small" />
             </ListItemIcon>

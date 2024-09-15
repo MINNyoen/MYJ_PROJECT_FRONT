@@ -42,11 +42,11 @@ export const JWTRegister: FC = () => {
       loginId: Yup
         .string()
         .email(t('valE-Mail-t'))
-        .max(50, c("valmax", {max: '50'}))
+        .max(50, c("valMax", {max: '50'}))
         .required(t('valE-Mail-r')),
       name: Yup
         .string()
-        .max(10, c("valmax", {max: '10'}))
+        .max(10, c("valMax", {max: '10'}))
         .required(t('valName-r')),
       password: Yup
         .string()
@@ -248,7 +248,6 @@ export const JWTRegister: FC = () => {
           variant="body2"
         >
           <Link
-            component="a"
             href="#"
           >
             {t('TermsAndConditions')}
@@ -264,7 +263,6 @@ export const JWTRegister: FC = () => {
           {t('IHaveRead')}
           {' '}
           <Link
-            component="a"
             href="#"
           >
             {t('TermsAndConditions')}

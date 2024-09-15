@@ -21,7 +21,8 @@
             "community" : {
                 "chatting" : "/minyeonjin/community/chatting",
                 "board" : "/minyeonjin/community/board",
-                "boardCreate" : "/minyeonjin/community/board-create"
+                "boardWrite" : "/minyeonjin/community/board-write",
+                "boardDetail" : "/minyeonjin/community/board-detail"
             },
             "planning" : {
                 "kanban" : "/minyeonjin/planning/kanban",

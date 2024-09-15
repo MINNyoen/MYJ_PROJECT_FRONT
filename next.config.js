@@ -11,17 +11,22 @@ const withTM = require('next-transpile-modules')([
 const withPlugins = require('next-compose-plugins');
 const nextTranslate = require('next-translate');
 
-module.exports = withPlugins([
-  [nextTranslate],[withTM]
-],
-  { 
-  webpack : (config) => {
+module.exports = withPlugins(
+  [
+    withTM, // 첫번째 플러그인
+    nextTranslate // 두번째 플러그인
+  ],
+  {
+    webpack: (config) => {
       config.module.rules.push({
         test: /\.svg$/,
-        use: ['@svgr/webpack']
+        use: ['@svgr/webpack'] // SVG 파일 처리 설정
       });
-      return config;
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: ['/node_modules/'], // 배열 또는 정규식으로 설정
+      };
+      return config
     }
-
-}
-)
+  }
+);

@@ -43,5 +43,8 @@
     "valString" : "Only strings can be entered",
     "valNumber" : "Only numbers can be entered",
     "valMax" : "You can enter up to {{max}} characters",
-    "valMin" : "You must enter at least {{min}} characters"
+    "valMin" : "You must enter at least {{min}} characters",
+    "RemoveAll" : "Remove All",
+    "SelectFile" : "Select file",
+    "SelectFileComment" : "Drop files browse thorough your folders"
 }

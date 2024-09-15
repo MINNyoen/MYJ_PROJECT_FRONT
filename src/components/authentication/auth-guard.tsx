@@ -56,7 +56,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props) => {
 
   const onConnected = () => {
     //알림
-    console.log(auth.user?.loginId);
+
     stompClient.send('app/login', {}, JSON.stringify(auth.user?.loginId));
     }
 

@@ -7,6 +7,7 @@ export interface Board {
   views: number;
   writer: string;
   fileExist: boolean;
+  mine: boolean;
   regId: string;
   regDt: number;
   updDt: number;

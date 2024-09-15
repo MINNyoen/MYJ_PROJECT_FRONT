@@ -22,11 +22,9 @@ const MenuItemDetail: FC<MenuItemDetailProps> = (props) => {
              {item.title}
             </Typography>
             {item.links && item.links.map((item_d: MenuType, index_d: number) => (
-              <NextLink
-              href={item_d.href ? item_d.href : "#"}
-              key={'bMenuItem - ' + index_d.toString()}
-              passHref>
                 <Link
+                  href={item_d.href ? item_d.href : "#"}
+                  key={'bMenuItem - ' + index_d.toString()}
                   color={'primary.contrastText'}
                   underline="none"
                   variant="subtitle2"
@@ -46,7 +44,6 @@ const MenuItemDetail: FC<MenuItemDetailProps> = (props) => {
                     />
                   </MenuItem>
                 </Link>
-              </NextLink>
             ))}
             <Divider orientation="vertical" flexItem />
         </Grid>

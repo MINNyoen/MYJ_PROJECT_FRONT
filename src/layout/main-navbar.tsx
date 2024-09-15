@@ -30,18 +30,14 @@ export const MainNavbar: FC<MainNavbarProps> = (props) => {
           disableGutters
           sx={{ minHeight: 64, ml: 1, mr: 1 }}
         >
-          <NextLink
-            href="/"
-            passHref
-          >
             <Link
+              href="/"
               color="primary.contrastText"
               underline="none"
               variant="h4"
               >
                 MinYeonJin
             </Link>
-          </NextLink>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton
             color="inherit"

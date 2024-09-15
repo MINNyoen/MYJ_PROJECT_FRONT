@@ -26,11 +26,11 @@ export const JWTLogin: FC = () => {
       loginId: Yup
         .string()
         .email(t('valEmail-t'))
-        .max(50, c("valmax", {max: '50'}))
+        .max(50, c("valMax", {max: '50'}))
         .required(t('valEmail-r')),
       password: Yup
         .string()
-        .max(30, c("valmax", {max: '30'}))
+        .max(30, c("valMax", {max: '30'}))
         .required(t('valPassword-r')),
       remember: Yup
         .boolean()

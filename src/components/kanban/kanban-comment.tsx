@@ -22,6 +22,8 @@ export const KanbanComment: FC<KanbanCommentProps> = (props) => {
   const { t } = useTransition("kanban");
   const dispatch = useDispatch();
 
+
+
   const handleOnclick = async (): Promise<void> => {
     try {
       if (message) {

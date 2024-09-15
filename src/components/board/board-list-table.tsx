@@ -1,5 +1,4 @@
 import {
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -7,14 +6,18 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material';
-import { DotsHorizontal as DotsHorizontalIcon } from 'components/icons/dots-horizontal';
 import { Scrollbar } from 'components/scrollbar';
-import { SeverityPill } from 'components/severity-pill';
 import PropTypes from 'prop-types';
 import type { FC } from 'react';
 import { ChangeEvent, Fragment, MouseEvent } from 'react';
 import type { Board } from 'types/board';
 import useTransition from 'next-translate/useTranslation';
+import { format } from 'date-fns';
+import { getBoardDetail } from 'slices/board';
+import { useDispatch } from 'store';
+import { useRouter } from 'next/router';
+import path from 'components/path.json';
+import { Circle } from '@mui/icons-material';
 
 interface BoardListTableProps {
   onPageChange: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
@@ -27,6 +30,8 @@ interface BoardListTableProps {
 
 export const BoardListTable: FC<BoardListTableProps> = (props) => {
   const {t} = useTransition("board");
+  const dispatch = useDispatch();
+  const router = useRouter();
   const {
     onPageChange,
     onRowsPerPageChange,
@@ -36,6 +41,10 @@ export const BoardListTable: FC<BoardListTableProps> = (props) => {
     rowsPerPage,
     ...other
   } = props;
+
+  const boardDetail = async (seq: string) => {
+    router.push(path.pages.minyeonjin.community.boardDetail + '/' + seq).catch(console.error);
+ };
   return (
     <div {...other}>
       <Scrollbar>
@@ -64,22 +73,23 @@ export const BoardListTable: FC<BoardListTableProps> = (props) => {
           </TableHead>
           <TableBody>
             {boards.map((board) => {
+              var updDt = new Date(board.updDt);
               return (
-                <Fragment key={board.id}>
+                <Fragment key={board.seq}>
                   <TableRow
                     hover
-                    key={board.id}
+                    key={board.seq}
+                    sx={{cursor: 'pointer'}}
+                    onClick={()=>{boardDetail(board.seq)}}
                   >
                     <TableCell align='center'>
-                      {board.id}
+                      {board.seq}
                     </TableCell>
                     <TableCell width="30%" align='center'>
                       {board.title}
                     </TableCell>
                     <TableCell align='center'>
-                      <SeverityPill color={board.fileExist ? 'success' : 'info'}>
-                      {board.fileExist ? 'exist' : 'empty'}
-                      </SeverityPill>
+                      {board.fileExist ? <Circle color='primary'/> : <Fragment/>}
                     </TableCell>
                     <TableCell align='center'>
                       {board.views}
@@ -88,12 +98,7 @@ export const BoardListTable: FC<BoardListTableProps> = (props) => {
                       {board.writer}
                     </TableCell>
                     <TableCell align='center'>
-                      {board.updDt}
-                    </TableCell>
-                    <TableCell align='center'>
-                      <IconButton>
-                        <DotsHorizontalIcon fontSize="small" />
-                      </IconButton>
+                      {format(updDt.getTime(), t('DateFormat'))}
                     </TableCell>
                   </TableRow>
                 </Fragment>
@@ -107,9 +112,9 @@ export const BoardListTable: FC<BoardListTableProps> = (props) => {
         count={boardsCount}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
-        page={page}
+        page={page-1}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[10, 30, 50]}
       />
     </div>
   );

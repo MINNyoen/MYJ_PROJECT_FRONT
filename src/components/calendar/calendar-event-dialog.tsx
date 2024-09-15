@@ -88,7 +88,7 @@ export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
   const dispatch = useDispatch();
 
   const handleApi = async () => {
-    console.log(sendData);
+
     if(checkModal?.type === "INSERT") {
       await calendarApi.createEvent(sendData).then((response)=>{
         if(response.status){
