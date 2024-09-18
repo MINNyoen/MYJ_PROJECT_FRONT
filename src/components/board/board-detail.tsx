@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from 'store';
 import { bytesToSize } from 'utils/bytes-to-size';
 import NextLink from 'next/link';
 import { getBoardDetail } from 'slices/board';
-import { QuillEditor } from 'components/quill-editor';
+import { MyjEditor } from 'components/myj-editor';
 
 
 export const BoardDetail: FC = () => {
@@ -73,7 +73,7 @@ export const BoardDetail: FC = () => {
     <Box>
       <Card sx={{overflow: 'visible'}}>
         <CardContent sx={{minHeight: '70vh', overflow: 'auto', m:0, p:0, pb: '0 !important'}}>
-          <QuillEditor
+          <MyjEditor
             readOnly={true}
             value={selectedBoard?.content}
             sx={{minHeight: '70vh'}}
@@ -135,7 +135,6 @@ export const BoardDetail: FC = () => {
           passHref
         >
           <Button
-            component='a'
             sx={{ float: 'left' }}
             variant="outlined"
           >

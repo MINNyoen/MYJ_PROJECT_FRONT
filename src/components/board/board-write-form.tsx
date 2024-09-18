@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import type { File } from 'components/file-dropzone';
 import { FileDropzone } from 'components/file-dropzone';
-import { QuillEditor } from 'components/quill-editor';
+import { MyjEditor } from 'components/myj-editor';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
@@ -48,7 +48,6 @@ export const BoardWriteForm: FC = () => {
         .required(t('valTitle')),
       content: Yup
         .string()
-        .required(t('WriteSomething'))
     })),
   })
 
@@ -74,6 +73,9 @@ export const BoardWriteForm: FC = () => {
 
   const onSubmit = async (values: any) => {
     try {
+      if (isMounted()) {
+        router.push(path.pages.minyeonjin.community.board).catch(console.error);
+      };
       if (seq) {
         toast.promise(
           boardApi.boardUpdate(Number(seq), values.title, values.content, files, deleteFiles),
@@ -95,9 +97,6 @@ export const BoardWriteForm: FC = () => {
            }
          );
       }
-      if (isMounted()) {
-        router.push(path.pages.minyeonjin.community.board).catch(console.error);
-      };
     } catch (err: any) {
       seq ? toast.success(t('ErrorModify')) : toast.success(t('ErrorCreate'));
       console.error(err);
@@ -155,7 +154,7 @@ export const BoardWriteForm: FC = () => {
           >
             {t("content")}
           </Typography>
-          <QuillEditor
+          <MyjEditor
             value={getValues('content')}
             onChange={handleChangeContent}
             placeholder={t("WriteSomething")}

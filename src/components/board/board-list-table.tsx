@@ -13,7 +13,6 @@ import { ChangeEvent, Fragment, MouseEvent } from 'react';
 import type { Board } from 'types/board';
 import useTransition from 'next-translate/useTranslation';
 import { format } from 'date-fns';
-import { getBoardDetail } from 'slices/board';
 import { useDispatch } from 'store';
 import { useRouter } from 'next/router';
 import path from 'components/path.json';
