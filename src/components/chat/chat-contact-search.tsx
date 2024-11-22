@@ -16,6 +16,7 @@ import {
 import { Search as SearchIcon } from 'components/icons/search';
 import type { Contact } from 'types/chat';
 import { Tip } from 'components/tip';
+import useTransition from 'next-translate/useTranslation';
 
 interface ChatContactSearchProps {
   isFocused?: boolean;
@@ -31,6 +32,8 @@ export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchPro
   props,
   ref
 ) => {
+  const {t} = useTransition("chatting");
+
   const { isFocused, onChange, onClickAway, onFocus, onSelect, query, results, ...other } = props;
 
   const displaySearchResults = query && isFocused;
@@ -52,7 +55,7 @@ export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchPro
           fullWidth
           onChange={onChange}
           onFocus={onFocus}
-          placeholder="Search contacts"
+          placeholder={t("SearchContacts")}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -64,17 +67,16 @@ export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchPro
         />
         {Boolean(isFocused && !query) && (
           <Box sx={{ py: 2 }}>
-            <Tip message="Enter a contact name" />
+            <Tip message={t("ContactsTips")} />
           </Box>
         )}
         {Boolean(displaySearchResults && results.length === 0) && (
-          <Box sx={{ py: 2 }}>
+          <Box sx={{ py: 2, textAlign: 'center' }}>
             <Typography
               color="textSecondary"
               variant="body2"
             >
-              We couldn&apos;t find any matches for &quot;{query}&quot;. Try checking for typos or using
-              complete words.
+              {t("SearchNobody", {query: query})}
             </Typography>
           </Box>
         )}
@@ -84,13 +86,13 @@ export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchPro
               color="textSecondary"
               variant="subtitle2"
             >
-              Contacts
+              {t("Contacts")}
             </Typography>
             <List>
               {results.map((result) => (
                 <ListItem
                   button
-                  key={result.id}
+                  key={result.userSid}
                   onClick={(): void => handleSelect(result)}
                 >
                   <ListItemAvatar>
@@ -103,7 +105,7 @@ export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchPro
                     />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={result.name}
+                    primary={result.userNm}
                     primaryTypographyProps={{
                       noWrap: true,
                       variant: 'subtitle2'

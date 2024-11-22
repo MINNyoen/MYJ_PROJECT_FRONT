@@ -1,6 +1,6 @@
 import type { Board, Card, CheckItem, Checklist, Column } from 'types/kanban';
 import { deepCopy } from 'utils/deep-copy';
-import { commonApi } from './common-api';
+import { commonApi } from 'utils/common-api';
 import { transFormData } from 'utils/transFromData';
 
 let board : Board = {

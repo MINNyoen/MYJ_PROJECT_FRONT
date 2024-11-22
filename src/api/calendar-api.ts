@@ -1,6 +1,6 @@
 import type { CalendarEvent, CalendarEventCd, CalendarGoal, CalendarGoalUsers } from '../types/calendar';
 import { deepCopy } from 'utils/deep-copy';
-import { commonApi } from './common-api';
+import { commonApi } from 'utils/common-api';
 import moment from 'moment';
 import converter from 'xml-js';
 import { transFormData } from 'utils/transFromData';

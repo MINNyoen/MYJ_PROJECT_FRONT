@@ -20,6 +20,7 @@ module.exports = {
         "/minyeonjin/community/board-detail/[seq]": ["board"],
         "/minyeonjin/community/chatting": ["chatting"],
         "/minyeonjin/mypage": ["mypage"],
+        "/minyeonjin/chatting": ["chatting"]
     },
     staticsHoc: hoistNonReactStatics
 }

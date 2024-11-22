@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import PropTypes from 'prop-types';
-import { formatDistanceToNowStrict } from 'date-fns';
-import { Avatar, Box, Card, CardMedia, Link, Typography } from '@mui/material';
+import { format } from 'date-fns';
+import { Avatar, Box, Card, CardMedia, Typography } from '@mui/material';
+import useTransition from 'next-translate/useTranslation';
+import { ko, enUS } from 'date-fns/locale';
 
 type AuthorType = 'contact' | 'user';
 
@@ -12,12 +14,15 @@ interface ChatMessageProps {
   authorType: AuthorType;
   body: string;
   contentType: string;
+  similarData: boolean;
   createdAt: number;
 }
 
 export const ChatMessage: FC<ChatMessageProps> = (props) => {
-  const { body, contentType, createdAt, authorAvatar, authorName, authorType, ...other } = props;
+  const { body, contentType, createdAt, authorAvatar, authorName, similarData, authorType, ...other } = props;
   const [expandMedia, setExpandMedia] = useState<boolean>(false);
+
+  const {t, lang} = useTransition("chatting");
 
   return (
     <Box
@@ -28,79 +33,85 @@ export const ChatMessage: FC<ChatMessageProps> = (props) => {
           : 'row',
         maxWidth: 500,
         ml: authorType === 'user' ? 'auto' : 0,
-        mb: 2
+        mb: similarData ? 0.5 : 2
       }}
       {...other}
     >
-      <Avatar
-        src={authorAvatar || undefined}
-        sx={{
-          height: 32,
-          ml: authorType === 'user' ? 2 : 0,
-          mr: authorType === 'user' ? 0 : 2,
-          width: 32
-        }}
-      />
-      <Box sx={{ flexGrow: 1 }}>
-        <Card
-          sx={{
-            backgroundColor: authorType === 'user'
-              ? 'primary.main'
-              : 'background.paper',
-            color: authorType === 'user'
-              ? 'text.primary'
-              : 'text.primary',
-            px: 2,
-            py: 1
-          }}
-        >
-          <Box sx={{ mb: 1 }}>
-            <Link
+      {authorType !== 'user' && 
+           <Avatar
+           src={authorAvatar || undefined}
+           sx={{
+             height: 32,
+             ml: 0,
+             mr: 1,
+             width: 32
+           }}
+         />
+      }
+      <Box>
+        {authorType !== 'user' &&
+          <Box sx={{textAlign :'left', mb : 0.5}}>
+            <Typography
               color="inherit"
-              sx={{ cursor: 'pointer' }}
               variant="subtitle2"
-            >
+              >
               {authorName}
-            </Link>
-          </Box>
-          {
-            contentType === 'image'
-              ? (
-                <CardMedia
-                  onClick={(): void => setExpandMedia(true)}
-                  image={body}
-                  sx={{ height: 200 }}
-                />
-              )
-              : (
-                <Typography
-                  color="inherit"
-                  variant="body1"
-                >
-                  {body}
-                </Typography>
-              )
-          }
-        </Card>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: authorType === 'user'
-              ? 'flex-end'
-              : 'flex-start',
-            mt: 1,
-            px: 2
-          }}
-        >
-          <Typography
-            color="textSecondary"
-            noWrap
-            variant="caption"
+            </Typography>            
+        </Box>
+        }
+        <Box display={'flex'} flexDirection={authorType === 'user'
+                ? 'row-reverse'
+                : 'row'}>
+          <Card
+            sx={{
+              width: 'fit-content',
+              backgroundColor: authorType === 'user'
+                ? 'primary.main'
+                : 'background.paper',
+              color: authorType === 'user'
+                ? 'text.primary'
+                : 'text.primary',
+              px: 1.5,
+              py: 1
+            }}
           >
-            {formatDistanceToNowStrict(createdAt)}
-            {' '}
-            ago
-          </Typography>
+            {
+              contentType === 'image'
+                ? (
+                  <CardMedia
+                    onClick={(): void => setExpandMedia(true)}
+                    image={body}
+                    sx={{ height: 200 }}
+                  />
+                )
+                : (
+                  <Typography
+                    color="inherit"
+                    variant="body1"
+                  >
+                    {body}
+                  </Typography>
+                )
+            }
+          </Card>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: authorType === 'user'
+                ? 'flex-end'
+                : 'flex-start',
+              mt: 2.5,
+              px: 0.5
+            }}
+          >
+            <Typography
+              color="textSecondary"
+              noWrap
+              variant="caption"
+            >
+              {!similarData && format(createdAt, 'a hh:mm', { locale: lang === 'ko' ? ko : enUS })}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Box>

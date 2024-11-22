@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { chatApi } from 'api/chat-api';
+import { MutableRefObject } from 'react';
 import type { AppThunk } from 'store';
 import type { Contact, Message, Thread } from 'types/chat';
+import { User } from 'types/user';
 import { objFromArray } from 'utils/obj-from-array';
 
 interface ChatState {
@@ -36,41 +38,37 @@ const slice = createSlice({
     getContacts(state: ChatState, action: PayloadAction<Contact[]>): void {
       const contacts = action.payload;
 
-      state.contacts.byId = objFromArray(contacts);
+      state.contacts.byId = objFromArray(contacts, 'userSid');
       state.contacts.allIds = Object.keys(state.contacts.byId);
     },
     getThreads(state: ChatState, action: PayloadAction<Thread[]>): void {
       const threads = action.payload;
 
-      state.threads.byId = objFromArray(threads);
+      state.threads.byId = objFromArray(threads, 'roomId');
       state.threads.allIds = Object.keys(state.threads.byId);
     },
     getThread(state: ChatState, action: PayloadAction<Thread | null>): void {
       const thread = action.payload;
 
       if (thread) {
-        state.threads.byId[thread.id!] = thread;
+        state.threads.byId[thread.roomId!] = thread;
 
-        if (!state.threads.allIds.includes(thread.id!)) {
-          state.threads.allIds.unshift(thread.id!);
+        if (!state.threads.allIds.includes(thread.roomId!)) {
+          state.threads.allIds.unshift(thread.roomId!);
         }
       }
     },
     markThreadAsSeen(state: ChatState, action: PayloadAction<string>): void {
       const threadId = action.payload;
       const thread = state.threads.byId[threadId];
-
-      if (thread) {
-        thread.unreadCount = 0;
-      }
     },
     setActiveThread(state: ChatState, action: PayloadAction<string | undefined>): void {
       state.activeThreadId = action.payload;
     },
     addMessage(state: ChatState,
-      action: PayloadAction<{ message: Message, threadId: string }>): void {
-      const { threadId, message } = action.payload;
-      const thread = state.threads.byId[threadId];
+      action: PayloadAction<{ message: Message, roomId: string }>): void {
+      const { roomId, message } = action.payload;
+      const thread = state.threads.byId[roomId];
 
       if (thread) {
         thread.messages.push(message);
@@ -97,8 +95,7 @@ export const getThread = (threadKey: string): AppThunk => async (dispatch): Prom
   const data = await chatApi.getThread(threadKey);
 
   dispatch(slice.actions.getThread(data));
-
-  return data?.id;
+  return data?.roomId;
 };
 
 export const markThreadAsSeen = (threadId: string): AppThunk => async (dispatch): Promise<void> => {
@@ -112,17 +109,33 @@ export const setActiveThread = (threadId?: string): AppThunk => (dispatch): void
 };
 
 export const addMessage = ({
-  threadId,
+  roomId,
   recipientIds,
-  body
-}: { threadId?: string; recipientIds?: string[]; body: string; }): AppThunk => async (dispatch): Promise<string> => {
+  body,
+  user,
+  stompClient
+}: { roomId: string; recipientIds?: string[]; body: string; user: User; stompClient: MutableRefObject<any> }): AppThunk => async (dispatch): Promise<string> => {
+  
+  dispatch(slice.actions.addMessage({
+    roomId : roomId,
+    message : {
+      id: 'new',
+      body,
+      contentType: 'text',
+      createdAt: new Date().getTime(),
+      authorId: user.userSid ? user.userSid?.toString() : "new"
+    }
+  }));
+
   const data = await chatApi.addMessage({
-    threadId,
+    roomId,
     recipientIds,
-    body
+    body,
+    user,
+    stompClient
   });
 
-  dispatch(slice.actions.addMessage(data));
+  dispatch(slice.actions.getThread(data));
 
-  return data.threadId;
+  return data.roomId;
 };

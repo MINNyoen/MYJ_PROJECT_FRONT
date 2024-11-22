@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import type { Login, User } from 'types/user';
 import { transFormData } from 'utils/transFromData';
 import { wait } from 'utils/wait';
-import { commonApi } from 'api/common-api';
+import { commonApi } from 'utils/common-api';
 import path from 'components/path.json';
 
 

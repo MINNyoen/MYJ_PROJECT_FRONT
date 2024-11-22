@@ -15,6 +15,8 @@ import { Scrollbar } from 'components/scrollbar';
 import { ChatContactSearch } from './chat-contact-search';
 import { ChatThreadItem } from './chat-thread-item';
 import path from 'components/path.json';
+import { useAuth } from 'hooks/use-auth';
+import useTransition from 'next-translate/useTranslation';
 
 interface ChatSidebarProps {
   containerRef?: MutableRefObject<HTMLDivElement | null>;
@@ -43,6 +45,7 @@ const ChatSidebarMobile = styled(Drawer)({
 });
 
 export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
+  const {t} = useTransition("chatting");
   const { containerRef, onClose, open, ...other } = props;
   const router = useRouter();
   const { threads, activeThreadId } = useSelector((state) => state.chat);
@@ -50,6 +53,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Contact[]>([]);
   const mdUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const { user } = useAuth();
 
   const handleGroupClick = (): void => {
     if (!mdUp) {
@@ -84,38 +88,28 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
     setIsSearchFocused(true);
   };
 
-  const handleSearchSelect = (result: Contact): void => {
+  const handleSearchSelect = async (result: Contact): Promise<void> => {
     setIsSearchFocused(false);
     setSearchQuery('');
 
     if (!mdUp) {
       onClose?.();
     }
-
-    router.push(path.pages.minyeonjin.community.chatting+`?threadKey=${result.id}`).catch(console.error);
+    const recipientIds:string[] = [];
+    recipientIds.push(result.userSid);
+    if(user?.userSid?.toString() && result.userSid != user?.userSid?.toString()) {
+      recipientIds.push(user?.userSid?.toString());
+    }
+    const roomId = await chatApi.getChatThreadByParticipants(recipientIds);
+    router.push(path.pages.minyeonjin.community.chatting+`?threadKey=${roomId}`).catch(console.error);
   };
 
   const handleSelectThread = (threadId: string): void => {
-    const thread = threads.byId[threadId];
-    let threadKey;
-
-    if (thread.type === 'GROUP') {
-      threadKey = thread.id;
-    } else {
-      // We hardcode the current user ID because the mocked that is not in sync
-      // with the auth provider.
-      // When implementing this app with a real database, replace this
-      // ID with the ID from Auth Context.
-      threadKey = thread.participantIds.find((participantId) => (
-        participantId !== '5e86809283e28b96d2d38537'
-      ));
-    }
-
     if (!mdUp) {
       onClose?.();
     }
 
-    router.push(path.pages.minyeonjin.community.chatting+`?threadKey=${threadKey}`).catch(console.error);
+    router.push(path.pages.minyeonjin.community.chatting+`?threadKey=${threads.byId[threadId].roomId}`).catch(console.error);
   };
 
   const content = (
@@ -128,20 +122,19 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
         }}
       >
         <Typography variant="h5">
-          Chats
+          {t("Chats")}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <NextLink
-          href="/dashboard/chat?compose=true"
+          href={path.pages.minyeonjin.community.chatting + "?compose=true"}
           passHref
         >
           <Button
-            component="a"
             onClick={handleGroupClick}
             startIcon={<PlusIcon />}
             variant="contained"
           >
-            Group
+            {t("Group")}
           </Button>
         </NextLink>
         <IconButton

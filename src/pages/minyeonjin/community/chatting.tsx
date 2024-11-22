@@ -14,6 +14,7 @@ import { ChatAlt2 as ChatAlt2Icon } from 'components/icons/chat-alt2';
 import { MenuAlt4 as MenuAlt4Icon } from 'components/icons/menu-alt-4';
 import { getThreads } from 'slices/chat';
 import { useDispatch } from 'store';
+import useTransition from 'next-translate/useTranslation';
 
 const ChatInner = styled(
   'div',
@@ -44,6 +45,7 @@ const ChatInner = styled(
 );
 
 const Chatting: NextPage = () => {
+  const {t} = useTransition("chatting");
   const router = useRouter();
   const dispatch = useDispatch();
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -79,10 +81,6 @@ const Chatting: NextPage = () => {
     setIsSidebarOpen((prevState) => !prevState);
   };
 
-  if (!router.isReady) {
-    return null;
-  }
-
   const view = threadKey
     ? 'thread'
     : compose
@@ -93,7 +91,7 @@ const Chatting: NextPage = () => {
     <>
       <Head>
         <title>
-          Chatting | MYJ's Home
+          {t("Chatting")} | {t("MinYeonJin")}
         </title>
       </Head>
       <Box
@@ -165,7 +163,7 @@ const Chatting: NextPage = () => {
                   sx={{ mt: 2 }}
                   variant="subtitle1"
                 >
-                  Start meaningful conversations!
+                  {t("Chatting_Main")}
                 </Typography>
               </Box>
             )}

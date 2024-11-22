@@ -1,18 +1,19 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import type { FC } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Box, Divider } from '@mui/material';
-import { chatApi } from 'api/chat-api';
 import { addMessage, getThread, markThreadAsSeen, setActiveThread } from 'slices/chat';
 import { useDispatch, useSelector } from 'store';
 import type { RootState } from 'store';
-import type { Participant, Thread } from 'types/chat';
+import type { Thread } from 'types/chat';
 import { Scrollbar } from 'components/scrollbar';
 import { ChatMessageAdd } from './chat-message-add';
 import { ChatMessages } from './chat-messages';
 import { ChatThreadToolbar } from './chat-thread-toolbar';
 import path from 'components/path.json';
+import { useAuth } from 'hooks/use-auth';
+import { connectWebSocket, disconnect } from 'utils/websocket-config';
 
 interface ChatThreadProps {
   threadKey: string;
@@ -30,44 +31,47 @@ export const ChatThread: FC<ChatThreadProps> = (props) => {
   const router = useRouter();
   const thread = useSelector((state) => threadSelector(state));
   const messagesRef = useRef<any>(null);
-  const [participants, setParticipants] = useState<Participant[]>([]);
-  // `const { user } = useAuth();`
-  const user = {
-    id: '5e86809283e28b96d2d38537'
+  const { user } = useAuth();
+  // STOMP 클라이언트를 위한 ref. 웹소켓 연결을 유지하기 위해 사용
+  const stompClient = useRef<any>(null);
+
+  //Subscribe한 CallbackFunction
+  const connect = (response: any) => {
+    console.log(response);
   };
+
 
   const getDetails = async (): Promise<void> => {
     try {
-      const _participants = await chatApi.getParticipants(threadKey);
 
-      setParticipants(_participants);
-
-      const threadId = await dispatch(getThread(threadKey));
-
-      // @ts-ignore
-      dispatch(setActiveThread(threadId));
-      // @ts-ignore
-      dispatch(markThreadAsSeen(threadId));
+    await dispatch(getThread(threadKey));
+  
+    // @ts-ignore
+    dispatch(setActiveThread(threadKey));
+    // @ts-ignore
+    dispatch(markThreadAsSeen(threadKey));
     } catch (err) {
       // If thread key is not a valid key (thread id or contact id)
       // the server throws an error, this means that the user tried a shady route
       // and we redirect them on the home view
       console.error(err);
-      router.push(path.pages.minyeonjin.community.chatting+``).catch(console.error);
+      router.push(path.pages.minyeonjin.community.chatting).catch(console.error);
     }
   };
 
   useEffect(
     () => {
+      connectWebSocket(stompClient, `/sub/chatroom/${threadKey}`, connect);
       getDetails();
+      
+      // 컴포넌트 언마운트 시 웹소켓 연결 해제
+      return () => disconnect(stompClient);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [threadKey]
   );
 
-  useEffect(
-    () => {
-      // Scroll to bottom of the messages after loading the thread
+  useEffect(() => {
       if (thread?.messages && messagesRef?.current) {
         const scrollElement = messagesRef.current.getScrollElement();
 
@@ -77,33 +81,17 @@ export const ChatThread: FC<ChatThreadProps> = (props) => {
     [thread]
   );
 
-  // If we have the thread, we use its ID to add a new message
-  // Otherwise we use the recipients IDs. When using participant IDs, it means that we have to
-  // get the thread.
   const handleSendMessage = async (body: string): Promise<void> => {
     try {
-      if (thread) {
-        await dispatch(addMessage({
-          threadId: thread.id,
-          body
+      if (stompClient && thread) {
+        user && await dispatch(addMessage({
+          roomId: thread.roomId,
+          body,
+          user,
+          stompClient
         }));
-      } else {
-        const recipientIds = participants
-          .filter((participant) => participant.id !== user.id)
-          .map((participant) => participant.id);
-
-        const threadId = await dispatch(addMessage({
-          recipientIds,
-          body
-        }));
-
-        // @ts-ignore
-        await dispatch(getThread(threadId));
-        // @ts-ignore
-        dispatch(setActiveThread(threadId));
       }
 
-      // Scroll to bottom of the messages after adding the new message
       if (messagesRef?.current) {
         const scrollElement = messagesRef.current.getScrollElement();
 
@@ -127,7 +115,7 @@ export const ChatThread: FC<ChatThreadProps> = (props) => {
       }}
       {...props}
     >
-      <ChatThreadToolbar participants={participants} />
+      <ChatThreadToolbar participants={thread?.participants ? thread?.participants : []} />
       <Box
         sx={{
           backgroundColor: 'background.default',

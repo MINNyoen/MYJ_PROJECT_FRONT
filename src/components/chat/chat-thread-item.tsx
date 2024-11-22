@@ -5,44 +5,8 @@ import type { Locale } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
 import { Avatar, AvatarGroup, Box, ListItem, ListItemAvatar, Typography } from '@mui/material';
 import type { Thread } from 'types/chat';
-
-const formatDistanceLocale: Record<string, string> = {
-  lessThanXSeconds: '{{count}}s',
-  xSeconds: '{{count}}s',
-  halfAMinute: '30s',
-  lessThanXMinutes: '{{count}}m',
-  xMinutes: '{{count}}m',
-  aboutXHours: '{{count}}h',
-  xHours: '{{count}}h',
-  xDays: '{{count}}d',
-  aboutXWeeks: '{{count}}w',
-  xWeeks: '{{count}}w',
-  aboutXMonths: '{{count}}m',
-  xMonths: '{{count}}m',
-  aboutXYears: '{{count}}y',
-  xYears: '{{count}}y',
-  overXYears: '{{count}}y',
-  almostXYears: '{{count}}y'
-};
-
-const customLocale: Locale = {
-  ...locale,
-  formatDistance: (token, count, options) => {
-    options = options || {};
-
-    const result = formatDistanceLocale[token].replace('{{count}}', count);
-
-    if (options.addSuffix) {
-      if (options.comparison > 0) {
-        return 'in ' + result;
-      } else {
-        return result + ' ago';
-      }
-    }
-
-    return result;
-  }
-};
+import useTransition from 'next-translate/useTranslation';
+import { useAuth } from 'hooks/use-auth';
 
 interface ChatThreadItemProps {
   active?: boolean;
@@ -52,28 +16,59 @@ interface ChatThreadItemProps {
 
 export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
   const { active, thread, onSelect, ...other } = props;
-  // To get the user from the authContext, you can use
-  // `const { user } = useAuth();`
-  const user = {
-    id: '5e86809283e28b96d2d38537'
+  const {user} = useAuth();
+  
+  const {t} = useTransition("chatting");
+
+  const formatDistanceLocale: Record<string, string> = {
+    lessThanXSeconds: '{{count}}' + t("LocaleSecond"),
+    xSeconds: '{{count}}' + t("LocaleSecond"),
+    halfAMinute: '30s' + t("LocaleSecond"),
+    lessThanXMinutes: '{{count}} + t("LocaleMinute")',
+    xMinutes: '{{count}}' + t("LocaleMinute"),
+    aboutXHours: '{{count}}' + t("LocaleHour"),
+    xHours: '{{count}}' + t("LocaleHour"),
+    xDays: '{{count}}' + t("LocaleDay"),
+    aboutXWeeks: '{{count}}' + t("LocaleWeek"),
+    xWeeks: '{{count}}' + t("LocaleWeek"),
+    aboutXMonths: '{{count}}' + t("LocaleMonth"),
+    xMonths: '{{count}}' + t("LocaleMonth"),
+    aboutXYears: '{{count}}' + t("LocaleYear"),
+    xYears: '{{count}}' + t("LocaleYear"),
+    overXYears: '{{count}}' + t("LocaleYear"),
+    almostXYears: '{{count}}' + t("LocaleYear")
+  };
+  
+  const customLocale: Locale = {
+    ...locale,
+    formatDistance: (token, count, options) => {
+      options = options || {};
+  
+      const result = formatDistanceLocale[token].replace('{{count}}', count);
+  
+      if (options.addSuffix) {
+        if (options.comparison > 0) {
+          return 'in ' + result;
+        } else {
+          return result + ' ' + t("ago");
+        }
+      }
+  
+      return result;
+    }
   };
 
-  const recipients = thread.participants!.filter((participant) => (
-    participant.id !== user.id
-  ));
+  const recipients = thread.participants.length === 1 ? thread.participants : thread.participants.filter((i) => i.userSid.toString() !== user?.userSid?.toString());;
   const lastMessage = thread.messages[thread.messages.length - 1];
   const name = recipients
-    .reduce((names: string[], participant) => [...names, participant.name], [])
+    .reduce((names: string[], participant) => [...names, participant.userNm], [])
     .join(', ');
   let content = '';
 
   if (lastMessage) {
-    const author = lastMessage.authorId === user.id ? 'Me: ' : '';
-    const message = lastMessage.contentType === 'image'
+    content = lastMessage.contentType === 'image'
       ? 'Sent a photo'
       : lastMessage.body;
-
-    content = `${author}${message}`;
   }
 
   return (
@@ -121,7 +116,7 @@ export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
         >
           {recipients.map((recipient) => (
             <Avatar
-              key={recipient.id}
+              key={recipient.userSid}
               src={recipient.avatar || undefined}
             />
           ))}
@@ -172,11 +167,11 @@ export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
         sx={{ whiteSpace: 'nowrap' }}
         variant="caption"
       >
-        {formatDistanceStrict(
+        {lastMessage && formatDistanceStrict(
           lastMessage.createdAt,
           new Date(),
           {
-            addSuffix: false,
+            addSuffix: true,
             locale: customLocale
           }
         )}

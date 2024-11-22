@@ -20,6 +20,7 @@ import { chatApi } from 'api/chat-api';
 import { Search as SearchIcon } from 'components/icons/search';
 import type { Contact } from 'types/chat';
 import { Scrollbar } from 'components/scrollbar';
+import useTransition from 'next-translate/useTranslation';
 
 interface ChatThreadComposerProps {
   onAddRecipient?: (contact: Contact) => void;
@@ -33,13 +34,14 @@ const filterSearchResults = (
 ): Contact[] => {
   const recipientIds = recipients.reduce((acc: string[], recipient) => [
     ...acc,
-    recipient.id
+    recipient.userSid
   ], []);
 
-  return searchResults.filter((result) => !recipientIds.includes(result.id));
+  return searchResults.filter((result) => !recipientIds.includes(result.userSid));
 };
 
 export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
+  const {t} = useTransition("chatting");
   const { onAddRecipient, onRemoveRecipient, recipients, ...other } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [query, setQuery] = useState<string>('');
@@ -131,7 +133,7 @@ export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
                 onBlur={handleSearchBlur}
                 onChange={handleSearchChange}
                 onFocus={handleSearchFocus}
-                placeholder="Search contacts"
+                placeholder={t("SearchContacts")}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -152,9 +154,9 @@ export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
             {recipients.reverse().map((recipient) => (
               <Chip
                 avatar={(<Avatar src={recipient.avatar} />)}
-                key={recipient.id}
-                label={recipient.name}
-                onDelete={(): void => handleRemoveRecipient(recipient.id)}
+                key={recipient.userSid}
+                label={recipient.userNm}
+                onDelete={(): void => handleRemoveRecipient(recipient.userSid)}
                 sx={{ mr: 2 }}
               />
             ))}
@@ -189,20 +191,10 @@ export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
                       }}
                     >
                       <Typography
-                        gutterBottom
-                        variant="h6"
-                      >
-                        Nothing Found
-                      </Typography>
-                      <Typography
                         color="textSecondary"
                         variant="body2"
                       >
-                        We couldn&apos;t find any matches
-                        for &quot;
-                        {query}
-                        &quot;. Try checking for typos or using
-                        complete words.
+                        {t("SearchNobody", {query: query})}
                       </Typography>
                     </Box>
                   )
@@ -218,21 +210,21 @@ export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
                           color="textSecondary"
                           variant="subtitle2"
                         >
-                          Contacts
+                          {t("Contacts")}
                         </Typography>
                       </Box>
                       <List>
                         {filteredSearchResults.map((result) => (
                           <ListItem
                             button
-                            key={result.id}
+                            key={result.userSid}
                             onClick={(): void => handleAddRecipient(result)}
                           >
                             <ListItemAvatar>
                               <Avatar src={result.avatar} />
                             </ListItemAvatar>
                             <ListItemText
-                              primary={result.name}
+                              primary={result.userNm}
                               primaryTypographyProps={{
                                 noWrap: true,
                                 variant: 'subtitle2'

@@ -13,7 +13,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers';
 import toast from 'react-hot-toast';
 import { Mail } from '@mui/icons-material';
 import { User } from 'types/user';
-import { commonApi } from 'api/common-api';
+import { commonApi } from 'utils/common-api';
 
 export const JWTRegister: FC = () => {
   const isMounted = useMounted();

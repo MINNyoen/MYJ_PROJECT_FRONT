@@ -5,6 +5,8 @@ import { Avatar, Box, IconButton, TextField, Tooltip } from '@mui/material';
 import { PaperAirplane as PaperAirplaneIcon } from 'components/icons/paper-airplane';
 import { Photograph as PhotographIcon } from 'components/icons/photograph';
 import { PaperClip as PaperClipIcon } from 'components/icons/paper-clip';
+import { useAuth } from 'hooks/use-auth';
+import useTransition from 'next-translate/useTranslation';
 
 interface ChatMessageAddProps {
   disabled?: boolean;
@@ -12,15 +14,11 @@ interface ChatMessageAddProps {
 }
 
 export const ChatMessageAdd: FC<ChatMessageAddProps> = (props) => {
+  const {t} = useTransition("chatting");
   const { disabled, onSend, ...other } = props;
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [body, setBody] = useState<string>('');
-  // To get the user from the authContext, you can use
-  // `const { user } = useAuth();`
-  const user = {
-    avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
-    name: 'Anika Visser'
-  };
+  const { user } = useAuth();
 
   const handleAttach = (): void => {
     fileInputRef.current?.click();
@@ -64,14 +62,14 @@ export const ChatMessageAdd: FC<ChatMessageAddProps> = (props) => {
           },
           mr: 2
         }}
-        src={user.avatar}
+        src={user?.avatar}
       />
       <TextField
         disabled={disabled}
         fullWidth
         onChange={handleChange}
         onKeyUp={handleKeyUp}
-        placeholder="Leave a message"
+        placeholder={t("MessagePlaceholder")}
         value={body}
         size="small"
       />
@@ -84,7 +82,7 @@ export const ChatMessageAdd: FC<ChatMessageAddProps> = (props) => {
           ml: 2
         }}
       >
-        <Tooltip title="Send">
+        <Tooltip title={t("Send")}>
           <Box sx={{ m: 1 }}>
             <IconButton
               color="primary"
@@ -95,7 +93,7 @@ export const ChatMessageAdd: FC<ChatMessageAddProps> = (props) => {
             </IconButton>
           </Box>
         </Tooltip>
-        <Tooltip title="Attach photo">
+        <Tooltip title={t("AttachPhoto")}>
           <Box
             sx={{
               display: {
@@ -114,7 +112,7 @@ export const ChatMessageAdd: FC<ChatMessageAddProps> = (props) => {
             </IconButton>
           </Box>
         </Tooltip>
-        <Tooltip title="Attach file">
+        <Tooltip title={t("AttachFile")}>
           <Box
             sx={{
               display: {
