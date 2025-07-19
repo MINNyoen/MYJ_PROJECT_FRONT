@@ -72,7 +72,7 @@ const ContactsPopover: FC<ContactsPopoverProps> = (props) => {
             return (
               <ListItem
                 disableGutters
-                key={contact.id}
+                key={contact.userSid}
               >
                 <ListItemAvatar>
                   <Avatar
@@ -90,7 +90,7 @@ const ContactsPopover: FC<ContactsPopoverProps> = (props) => {
                       underline="none"
                       variant="subtitle2"
                     >
-                      {contact.name}
+                      {contact.userNm}
                     </Link>
                   )}
                 />

@@ -24,6 +24,7 @@ import { Notification } from 'types/notification';
 import { Bell as BellIcon } from 'components/icons/bell';
 import { Scrollbar } from 'components/scrollbar';
 import useTranslation from 'next-translate/useTranslation';
+import toast from 'react-hot-toast';
 
 interface NotificationsPopoverProps {
   anchorEl: null | Element;
@@ -360,6 +361,9 @@ export const NotificationsButton = () => {
   // notifications popover. To simplify the demo, we get it from the popover
 
   const handleOpenPopover = (): void => {
+    //개발을 위한 테스트 중중
+    toast('현재 개발 중인 메뉴입니다!', {icon : '🧑🏻‍💻'});
+    return;
     setOpenPopover(true);
   };
 
@@ -381,7 +385,7 @@ export const NotificationsButton = () => {
         >
           <Badge
             color="error"
-            badgeContent={unread}
+            badgeContent={0}
           >
             <BellIcon fontSize="small" />
           </Badge>

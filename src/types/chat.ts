@@ -20,5 +20,5 @@ export interface Thread {
   messages: Message[];
   participants: Contact[];
   type: 'ONE_TO_ONE' | 'GROUP';
-  unreadCount: number;
+  chatUnread: number;
 }

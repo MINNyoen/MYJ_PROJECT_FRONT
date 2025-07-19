@@ -20,6 +20,7 @@ import { createEmotionCache } from 'utils/create-emotion-cache';
 import { AuthConsumer, AuthProvider } from 'contexts/jwt-context';
 import 'styles/globals.css';
 import 'styles/roomchat.css';
+import { WebsocketProvider } from 'contexts/websocket-context';
 
 
 type EnhancedAppProps = AppProps & {
@@ -46,27 +47,29 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
       <ReduxProvider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <AuthProvider>
-            <SettingsProvider>
-              <SettingsConsumer>
-                {({ settings }) => (
-                  <ThemeProvider theme={createTheme({
-                    responsiveFontSizes: settings.responsiveFontSizes,
-                    mode: settings.theme
-                  })}>
-                    <CssBaseline />
-                    <Toaster position="top-center" />
-                    <SettingsButton /> 
-                    <AuthConsumer>
-                        {
-                          (auth) =>  (auth.isInitialized
-                            ? getLayout(<Component {...pageProps}/>)
-                            : <SplashScreen/>)
-                        }
-                      </AuthConsumer>
-                  </ThemeProvider>
-                )}
-              </SettingsConsumer>
-            </SettingsProvider>
+            <WebsocketProvider>
+              <SettingsProvider>
+                <SettingsConsumer>
+                  {({ settings }) => (
+                    <ThemeProvider theme={createTheme({
+                      responsiveFontSizes: settings.responsiveFontSizes,
+                      mode: settings.theme
+                    })}>
+                      <CssBaseline />
+                      <Toaster position="top-center" />
+                      <SettingsButton /> 
+                      <AuthConsumer>
+                          {
+                            (auth) =>  (auth.isInitialized
+                              ? getLayout(<Component {...pageProps}/>)
+                              : <SplashScreen/>)
+                          }
+                        </AuthConsumer>
+                    </ThemeProvider>
+                  )}
+                </SettingsConsumer>
+              </SettingsProvider>
+            </WebsocketProvider>
           </AuthProvider>
         </LocalizationProvider>
       </ReduxProvider>

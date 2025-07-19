@@ -34,6 +34,10 @@ const Mypage: NextPage = () => {
   const {t} = useTransition("mypage");
 
   const handleTabsChange = (event: ChangeEvent<{}>, value: string): void => {
+    if(value === 'notifications') {
+      toast('현재 개발 중인 메뉴입니다!', {icon : '🧑🏻‍💻'});
+      return;
+    }
     setCurrentTab(value);
   };
 

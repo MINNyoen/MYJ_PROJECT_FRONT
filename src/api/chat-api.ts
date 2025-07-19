@@ -66,7 +66,7 @@ class ChatApi {
               messages: messages,
               participants: participants,
               type: participants.length > 2 ? 'ONE_TO_ONE' : 'GROUP',
-              unreadCount: item.unreadCount ? item.unreadCount : 0
+              chatUnread: item.chatUnread ? item.chatUnread : 0
             }
             chatThreadsList.push(chatThread);
           })
@@ -109,11 +109,11 @@ class ChatApi {
           })
 
           const chatThread : Thread = {
-            roomId: response.roomId.toString(),
+            roomId: response.roomId,
             messages: messages,
             participants: participants,
             type: participants.length > 2 ? 'ONE_TO_ONE' : 'GROUP',
-            unreadCount: response.unreadCount ? response.unreadCount : 0
+            chatUnread: response.chatUnread ? response.chatUnread : 0
           }
           resolve(deepCopy(chatThread));
         });
@@ -125,14 +125,14 @@ class ChatApi {
     });
   }
 
-  markThreadAsSeen(roomId: string): Promise<true> {
+  markThreadAsSeen(messageId: string): Promise<true> {
     return new Promise(async (resolve, reject) => {
       try {
-        // await commonApi("put","/chat/readChatThread",{roomId: roomId}).then((response)=>{
-        //   if(response) {
-        //     resolve(true);
-        //   }
-        // });
+         await commonApi("put","/chat/readChatThread",{messageId: messageId}).then((response)=>{
+           if(response) {
+             resolve(true);
+           }
+         });
       } catch (err) {
         console.error('[Chat Api]: ', err);
         reject(new Error('Internal server error'));
@@ -160,14 +160,13 @@ class ChatApi {
     });
   }
 
-
   addMessage({
     roomId,
     recipientIds,
     body,
     user,
     stompClient
-  }: { roomId: string; recipientIds?: string[]; body: string; user: User; stompClient: MutableRefObject<any>; }): Promise<Thread> {
+  }: { roomId: string; recipientIds?: string[]; body: string; user: User; stompClient: MutableRefObject<any> | undefined; }): Promise<Thread> {
     return new Promise(async (resolve, reject) => {
       try {
         if (!(roomId || recipientIds)) {
@@ -181,10 +180,10 @@ class ChatApi {
           authorId: user.userSid
         };
 
-        stompClient.current.send(`/pub/chat/createChatMessage/`+roomId, {}, JSON.stringify(message));
+        stompClient && stompClient.current.send(`/pub/chat/createChatMessage/`+roomId, {}, JSON.stringify(message));
         
       } catch (err) {
-        console.error('[Chat Api]: ', err);
+        console.error('[Chat Api]: ', err); 
         reject(new Error('Internal server error'));
       }
     });

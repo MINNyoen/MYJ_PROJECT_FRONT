@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { Fragment, type FC } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import type { Message, Contact } from 'types/chat';
@@ -17,9 +17,8 @@ export const ChatMessages: FC<ChatMessagesProps> = (props) => {
   const { messages, participants, ...other } = props;
   const { user } = useAuth();
   let beforeDay: number;
-  let beforeUser: number;
 
-  const {t, lang} = useTransition("chatting");
+  const {t} = useTransition("chatting");
 
   return (
     <Box
@@ -56,7 +55,7 @@ export const ChatMessages: FC<ChatMessagesProps> = (props) => {
         }
 
         return (
-          <>
+          <Fragment key={'message_' + message.id.toString()}>
             {change && (
               <Box display={'flex'} justifyContent={'center'}>
                 <Box display={'flex'} sx={{backgroundColor: 'primary.light', px: 2, py: 0.5, borderRadius: 5}} >
@@ -77,7 +76,7 @@ export const ChatMessages: FC<ChatMessagesProps> = (props) => {
               similarData={similarData}
               key={message.id}
             />
-          </>
+          </Fragment>
         );
       })}
     </Box>

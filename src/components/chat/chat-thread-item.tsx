@@ -141,7 +141,7 @@ export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
             display: 'flex'
           }}
         >
-          {Boolean(thread.unreadCount && thread.unreadCount > 0) && (
+          {Boolean(thread.chatUnread && thread.chatUnread > 0) && (
             <Box
               sx={{
                 backgroundColor: 'primary.main',

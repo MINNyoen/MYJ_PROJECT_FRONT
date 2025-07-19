@@ -9,7 +9,7 @@ import { ko, enUS } from 'date-fns/locale';
 type AuthorType = 'contact' | 'user';
 
 interface ChatMessageProps {
-  authorAvatar?: string | null;
+  authorAvatar?: string;
   authorName: string;
   authorType: AuthorType;
   body: string;
@@ -39,7 +39,7 @@ export const ChatMessage: FC<ChatMessageProps> = (props) => {
     >
       {authorType !== 'user' && 
            <Avatar
-           src={authorAvatar || undefined}
+           src={authorAvatar}
            sx={{
              height: 32,
              ml: 0,
@@ -119,7 +119,7 @@ export const ChatMessage: FC<ChatMessageProps> = (props) => {
 };
 
 ChatMessage.propTypes = {
-  authorAvatar: PropTypes.string.isRequired,
+  authorAvatar: PropTypes.any,
   authorName: PropTypes.string.isRequired,
   authorType: PropTypes.oneOf<AuthorType>(['contact', 'user']).isRequired,
   body: PropTypes.string.isRequired,

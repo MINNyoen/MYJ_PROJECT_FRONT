@@ -13,6 +13,7 @@ interface ScrollbarProps extends SimpleBar.Props {
 
 const ScrollbarRoot = styled(SimpleBar)``;
 
+// eslint-disable-next-line react/display-name
 export const Scrollbar = forwardRef<MutableRefObject<SimpleBar>, ScrollbarProps>((props, ref) => {
   return (
     <ScrollbarRoot

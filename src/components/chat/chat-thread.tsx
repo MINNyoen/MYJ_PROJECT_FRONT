@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FC } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Box, Divider } from '@mui/material';
-import { addMessage, getThread, markThreadAsSeen, setActiveThread } from 'slices/chat';
+import { receiveMessage, addMessage, setActiveThread } from 'slices/chat';
 import { useDispatch, useSelector } from 'store';
 import type { RootState } from 'store';
 import type { Thread } from 'types/chat';
@@ -13,7 +13,7 @@ import { ChatMessages } from './chat-messages';
 import { ChatThreadToolbar } from './chat-thread-toolbar';
 import path from 'components/path.json';
 import { useAuth } from 'hooks/use-auth';
-import { connectWebSocket, disconnect } from 'utils/websocket-config';
+import { useWebSocket } from 'hooks/use-websocket';
 
 interface ChatThreadProps {
   threadKey: string;
@@ -32,28 +32,22 @@ export const ChatThread: FC<ChatThreadProps> = (props) => {
   const thread = useSelector((state) => threadSelector(state));
   const messagesRef = useRef<any>(null);
   const { user } = useAuth();
-  // STOMP 클라이언트를 위한 ref. 웹소켓 연결을 유지하기 위해 사용
-  const stompClient = useRef<any>(null);
+  const {stompClient, connectWebSubscribe, connectWebUnSubscribe} = useWebSocket();
+  const [scroll,setScroll] = useState<boolean>(false);
 
   //Subscribe한 CallbackFunction
-  const connect = (response: any) => {
-    console.log(response);
+  const chatConnect = async (message: any) => {
+    const data = JSON.parse(message.body);
+    user && await dispatch(receiveMessage(data,user));
   };
 
 
   const getDetails = async (): Promise<void> => {
     try {
-
-    await dispatch(getThread(threadKey));
   
     // @ts-ignore
     dispatch(setActiveThread(threadKey));
-    // @ts-ignore
-    dispatch(markThreadAsSeen(threadKey));
     } catch (err) {
-      // If thread key is not a valid key (thread id or contact id)
-      // the server throws an error, this means that the user tried a shady route
-      // and we redirect them on the home view
       console.error(err);
       router.push(path.pages.minyeonjin.community.chatting).catch(console.error);
     }
@@ -61,11 +55,15 @@ export const ChatThread: FC<ChatThreadProps> = (props) => {
 
   useEffect(
     () => {
-      connectWebSocket(stompClient, `/sub/chatroom/${threadKey}`, connect);
+      let connectId = "";
+      if(connectWebSubscribe) {
+        connectId = connectWebSubscribe(`/sub/chatroom/${threadKey}`, chatConnect);
+      } 
       getDetails();
+      setScroll(!scroll);
       
       // 컴포넌트 언마운트 시 웹소켓 연결 해제
-      return () => disconnect(stompClient);
+      return () => connectWebUnSubscribe && connectWebUnSubscribe(connectId);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [threadKey]
@@ -77,8 +75,7 @@ export const ChatThread: FC<ChatThreadProps> = (props) => {
 
         scrollElement.scrollTop = messagesRef.current.el.scrollHeight;
       }
-    },
-    [thread]
+    },[scroll]
   );
 
   const handleSendMessage = async (body: string): Promise<void> => {

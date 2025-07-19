@@ -43,6 +43,7 @@ export const MainFirst: FC = (props) => {
         backgroundImage: "linear-gradient(45deg, rgba(255, 255, 255, 0.6),  rgba(255, 255, 255, 0.0)), url('/static/main/one.jpeg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        height: '100vh',
         pt: 15,
         pb: 15,
       }}
@@ -89,7 +90,7 @@ export const MainFirst: FC = (props) => {
                       {t('Notice')}
                     </Typography>
                   </Box>
-                  {["1", "2", "3"].map((i) => (
+                  {/* {["1", "2", "3"].map((i) => (
                     <Box
                       width={"100%"}
                       key={i}
@@ -103,7 +104,7 @@ export const MainFirst: FC = (props) => {
                         2022.08.11 1{i}:00
                       </Typography>
                     </Box>
-                  ))}
+                  ))} */}
                 </CardContent>
               </Card>
             </Grid>
@@ -217,7 +218,7 @@ export const MainFirst: FC = (props) => {
                   </Typography>
                 </Box>
                 <List disablePadding sx={{ pt: 2, maxHeight: '200px', overflow: 'auto'}}>
-                  {["1", "2", "3", "4", "5"].map((i, index) => (
+                  {/* {["1", "2", "3", "4", "5"].map((i, index) => (
                     <ListItem
                       disableGutters
                       key={index}
@@ -267,7 +268,7 @@ export const MainFirst: FC = (props) => {
                         }
                       />
                     </ListItem>
-                  ))}
+                  ))} */}
                 </List>
               </CardContent>
               <CardContent sx={{pt: 1}}>

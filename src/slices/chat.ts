@@ -114,18 +114,7 @@ export const addMessage = ({
   body,
   user,
   stompClient
-}: { roomId: string; recipientIds?: string[]; body: string; user: User; stompClient: MutableRefObject<any> }): AppThunk => async (dispatch): Promise<string> => {
-  
-  dispatch(slice.actions.addMessage({
-    roomId : roomId,
-    message : {
-      id: 'new',
-      body,
-      contentType: 'text',
-      createdAt: new Date().getTime(),
-      authorId: user.userSid ? user.userSid?.toString() : "new"
-    }
-  }));
+}: { roomId: string; recipientIds?: string[]; body: string; user: User; stompClient?: MutableRefObject<any> }): AppThunk => async (dispatch): Promise<string> => {
 
   const data = await chatApi.addMessage({
     roomId,
@@ -135,7 +124,33 @@ export const addMessage = ({
     stompClient
   });
 
-  dispatch(slice.actions.getThread(data));
-
   return data.roomId;
+};
+
+
+export const receiveMessage = ({
+  roomId,
+  messageId,
+  body,
+  contentType,
+  createdAt,
+  authorId
+}: { roomId: string; messageId: string; body: string; contentType: string; createdAt: number; authorId: string; }, user: User): AppThunk => async (dispatch): Promise<string> => {
+  
+  dispatch(slice.actions.addMessage({
+    roomId : roomId,
+    message : {
+      id: messageId,
+      body,
+      contentType,
+      createdAt,
+      authorId
+    }
+  }));
+  
+  if(Number(authorId) !== user.userSid) {
+    await chatApi.markThreadAsSeen(messageId);
+  }
+
+  return roomId;
 };

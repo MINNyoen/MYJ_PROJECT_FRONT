@@ -56,7 +56,7 @@ export const getMenuList = () => {
             {
               title: t('Chatting'),
               icon: <ForumIcon/>,
-              href: path.pages.minyeonjin.community.chatting
+              //href: path.pages.minyeonjin.community.chatting
             },
             {
               title: t('Board'),
@@ -146,7 +146,7 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           onClose={(): void => setIsSidebarOpen(false)}
           open={isSidebarOpen}
         />
-        <Box component={'main'}>
+        <Box component={'main'} minHeight={'100vh'}>
         {children}
         </Box>
         <Footer />

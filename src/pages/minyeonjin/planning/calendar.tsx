@@ -387,7 +387,6 @@ const Calendar: NextPage = () => {
       </Head>
       <Box
         sx={{
-          backgroundColor: 'background.paper',
           flexGrow: 1,
           minHeight: '90vh',
           p: '8%',

@@ -90,13 +90,13 @@ const Login: NextPage = () => {
               <Grid item xs={9}>
               <Box>
             <div>
-                <Link
+                {/* <Link
                   href={path.pages.authentication.register}
                   color="textSecondary"
                   variant="body2"
                 >
                   {l('CreateNewAccount')}
-                </Link>
+                </Link> */}
             </div>
               <Box sx={{ mt: 1, pointerEvents: 'fill' }}>
                   <Link
@@ -111,12 +111,6 @@ const Login: NextPage = () => {
               </Box>
               </Grid>
               <Grid item xs={3}>
-              <img
-              alt="Auth platform"
-              src={'/static/icons/jwt.svg'}
-              style={{float: 'right', marginTop: 10}}
-              width={30}
-                />
               </Grid>
             </Grid>
           </Card>

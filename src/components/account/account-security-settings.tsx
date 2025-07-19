@@ -110,7 +110,8 @@ export const AccountSecuritySettings = ({handleCheckMeAlert} : PropsType) => {
           </Grid>
         </CardContent>
       </Card>
-      <Card sx={{ mt: 4 }}>
+      {/*개발 중인 범위*/}
+      <Card sx={{ mt: 4 , display : 'none'}}>
         <CardContent>
           <Typography variant="h6">
             {t("LoginHistory")}
