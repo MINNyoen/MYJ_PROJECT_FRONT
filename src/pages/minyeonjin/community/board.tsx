@@ -17,7 +17,7 @@ interface SortOption {
   label: string;
   value: string;
 }
-
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const board: NextPage = () => {
   const {t} = useTransition("board");
   const dispatch = useDispatch();

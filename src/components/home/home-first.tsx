@@ -61,7 +61,7 @@ export const MainFirst: FC = (props) => {
           MinYeonjin
         </Typography>
         <Typography align="center" variant="h1">
-          MYJ's World Homepage
+          {"MYJ's World Homepage"}
         </Typography>
         <Grid
           container

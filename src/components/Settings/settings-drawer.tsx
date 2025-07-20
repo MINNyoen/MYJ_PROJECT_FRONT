@@ -13,10 +13,6 @@ import type { Settings } from 'contexts/settings-context';
 import { useSettings } from 'hooks/use-settings';
 import { X as XIcon } from 'components/icons/x';
 // @ts-ignore
-import pinkThemeIcon from './pinkTheme.jpg';
-// @ts-ignore
-import blueThemeIcon from './blueTheme.jpg';
-// @ts-ignore
 import KoLanguageIcon from './flag-ko.svg';
 // @ts-ignore
 import UsLanguageIcon from './flag-en.svg';
@@ -33,12 +29,12 @@ const themes = [
   {
     label: 'Ocean',
     value: 'blue',
-    img: blueThemeIcon
+    img: './blueTheme.jpg'
   },
   {
     label: 'Flower',
     value: 'pink',
-    img: pinkThemeIcon
+    img: './pinkTheme.jpg'
   }
 ];
 
@@ -170,7 +166,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
                     }}
                   >
                     <Image
-                      src={imgLink}
+                      src={imgLink} alt={''}
                     />
                   </Box>
                 </Box>
