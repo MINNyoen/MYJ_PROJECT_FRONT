@@ -304,10 +304,10 @@ const Calendar: NextPage = () => {
     }
     //이미지
     else if(category === 3){
-      img =  <Box component={'img'} width={'30px'} src={'/static/calendar/icon/yeonjinIcon.png'} mt={'-4px'}/>;
+      img =  <Box component={'img'} width={'30px'} src={'/static/calendar/Icon/yeonjinIcon.png'} mt={'-4px'}/>;
     }
     else if(category === 4){
-      img = <Box component={'img'} width={'35px'} src={'/static/calendar/icon/minnyeonIcon.png'} m={'-6px'} mt={'-3.5px'} mr={'-1px'}/>
+      img = <Box component={'img'} width={'35px'} src={'/static/calendar/Icon/minnyeonIcon.png'} m={'-6px'} mt={'-3.5px'} mr={'-1px'}/>
     }
     else if(category === 5){
       img = <BeachAccessIcon sx={{mr: 1}}/>;
@@ -317,6 +317,7 @@ const Calendar: NextPage = () => {
     }
     return img;
   }
+  
 
   const renderEventContent = (eventInfo : any) => {
     const extendedProps = eventInfo.event._def.extendedProps;

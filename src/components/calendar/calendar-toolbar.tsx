@@ -85,6 +85,7 @@ export const CalendarToolbar: FC<CalendarToolbarProps> = (props) => {
     view,
     ...other
   } = props;
+  
 
   const { t } = useTransition("calendar");
 
@@ -203,7 +204,7 @@ export const CalendarToolbar: FC<CalendarToolbarProps> = (props) => {
                 <Box
                   component={"img"}
                   width={47}
-                  src={"/static/calendar/icon/minnyeonIcon.png"}
+                  src={"/static/calendar/Icon/minnyeonIcon.png"}
                   pt={"3px"}
                 />
               </IconButton>
@@ -254,7 +255,7 @@ export const CalendarToolbar: FC<CalendarToolbarProps> = (props) => {
                 <Box
                   component={"img"}
                   width={40}
-                  src={"/static/calendar/icon/yeonjinIcon.png"}
+                  src={"/static/calendar/Icon/yeonjinIcon.png"}
                   pb={"3px"}
                 />
               </IconButton>
